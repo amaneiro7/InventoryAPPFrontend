@@ -11,8 +11,7 @@ export function ItemInput(props) {
         setLoading(true);
         getItems().then(response => {
             setItems(response.data);
-            setError(false);
-            console.log(response.data);
+            setError(false);            
         }).catch(error => {
             setError(true);
         }).finally(() => {
@@ -22,7 +21,7 @@ export function ItemInput(props) {
 
 
     return (
-        <section className='main-input'>
+        <>
             <label htmlFor="Descripcion">Serial</label>
             <select name="Serial" id="Serial">
                 {items.map(item => {
@@ -39,6 +38,6 @@ export function ItemInput(props) {
                     );
                 })}
             </select>
-        </section>
+        </>
     )
 }

@@ -15,6 +15,7 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   font-family: 'Cosmos',Helvetica,Arial,sans-serif !important;
+  color: var(--azul-oscuro);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--blanco);
@@ -40,4 +41,31 @@ img {
   max-width: 100%;
   vertical-align: middle;
   border: 0;
+}
+
+select {
+  color: var(--azul-oscuro);
+  font-size: 16px;
+  border-radius: .5rem;
+  box-shadow: 0 0 10px #a2a2a2;
+  border: none;
+  background: #fff;
+}
+
+select:hover {
+  color: var(--naranja)
+}
+
+select option {
+  color: var(--azul-oscuro);  
+  border-radius: .5rem;
+  box-shadow: 0 0 10px #a2a2a2;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+}
+select option:hover {
+  color: var(--naranja);
+  cursor: pointer;
+
 }

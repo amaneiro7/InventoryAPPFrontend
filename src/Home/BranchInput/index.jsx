@@ -21,7 +21,7 @@ export function BranchInput(props) {
 
 
     return (
-        <section className='main-input'>
+        <>
             <label htmlFor="Descripcion">Marca</label>
             <select name="Categoria" id="Categoria">
                 {branches.map(branch => {
@@ -29,8 +29,7 @@ export function BranchInput(props) {
                         <option key={branch.id} value={branch.id}>{branch.name}</option>
                     );
                 })}
-                <button type='button' onClick={() => console.log('he clickeado')}>Agrega una nueva categoria</button>
             </select>
-        </section>
+        </>
     )
 }

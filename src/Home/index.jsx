@@ -3,13 +3,13 @@ import { CategoryInput } from './CategoryInput';
 import { ItemInput } from "./ItemInput";
 import { BranchInput } from "./BranchInput";
 import { ModelsInput } from "./ModelsInput";
-import './Menu.css';
+import './Home.css'
 
 export function Home() {
     return (
-        <main>
+        <main className='main-inputs'>
             <h1>InventarioAPP</h1>
-            <section>
+            <section className='main-section'>
                 <CategoryInput />
                 <ItemInput/>
                 <BranchInput/>

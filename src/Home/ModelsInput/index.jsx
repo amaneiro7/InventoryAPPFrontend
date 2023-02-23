@@ -21,7 +21,7 @@ export function ModelsInput(props) {
 
 
     return (
-        <section className='main-input'>
+        <>
             <label htmlFor="Descripcion">Modelo</label>
             <select name="Categoria" id="Categoria">
                 {models.map(model => {
@@ -29,8 +29,7 @@ export function ModelsInput(props) {
                         <option key={model.id} value={model.id}>{model.name}</option>
                     );
                 })}
-                <button type='button' onClick={() => console.log('he clickeado')}>Agrega una nueva categoria</button>
             </select>
-        </section>
+        </>
     )
 }
