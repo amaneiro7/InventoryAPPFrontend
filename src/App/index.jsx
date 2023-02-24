@@ -11,7 +11,7 @@ import './App.css';
 
 function App() {
   return (
-    // <InventaryProvider>
+    <InventaryProvider>
       <HashRouter>
         <Menu />
         <Routes>
@@ -20,7 +20,7 @@ function App() {
           <Route path='*' element={<p>Not Found</p>}/>
         </Routes>
       </HashRouter>
-    // </InventaryProvider>    
+    </InventaryProvider>    
   );
 }
 

@@ -1,25 +1,39 @@
-import React, {createContext } from "react";
+import React, {createContext, useState } from "react";
 import { useGetData } from "./useGetData";
-
-
 
 export const InventaryContext = createContext();
 
 export function InventaryProvider(props) {
-    const { data, loading, error, getData } = useGetData;
+    const { items, loading, error } = useGetData();
 
-    const getAllData = async (endpoint) => {
-        const response = await getData(endpoint)
-        return response;
-    }
+    const [searchValue, setSearchValue] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+
+    let searchedItems = [];
+
+    if (searchValue.length >= 1) {
+        searchedItems = items.filter(item => {
+            return item.serial.toLowerCase().includes(searchValue.toLowerCase());
+        })
+    } else {
+            searchedItems = items;
+    };
+
     
     return (
         <InventaryContext.Provider value={{
-            data,
+            items,
             loading,
             error,
-            getAllData
-            }}>            
+
+            searchValue,
+            setSearchValue,
+            openModal,
+            setOpenModal,
+
+            searchedItems
+            }}>
+                {props.children}
         </InventaryContext.Provider>
     )
 }

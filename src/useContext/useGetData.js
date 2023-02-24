@@ -1,37 +1,26 @@
 import { useEffect, useState } from "react";
-import { getApiUrl } from "../config";
-import axios from "axios";
+import { getItems  } from "../services/getData";
 
 
-export function useGetData(endpoint) {
+export function useGetData() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const [data, setData] = useState([]);
+    const [items, setItems] = useState([]);
 
-    useEffect(() => {
-        setLoading(true)
 
-        const [dataInfo] = Promise.all([
-            getData({endpoint})
-        ]).then(() => {
-            setData(dataInfo)
-        }).catch(error => {
-            new Error(error);
-            setLoading(false)
-            setError(error)
-        })
-    },[endpoint])
-
-    const getData = ({endpoint}) => {
-        const apiUrl = getApiUrl(`${endpoint}`)
-        return axios.get(apiUrl).then(res => res.data)
-    }
+useEffect(() => {
+    setLoading(true);
+    setError(false);
+    getItems()
+        .then(res => setItems(res.data))
+        .catch(err => setError(err))
+        .finally(() => setLoading(false))
+},[])
 
     return {
-        data,
+        items,
         loading,
-        error,
-        getData
+        error,        
     }
 }
 

@@ -1,0 +1,21 @@
+.input {
+    width: min-content;
+    height: 50px;    
+    display: block;
+    border-width: .5pt;
+    padding: .75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1e2022;
+    background-color: #fff;    
+    border: 1px solid #d5dae2;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.input:focus {
+    outline: 0;
+    border-color: var(--naranja);
+    box-shadow: 0 0 1px 1px var(--naranja);
+    inset: 0 0 1px -1px var(--naranja);
+}
