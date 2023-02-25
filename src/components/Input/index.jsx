@@ -2,7 +2,7 @@ import React from 'react';
 import './Input.css'
 
 export function Input({value, searchValue, setSearchValue}) {
-    const onSearchValueChange = ({target: {value}}) => setSearchValue(value)
+    const onSearchValueChange = ({target: {value}}) => setSearchValue(value)    
     return (
         <>
             <input 

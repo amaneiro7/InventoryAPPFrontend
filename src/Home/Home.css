@@ -43,6 +43,6 @@
     background-color: #efefef;
 }
 
-.main-table tr:hover {
+.main-table tr:hover:not(.main-table--title) {
     background-color: #ddd;
 }

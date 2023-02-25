@@ -6,14 +6,26 @@ export const InventaryContext = createContext();
 export function InventaryProvider(props) {
     const { items, loading, error } = useGetData();
 
-    const [searchValue, setSearchValue] = useState("");
+    const [searchValueCategory, setSearchValueCategory] = useState("");
+    const [searchValueSerial, setSearchValueSerial] = useState("");
+    const [searchValueActivo, setSearchValueActivo] = useState("");
+    const [searchValueBranch, setSearchValueBranch] = useState("");
+    const [searchValueModel, setSearchValueModel] = useState("");
     const [openModal, setOpenModal] = useState(false);
 
     let searchedItems = [];
 
-    if (searchValue.length >= 1) {
+    if (searchValueCategory.length >= 1) {
         searchedItems = items.filter(item => {
-            return item.serial.toLowerCase().includes(searchValue.toLowerCase());
+            return item.category.name.toLowerCase().includes(searchValueCategory.toLowerCase());
+        })
+    } else {
+            searchedItems = items;
+    };
+    
+    if (searchValueBranch.length >= 1) {        
+        searchedItems = items.filter(item => {
+            return item.branch.name.toLowerCase().includes(searchValueBranch.toLowerCase());
         })
     } else {
             searchedItems = items;
@@ -25,9 +37,17 @@ export function InventaryProvider(props) {
             items,
             loading,
             error,
-
-            searchValue,
-            setSearchValue,
+            searchedItems,
+            searchValueCategory, 
+            setSearchValueCategory,
+            searchValueSerial,
+            setSearchValueSerial,
+            searchValueActivo, 
+            setSearchValueActivo,
+            searchValueBranch, 
+            setSearchValueBranch,
+            searchValueModel, 
+            setSearchValueModel,
             openModal,
             setOpenModal,
 

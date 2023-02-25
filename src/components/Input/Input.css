@@ -1,9 +1,9 @@
 .input {
     width: min-content;
-    height: 50px;    
+    height: min-content;    
     display: block;
     border-width: .5pt;
-    padding: .75rem 1rem;
+    padding: .75rem .5rem;
     font-size: 1rem;
     line-height: 1.5;
     color: #1e2022;

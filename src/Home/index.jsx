@@ -4,27 +4,41 @@ import './Home.css';
 import { Input } from "../components/Input";
 
 export function Home() {
-    const { items, loading, error, searchValue, setSearchValue } = useContext(InventaryContext)
+    const { 
+        searchedItems, 
+        loading, 
+        error,
+        searchValueCategory,
+        searchValueSerial,
+        searchValueActivo,
+        searchValueBranch,
+        searchValueModel,
+        setSearchValueCategory,
+        setSearchValueSerial,
+        setSearchValueActivo,
+        setSearchValueBranch,
+        setSearchValueModel,
+    } = useContext(InventaryContext)
     return (
         <main className='main-inputs'>
             <h1>InventarioAPP</h1>
             <table className='main-table'>
                 <tbody>
-                    <tr>                       
-                        <th>Categoria<Input value={"Categoria"} searchValue={searchValue} setSearchValue={setSearchValue}/></th>
-                        <th>Serial<Input value={"Serial"} searchValue={searchValue} setSearchValue={setSearchValue}/></th>
-                        <th>Activo<Input value={"Activo"} searchValue={searchValue} setSearchValue={setSearchValue}/></th>
-                        <th>Marca<Input value={"Marca"} searchValue={searchValue} setSearchValue={setSearchValue}/></th>
-                        <th>Modelo<Input value={"Modelo"} searchValue={searchValue} setSearchValue={setSearchValue}/></th>
+                    <tr className='main-table--title'>
+                        <th>Categoria<Input value={"Categoria"} searchValue={searchValueCategory} setSearchValue={setSearchValueCategory} /></th>
+                        <th>Serial<Input value={"Serial"} searchValue={searchValueSerial} setSearchValue={setSearchValueSerial} /></th>
+                        <th>Activo<Input value={"Activo"} searchValue={searchValueActivo} setSearchValue={setSearchValueActivo} /></th>
+                        <th>Marca<Input value={"Marca"} searchValue={searchValueBranch} setSearchValue={setSearchValueBranch} /></th>
+                        <th>Modelo<Input value={"Modelo"} searchValue={searchValueModel} setSearchValue={setSearchValueModel} /></th>
                     </tr>
-                    {items.map(item => {
+                    {searchedItems.map(item => {
                         return (
                             <tr key={item.id}>
                                 <td>{item.category.name}</td>
                                 <td>{item.serial}</td>
                                 <td>{item.activo}</td>
                                 <td>{item.branch.name}</td>
-                                <td>{item.model.name}</td>                                
+                                <td>{item.model.name}</td>
                             </tr>
                         )
                     })}
