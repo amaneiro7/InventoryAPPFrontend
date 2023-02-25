@@ -2,6 +2,10 @@ import React, { useContext } from 'react';
 import { InventaryContext } from "../useContext/index";
 import './Home.css';
 import { Input } from "../components/Input";
+import { Button } from "../components/Button";
+import { InventoryList } from './InventoryList/InventoryList';
+import { Modal } from "../Modal";
+import { AddNewItemForm } from "../AddNewItemForm";
 
 export function Home() {
     const { 
@@ -18,10 +22,20 @@ export function Home() {
         setSearchValueActivo,
         setSearchValueBranch,
         setSearchValueModel,
+        setOpenModal,
+        openModal
     } = useContext(InventaryContext)
+    
+    const onHandleOpenModal = () => setOpenModal(true)
     return (
         <main className='main-inputs'>
-            <h1>InventarioAPP</h1>
+            <div>
+                <h1>InventarioAPP</h1>
+                <Button 
+                    name={"Agregar un nuevo Item"}
+                    onHandle={onHandleOpenModal}
+                />
+            </div>
             <table className='main-table'>
                 <tbody>
                     <tr className='main-table--title'>
@@ -31,19 +45,17 @@ export function Home() {
                         <th>Marca<Input value={"Marca"} searchValue={searchValueBranch} setSearchValue={setSearchValueBranch} /></th>
                         <th>Modelo<Input value={"Modelo"} searchValue={searchValueModel} setSearchValue={setSearchValueModel} /></th>
                     </tr>
-                    {searchedItems.map(item => {
-                        return (
-                            <tr key={item.id}>
-                                <td>{item.category.name}</td>
-                                <td>{item.serial}</td>
-                                <td>{item.activo}</td>
-                                <td>{item.branch.name}</td>
-                                <td>{item.model.name}</td>
-                            </tr>
-                        )
-                    })}
+                    {(!error && !loading) && <InventoryList/>}
                 </tbody>
+                    {error && <p>Ha Ocurrirdo un error {error}</p>}
+                    {(loading && !error) && <p>...Loading</p>}
+                    {(!loading && searchedItems.length === 0) && <p>No se encuentra el elemento que esta buscando</p>}
             </table>
+            {openModal && (
+                <Modal>
+                    <AddNewItemForm/>
+                </Modal>
+            )}
         </main>
     )
 }

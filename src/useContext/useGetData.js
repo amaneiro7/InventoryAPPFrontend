@@ -3,7 +3,7 @@ import { getItems  } from "../services/getData";
 
 
 export function useGetData() {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [items, setItems] = useState([]);
 
