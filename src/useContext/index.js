@@ -14,23 +14,48 @@ export function InventaryProvider(props) {
     const [openModal, setOpenModal] = useState(false);
 
     let searchedItems = [];
+    let currentSearchValue = items; 
 
     if (searchValueCategory.length >= 1) {
-        searchedItems = items.filter(item => {
+        searchedItems = currentSearchValue.filter(item => {
             return item.category.name.toLowerCase().includes(searchValueCategory.toLowerCase());
         })
-    } else {
-            searchedItems = items;
-    };
-    
-    if (searchValueBranch.length >= 1) {        
-        searchedItems = items.filter(item => {
+        currentSearchValue = searchedItems
+    } 
+
+    if (searchValueSerial.length >= 1) {
+        searchedItems = currentSearchValue.filter(item => {
+            return String(item.serial).toLowerCase().includes(searchValueSerial.toLowerCase());
+        })
+        currentSearchValue = searchedItems
+    }
+
+    if (searchValueActivo.length >= 1) {
+        searchedItems = currentSearchValue.filter(item => {
+            return String(item.activo).toLowerCase().includes(searchValueActivo.toLowerCase());
+        })
+        currentSearchValue = searchedItems
+    } 
+
+    if (searchValueBranch.length >= 1) {
+        searchedItems = currentSearchValue.filter(item => {
             return item.branch.name.toLowerCase().includes(searchValueBranch.toLowerCase());
         })
-    } else {
-            searchedItems = items;
-    };
+        currentSearchValue = searchedItems
+    } 
 
+    if (searchValueModel.length >= 1) {
+        searchedItems = currentSearchValue.filter(item => {
+            return item.model.name.toLowerCase().includes(searchValueModel.toLowerCase());
+        })
+        currentSearchValue = searchedItems
+    } 
+    
+    const searchValueTrigger = searchValueCategory.length + searchValueSerial.length + searchValueActivo.length + searchValueBranch.length + searchValueModel.length;
+
+    if (searchValueTrigger === 0) {
+        searchedItems = items
+    }
     
     return (
         <InventaryContext.Provider value={{
@@ -50,8 +75,6 @@ export function InventaryProvider(props) {
             setSearchValueModel,
             openModal,
             setOpenModal,
-
-            searchedItems
             }}>
                 {props.children}
         </InventaryContext.Provider>
