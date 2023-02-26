@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getItems  } from "../services/getData";
+import { getItems } from "../services/getData";
 
 
 export function useGetData() {

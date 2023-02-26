@@ -9,8 +9,8 @@ export const getItems = async () => {
     const response = await axios.get(endPoints.items.getAllItems);
     return response
 }
-export const getBranches = async () => {
-    const response = await axios.get(endPoints.branch.getAllBranches);
+export const getBrands = async () => {
+    const response = await axios.get(endPoints.brand.getAllBrands);
     return response
 }
 export const getModels = async () => {

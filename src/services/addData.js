@@ -18,7 +18,7 @@ export const createItems = async (data) => {
 }
 export const createBrands = async (data) => {
     console.log(data);
-    await axios.post(endPoints.branch.createBranch, data)
+    await axios.post(endPoints.brand.createBrand, data)
         .then(res => res.data)
         .catch(err => console.log(err))
     

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { getBranches, getCategories } from "../services/getData";
+import { getBrands, getCategories } from "../services/getData";
 
 export function useGetAddData() {
     const [categories, setCategories] = useState([])
-    const [branches, setBranches] = useState([])
+    const [brands, setBrands] = useState([])
     const [models, setModels] = useState([])
     const [category, setCategory] = useState("")
     const [serial, setSerial] = useState("")
     const [activo, setActivo] = useState("")
-    const [branch, setBranch] = useState("")
+    const [brand, setBrand] = useState("")
     const [model, setModel] = useState("")
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -18,38 +18,38 @@ export function useGetAddData() {
         setError(false)
         getCategories()
             .then(res => setCategories(res.data))            
-        getBranches()
-            .then(res => setBranches(res.data))
+        getBrands()
+            .then(res => setBrands(res.data))
             .catch(error => setError(error))
             .finally(() => setLoading(false))
     }, [])
 
     useEffect(() => { 
-        let filteredBranch = []            
-        if (branches.length >= 1) {
-            filteredBranch = branches.filter((model) => {
-                return model.id === Number(branch)
+        let filteredBrand = []            
+        if (brands.length >= 1) {
+            filteredBrand = brands.filter((model) => {
+                return model.id === Number(brand)
             });
         }
-        const filteredModel = filteredBranch.map(elem => elem.model)
+        const filteredModel = filteredBrand.map(elem => elem.model)
         setModels(filteredModel[0])
-        }, [branch])
+        }, [brand])
 
     return {
         loading,
         error,
         categories,
-        branches,
+        brands,
         models,
         category,
         serial,
         activo,
-        branch,
+        brand,
         model,
         setCategory,
         setSerial,
         setActivo,
-        setBranch,
+        setBrand,
         setModel
     }
 }

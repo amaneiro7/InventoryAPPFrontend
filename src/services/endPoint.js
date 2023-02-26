@@ -3,10 +3,10 @@ import { getApiUrl } from "./config";
 const endPoints = {
     categories: {
         getAllCategories: `${getApiUrl}/categories`,
-        getCategory: (name) => `${getApiUrl}/categories/${name}`,
+        getCategory: (id) => `${getApiUrl}/categories/${id}`,
         createCategory: `${getApiUrl}/categories`,
-        updateCategory: (name) => `${getApiUrl}/categories/${name}`,
-        deleteCategory: (name) => `${getApiUrl}/categories/${name}`,
+        updateCategory: (id) => `${getApiUrl}/categories/${id}`,
+        deleteCategory: (id) => `${getApiUrl}/categories/${id}`,
     },
     items: {
         getAllItems: `${getApiUrl}/items`,
@@ -15,19 +15,19 @@ const endPoints = {
         updateItem: (id) => `${getApiUrl}/items/${id}`,
         deleteItem: (id) => `${getApiUrl}/items/${id}`,
     },
-    branch: {
-        getAllBranches: `${getApiUrl}/branch`,
-        getBranch: (name) => `${getApiUrl}/branch/${name}`,
-        createBranch: `${getApiUrl}/branch`,
-        updateBranch: (name) => `${getApiUrl}/branch/${name}`,
-        deleteBranch: (name) => `${getApiUrl}/branch/${name}`,
+    brand: {
+        getAllBrands: `${getApiUrl}/brand`,
+        getBrand: (id) => `${getApiUrl}/brand/${id}`,
+        createBrand: `${getApiUrl}/brand`,
+        updateBrand: (id) => `${getApiUrl}/brand/${id}`,
+        deleteBrand: (id) => `${getApiUrl}/brand/${id}`,
     },
     models: {
         getAllModels: `${getApiUrl}/models`,
-        getModel: (name) => `${getApiUrl}/models/${name}`,
+        getModel: (id) => `${getApiUrl}/models/${id}`,
         createModel: `${getApiUrl}/models`,
-        updateModel: (name) => `${getApiUrl}/models/${name}`,
-        deleteModel: (name) => `${getApiUrl}/models/${name}`,
+        updateModel: (id) => `${getApiUrl}/models/${id}`,
+        deleteModel: (id) => `${getApiUrl}/models/${id}`,
     }
 }
 

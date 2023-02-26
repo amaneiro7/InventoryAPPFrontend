@@ -23,16 +23,16 @@ export function AddNewItemForm() {
         loading,
         error,
         categories,
-        branches,
+        brands,
         models,
         category,
         serial,
         activo,
-        branch,
+        brand,
         setCategory,
         setSerial,
         setActivo,
-        setBranch,
+        setBrand,
         setModel
     } = useGetAddData()
 
@@ -48,7 +48,7 @@ export function AddNewItemForm() {
         setOpenModal(true)
     }
     const onOpenModalModel = () => {
-setOpenModalModel(true)
+        setOpenModalModel(true)
         setOpenModal(true)
     }
 
@@ -112,8 +112,8 @@ setOpenModalModel(true)
                             <Select
                                 name={'branchId'}
                                 isDisabled={!category ? true : false}
-                                setValue={setBranch}
-                                options={branches}
+                                setValue={setBrand}
+                                options={brands}
                                 placeholder={'-- Seleccione la Marca --'}
                             />
                             <Button
@@ -125,7 +125,7 @@ setOpenModalModel(true)
                         <div className='AddNewItemForm--select'>
                             <Select
                                 name={'modelId'}
-                                isDisabled={!branch ? true : false}
+                                isDisabled={!brand ? true : false}
                                 setValue={setModel}
                                 options={models}
                                 placeholder={'-- Seleccione el Model --'}
@@ -154,7 +154,7 @@ setOpenModalModel(true)
             {openModal && <Modal>
                 {openModalCategoy && <CreateNewBranchForm />}
                 {openModalBrand && <CreateNewCategoryForm />}
-                {openModalModel && <CreateNewModelForm brands={branches} />}
+                {openModalModel && <CreateNewModelForm brands={brands} />}
             </Modal>}
         </>
     )
