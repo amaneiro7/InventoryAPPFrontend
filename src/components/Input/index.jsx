@@ -1,15 +1,16 @@
 import React from 'react';
 import './Input.css'
 
-export function Input({value, searchValue, setSearchValue}) {
-    const onSearchValueChange = ({target: {value}}) => setSearchValue(value)    
+export function Input({name, placeholder, value, setInputValue, type = 'text'}) {
+    const onSearchValueChange = ({target: {value}}) => setInputValue(value)    
     return (
         <>
             <input 
-                className='input' 
-                type="text" 
-                placeholder={value}
-                value={searchValue}
+                className='input'
+                name={name}
+                type={type} 
+                placeholder={placeholder}
+                value={value}
                 onChange={onSearchValueChange}
             />
         </>

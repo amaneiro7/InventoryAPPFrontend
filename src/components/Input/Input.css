@@ -1,5 +1,6 @@
 .input {
-    width: min-content;
+    width: 100%;
+    max-width: max-content;
     height: min-content;    
     display: block;
     border-width: .5pt;

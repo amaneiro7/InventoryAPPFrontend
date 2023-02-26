@@ -2,12 +2,9 @@ import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Dashboard } from '../Dashboard';
 import { Home } from '../Home';
-import { Menu } from '../Menu';
+import { Menu } from '../UI/Menu';
 import { InventaryProvider } from '../useContext';
-
-
 import './App.css';
-
 
 function App() {
   return (

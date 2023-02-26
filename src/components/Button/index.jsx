@@ -1,15 +1,16 @@
 import React from 'react';
 import './Button.css'
 
-export function Button(props) {
+export function Button({type, onHandle, name}) {
 
     return (
         <>
             <button 
                 className='btn'
-                onClick={props.onHandle}
+                onClick={onHandle}
+                type={type}
             >
-                {props.name}
+                {name}
             </button>
         </>
     )
