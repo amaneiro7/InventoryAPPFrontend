@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { createBrands } from '../../../services/addData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
-import { InventaryContext } from '../../../useContext';
+import { InventaryContext } from '../../../Hooks';
 
 export function CreateNewBranchForm() {
     const {setOpenModal} = useContext(InventaryContext)

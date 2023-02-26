@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Input } from "../../../UI/Input"
-import { InventaryContext } from "../../../useContext/index";
+import { InventaryContext } from "../../../Hooks";
 
 export function TableTitle() {
     const {

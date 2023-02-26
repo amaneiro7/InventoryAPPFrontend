@@ -3,7 +3,7 @@ import { createModels } from '../../../services/addData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
 import { Select } from '../../../UI/Select';
-import { InventaryContext } from '../../../useContext';
+import { InventaryContext } from '../../../Hooks';
 
 export function CreateNewModelForm({ brands }) {
     const { setOpenModal } = useContext(InventaryContext)

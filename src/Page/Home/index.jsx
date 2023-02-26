@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { InventaryContext } from "../../useContext/index";
+import { InventaryContext } from "../../Hooks";
 import { TableTitle } from "./TableTitle";
 import { Button } from "../../UI/Button";
 import { InventoryList } from './InventoryList/InventoryList';

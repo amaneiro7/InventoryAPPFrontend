@@ -4,7 +4,7 @@ import { Dashboard } from '../Page/Dashboard';
 import { Home } from '../Page/Home';
 import { AddNewItemForm } from '../Page/AddNewItemForm';
 import { Menu } from '../UI/Menu';
-import { InventaryProvider } from '../useContext';
+import { InventaryProvider } from '../Hooks';
 import './App.css';
 
 function App() {
