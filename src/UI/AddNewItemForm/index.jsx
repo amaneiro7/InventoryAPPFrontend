@@ -102,6 +102,7 @@ export function AddNewItemForm() {
                 <Button
                     type={'button'}
                     name={'Cerrar'}
+                    action={'cancelType'}
                     onHandle={onClose}
                 />
                 <Button

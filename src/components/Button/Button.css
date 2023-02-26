@@ -1,6 +1,5 @@
 .btn {
     font-size: 1.2rem;
-    background-color: var(--naranja);
     color: var(--blanco);
     font-weight: 300;
     cursor: pointer;
@@ -11,12 +10,34 @@
     line-height: 1.5;
     border: 1px solid transparent;
     padding: .5rem 3rem;
+    transition: all .5s ease;
+}
+
+.actionType {    
+    color: var(--blanco);
+    border-color: #ffcf3e;
+    background-color: var(--naranja);  
+}
+
+.actionType:hover {
+    opacity: .7;
+}
+
+.cancelType {
+    color: #8c98a4;
+    border-color: #d5dae2;
+    background-color: transparent;  
+}
+
+.cancelType:hover {
+    color: #377dff;
+    border-color: #377dff;
 }
 
 .btn:active {
     box-shadow: 0 3px 5px rgba(0, 0, 0, .1);
 }
 
-.btn:hover {
+/* .btn:hover {
     opacity: .7;
-}
+} */
