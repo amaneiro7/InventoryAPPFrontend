@@ -1,5 +1,5 @@
-.AddNewItemForm {
-    width: 50%;
+.AddNewItemForm {    
+    width: 70%;
     max-width: max-content;
     background-color: var(--blanco);
     padding: 3rem;
@@ -36,5 +36,12 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    
+}
+
+.AddNewItemForm--select {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    align-items: center;
+    justify-content: flex-start;
 }

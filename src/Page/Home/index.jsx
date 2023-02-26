@@ -3,8 +3,8 @@ import { InventaryContext } from "../../useContext/index";
 import { TableTitle } from "./TableTitle";
 import { Button } from "../../UI/Button";
 import { InventoryList } from './InventoryList/InventoryList';
-import './Home.css';
 import { useNavigate } from 'react-router-dom';
+import './Home.css';
 
 export function Home() {
     const navigate = useNavigate();
