@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { InventaryContext } from "../../useContext/index";
+import { InventaryContext } from "../../../useContext/index";
 
 export function InventoryList() {
     const {searchedItems} = useContext(InventaryContext)
