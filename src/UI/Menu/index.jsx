@@ -14,7 +14,7 @@ export function Menu() {
                 </div>
                 <div className='menu-colum menu-list'>
                     <NavLink className={({isActive}) => isActive ? "selected" : undefined} to={'/'}>Home <br /></NavLink>
-                    <NavLink className={({isActive}) => isActive ? "selected" : undefined} to={'/dashboard'}>Dashboard <br /></NavLink>
+                    <NavLink className={({isActive}) => isActive ? "selected" : undefined} to={'/dashboard'}>Dashboard <br /></NavLink>                    
                 </div>
             </nav>
         </header>

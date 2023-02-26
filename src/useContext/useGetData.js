@@ -3,7 +3,7 @@ import { getItems  } from "../services/getData";
 
 
 export function useGetData() {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [items, setItems] = useState([]);
 
@@ -20,7 +20,9 @@ useEffect(() => {
     return {
         items,
         loading,
-        error,        
+        setLoading,
+        error,  
+        setError
     }
 }
 
