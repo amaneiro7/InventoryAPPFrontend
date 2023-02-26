@@ -17,6 +17,5 @@
 .input:focus {
     outline: 0;
     border-color: var(--naranja);
-    box-shadow: 0 0 1px 1px var(--naranja);
-    inset: 0 0 1px -1px var(--naranja);
+    box-shadow: 0 0 1px 1px var(--naranja);    
 }
