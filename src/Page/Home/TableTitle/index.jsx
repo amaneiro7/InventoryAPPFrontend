@@ -23,35 +23,45 @@ export function TableTitle() {
                 type={'text'}
                 placeholder={"Categoria"}
                 value={searchValueCategory}
-                setInputValue={setSearchValueCategory} />
+                setInputValue={setSearchValueCategory} 
+                autoFocus={true}
+            />
             </th>
             <th>Serial<Input
                 name={''}
                 type={'text'}
                 placeholder={"Serial"}
                 value={searchValueSerial}
-                setInputValue={setSearchValueSerial} />
+                setInputValue={setSearchValueSerial} 
+                autoFocus={false}
+            />
             </th>
             <th>Activo<Input
                 name={''}
                 type={'text'}
                 placeholder={"Activo"}
                 value={searchValueActivo}
-                setInputValue={setSearchValueActivo} />
+                setInputValue={setSearchValueActivo} 
+                autoFocus={false}
+            />
             </th>
             <th>Marca<Input
                 name={''}
                 type={'text'}
                 placeholder={"Marca"}
                 value={searchValueBranch}
-                setInputValue={setSearchValueBranch} />
+                setInputValue={setSearchValueBranch} 
+                autoFocus={false}
+            />
             </th>
             <th>Modelo<Input
                 name={''}
                 type={'text'}
                 placeholder={"Modelo"}
                 value={searchValueModel}
-                setInputValue={setSearchValueModel} />
+                setInputValue={setSearchValueModel} 
+                autoFocus={false}
+            />
             </th>
         </tr>
     )

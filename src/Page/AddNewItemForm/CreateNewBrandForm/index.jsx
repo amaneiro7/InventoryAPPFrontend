@@ -38,6 +38,7 @@ export function CreateNewBrandForm() {
                         name={'name'}
                         value={input}
                         setInputValue={setInput}
+                        autoFocus={true}
                         required={true}
                     />
                 </div>

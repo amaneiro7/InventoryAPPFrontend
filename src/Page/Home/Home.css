@@ -23,6 +23,7 @@
     background-color: transparent;
     border-spacing: 0;
     display: table;
+    text-transform: capitalize;
     text-indent: initial;
     border-color: gray;
 }

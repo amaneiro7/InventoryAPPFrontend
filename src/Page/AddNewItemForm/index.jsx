@@ -60,8 +60,8 @@ export function AddNewItemForm() {
 
     const onSubmit = (e) => {        
         const formData = new FormData(formRef.current)
-        const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toLowerCase()
-        const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toLowerCase()
+        const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toUpperCase()
+        const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toUpperCase()
         const data = {
             serial: valueSerial,
             activo: valueActivo,
@@ -71,8 +71,6 @@ export function AddNewItemForm() {
         }
         createNewItem(data)
     }
-
-    console.log(statusData);
 
     return (
         <>
@@ -88,6 +86,7 @@ export function AddNewItemForm() {
                                 isDisabled={false}
                                 options={categories}
                                 placeholder={'-- Seleccione la categoria --'}
+                                autoFocus={true}
                             />
                             <Button
                                 type={'button'}
@@ -104,6 +103,7 @@ export function AddNewItemForm() {
                                 value={serial}
                                 setInputValue={setSerial}
                                 required={true}
+                                autoFocus={false}
                             />
                         </div>
 
@@ -115,6 +115,7 @@ export function AddNewItemForm() {
                                 value={activo}
                                 setInputValue={setActivo}
                                 required={true}
+                                autoFocus={false}
                             />
                         </div>
                         <div className='AddNewItemForm--select'>
@@ -124,6 +125,7 @@ export function AddNewItemForm() {
                                 setValue={setBrand}
                                 options={brands}
                                 placeholder={'-- Seleccione la Marca --'}
+                                autoFocus={false}
                             />
                             <Button
                                 type={'button'}
@@ -138,6 +140,7 @@ export function AddNewItemForm() {
                                 setValue={setModel}
                                 options={models}
                                 placeholder={'-- Seleccione el Model --'}
+                                autoFocus={false}
                             />
                             <Button
                                 type={'button'}
