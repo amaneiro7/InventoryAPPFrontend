@@ -1,20 +1,22 @@
-import React, { useContext, useRef } from 'react';
-import { createBrands } from '../../../services/addData';
+import React, { useContext, useRef, useState } from 'react';
+import { useCreateAddData } from '../../../Hooks/useCreateAddData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
 import { InventaryContext } from '../../../Hooks';
 
-export function CreateNewBranchForm() {
+export function CreateNewBrandForm() {
     const {setOpenModal} = useContext(InventaryContext)
+    const [input, setInput ] = useState("");
+    const {createNewBrand, loading, error, statusData} = useCreateAddData()
     const formRef = useRef(null)
     
-    const onSubmit = (e) => {
-        e.preventDefault();        
+    const onSubmit = (e) => {           
         const formData = new FormData(formRef.current)
         const data = {
             name: formData.get('name')
         }        
-        createBrands(data)
+        createNewBrand(data)
+        setInput('')
     }
 
     const onClose = () => setOpenModal(false)
@@ -26,13 +28,15 @@ export function CreateNewBranchForm() {
         >
             <div className='AddNewItemForm--container'>
                 <div className='AddNewItemForm--title'>
-                    <h2>Create new brand</h2>
+                    <h2>Agrega una nueva Marca</h2>
                 </div>
                 <div className='AddNewItemForm--input'>
                     <Input
                         type='text'
                         placeholder='Ingresa la nueva Marca'
-                        name={'name'}                        
+                        name={'name'}
+                        value={input}
+                        setInputValue={setInput}
                         required={true}
                     />
                 </div>
@@ -47,9 +51,11 @@ export function CreateNewBranchForm() {
                         type={'submit'}
                         name={'Añadir'}
                     />
-                </div>
+                </div>                
+                {(loading && !error) && <p>Se esta Enviando</p>}
+                {(!loading && statusData.status === 201) && <p>{statusData.statusText}</p>}
+                {(error && !loading) && <p>{statusData.error[0].message}</p>}
             </div>
-
         </form>
     )
 }

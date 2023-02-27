@@ -1,5 +1,5 @@
-import React, { useContext, useRef } from 'react';
-import { createModels } from '../../../services/addData';
+import React, { useContext, useRef, useState } from 'react';
+import { useCreateAddData } from '../../../Hooks/useCreateAddData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
 import { Select } from '../../../UI/Select';
@@ -7,15 +7,18 @@ import { InventaryContext } from '../../../Hooks';
 
 export function CreateNewModelForm({ brands }) {
     const { setOpenModal } = useContext(InventaryContext)
+    const [input, setInput ] = useState("");
+    const {createNewModel, loading, error, statusData} = useCreateAddData()
     const formRef = useRef(null)
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (e) => {        
         const formData = new FormData(formRef.current)
         const data = {
-            name: formData.get('name')
+            name: formData.get('name'),
+            brandId: formData.get('brandId'),
         }
-        createModels(data)
+        createNewModel(data)
+        setInput('')
     }
 
     const onClose = () => setOpenModal(false)
@@ -32,11 +35,13 @@ export function CreateNewModelForm({ brands }) {
                         type='text'
                         placeholder='Ingresa el nuevo Modelo'
                         name={'name'}
+                        value={input}
+                        setInputValue={setInput}
                         required={true}
                     />
                 </div>
                 <Select
-                    name={'branchId'}
+                    name={'brandId'}
                     isDisabled={false}                    
                     options={brands}
                     placeholder={'-- Seleccione la Marca --'}
@@ -53,6 +58,9 @@ export function CreateNewModelForm({ brands }) {
                         name={'Añadir'}
                     />
                 </div>
+                {(loading && !error) && <p>Se esta Enviando</p>}
+                {(!loading && statusData.status === 201) && <p>{statusData.statusText}</p>}
+                {(error && !loading) && <p>{statusData.error[0].message}</p>}
             </div>
         </form>
     )

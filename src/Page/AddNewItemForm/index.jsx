@@ -1,27 +1,27 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InventaryContext } from "../../Hooks";
+import { useCreateAddData } from '../../Hooks/useCreateAddData';
+import { useGetAddData } from '../../Hooks/useGetAddData';
 import { Button } from "../../UI/Button";
 import { Input } from "../../UI/Input";
 import { Select } from "../../UI/Select";
-import { useGetAddData } from '../../Hooks/useGetAddData';
 import { Modal } from "../../UI/Modal";
-import { CreateNewBranchForm } from './CreateNewBranchForm';
+import { CreateNewBrandForm } from './CreateNewBrandForm';
 import { CreateNewCategoryForm } from './CreateNewCategoryForm';
 import { CreateNewModelForm } from './CreateNewModelForm';
-import { createItems } from '../../services/addData';
 import './AddNewItemForm.css'
 
 
 export function AddNewItemForm() {
+    const navigate = useNavigate()
+    const formRef = useRef(null)
     const { openModal, setOpenModal } = useContext(InventaryContext)
     const [openModalCategoy,setOpenModalCategory] = useState(false);
     const [openModalBrand,setOpenModalBrand] = useState(false);
     const [openModalModel,setOpenModalModel] = useState(false);
-    const navigate = useNavigate()
+    const {createNewItem, loading, error, statusData} = useCreateAddData()
     const {
-        loading,
-        error,
         categories,
         brands,
         models,
@@ -29,6 +29,7 @@ export function AddNewItemForm() {
         serial,
         activo,
         brand,
+        model,
         setCategory,
         setSerial,
         setActivo,
@@ -36,33 +37,39 @@ export function AddNewItemForm() {
         setModel
     } = useGetAddData()
 
-    const formRef = useRef(null)
 
     const onClose = () => { navigate('/') }
     const onOpenModalCategory = () => {
+        setOpenModalBrand(false)
+        setOpenModalModel(false)
         setOpenModalCategory(true)
         setOpenModal(true)
     }
     const onOpenModalBrand = () => {
+        setOpenModalModel(false)
+        setOpenModalCategory(false)
         setOpenModalBrand(true)
         setOpenModal(true)
     }
     const onOpenModalModel = () => {
+        setOpenModalBrand(false)
+        setOpenModalCategory(false)
         setOpenModalModel(true)
         setOpenModal(true)
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (e) => {        
         const formData = new FormData(formRef.current)
+        const valueSerial = formData.get('serial') === "" ? null : formData.get('serial')
+        const valueActivo = formData.get('activo') === "" ? null : formData.get('activo')        
         const data = {
-            serial: formData.get('serial'),
-            activo: formData.get('activo'),
+            serial: valueSerial,
+            activo: valueActivo,
             categoryId: formData.get('categoryId'),
-            branchId: formData.get('branchId'),
+            brandId: formData.get('brandId'),
             modelId: formData.get('modelId'),
         }
-        createItems(data)        
+        createNewItem(data)
     }
 
     return (
@@ -110,7 +117,7 @@ export function AddNewItemForm() {
                         </div>
                         <div className='AddNewItemForm--select'>
                             <Select
-                                name={'branchId'}
+                                name={'brandId'}
                                 isDisabled={!category ? true : false}
                                 setValue={setBrand}
                                 options={brands}
@@ -148,12 +155,16 @@ export function AddNewItemForm() {
                     <Button
                         type={'submit'}
                         name={'Añadir'}
+                        isDisabled={((!category || !brand || !model) || (serial === "" && activo === "") ) ? true : false}
                     />
                 </div>
+                {(loading && !error) && <p>Se esta Enviando</p>}
+                {(!loading && statusData.status === 201) && <p>{statusData.statusText}</p>}
+                {(error && !loading) && <p>{statusData.error[0].message}</p>}
             </form>
             {openModal && <Modal>
-                {openModalCategoy && <CreateNewBranchForm />}
-                {openModalBrand && <CreateNewCategoryForm />}
+                {openModalCategoy && <CreateNewCategoryForm />}
+                {openModalBrand && <CreateNewBrandForm />}
                 {openModalModel && <CreateNewModelForm brands={brands} />}
             </Modal>}
         </>

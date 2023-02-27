@@ -16,8 +16,7 @@ export function InventaryProvider(props) {
         setSearchValueSerial,
         setSearchValueActivo,
         setSearchValueBranch,
-        setSearchValueModel, } = useGetSearch();
-
+        setSearchValueModel, } = useGetSearch();    
     const [openModal, setOpenModal] = useState(false);
     
     return (

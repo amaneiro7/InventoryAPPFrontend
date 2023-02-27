@@ -1,21 +1,23 @@
-import React, { useContext, useRef } from 'react';
-import { createCategories } from '../../../services/addData';
+import React, { useContext, useRef, useState } from 'react';
+import { useCreateAddData } from '../../../Hooks/useCreateAddData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
 import { InventaryContext } from '../../../Hooks';
 
 export function CreateNewCategoryForm() {
-    const {setOpenModal} = useContext(InventaryContext)
+    const {setOpenModal} = useContext(InventaryContext);
+    const [input, setInput ] = useState("");
+    const {createNewCategory, loading, error, statusData} = useCreateAddData()
     const formRef = useRef(null)
     
-    const onSubmit = (e) => {
-        e.preventDefault();        
+    const onSubmit = (e) => {             
         const formData = new FormData(formRef.current)
         const data = {
             name: formData.get('name')
         }        
-        createCategories(data)
-    }
+        createNewCategory(data)
+        setInput('')        
+    }    
     const onClose = () => setOpenModal(false)
 
     return (
@@ -33,6 +35,8 @@ export function CreateNewCategoryForm() {
                         type='text'
                         placeholder='Ingresa la nueva Categoria'
                         name={'name'}                        
+                        value={input}
+                        setInputValue={setInput}
                         required={true}
                     />
                 </div>
@@ -45,11 +49,13 @@ export function CreateNewCategoryForm() {
                     />
                     <Button
                         type={'submit'}
-                        name={'Añadir'}
+                        name={'Añadir'}                        
                     />
                 </div>
+                {(loading && !error) && <p>Se esta Enviando</p>}
+                {(!loading && statusData.status === 201) && <p>{statusData.statusText}</p>}
+                {(error && !loading) && <p>{statusData.error[0].message}</p>}
             </div>
-
         </form>
     )
 }

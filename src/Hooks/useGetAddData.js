@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getBrands, getCategories } from "../services/getData";
+import { useCreateAddData } from "./useCreateAddData";
 
 export function useGetAddData() {
+    const {upload} = useCreateAddData();
     const [categories, setCategories] = useState([])
     const [brands, setBrands] = useState([])
     const [models, setModels] = useState([])
@@ -22,7 +24,7 @@ export function useGetAddData() {
             .then(res => setBrands(res.data))
             .catch(error => setError(error))
             .finally(() => setLoading(false))
-    }, [])
+    }, [upload])
 
     useEffect(() => { 
         let filteredBrand = []            
