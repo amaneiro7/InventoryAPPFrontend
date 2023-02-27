@@ -86,7 +86,7 @@ export function AddNewItemForm() {
                                 isDisabled={false}
                                 options={categories}
                                 placeholder={'-- Seleccione la categoria --'}
-                                autoFocus={true}
+                                isAutoFocus={true}
                             />
                             <Button
                                 type={'button'}
@@ -103,7 +103,7 @@ export function AddNewItemForm() {
                                 value={serial}
                                 setInputValue={setSerial}
                                 required={true}
-                                autoFocus={false}
+                                isAutoFocus={false}
                             />
                         </div>
 
@@ -115,7 +115,7 @@ export function AddNewItemForm() {
                                 value={activo}
                                 setInputValue={setActivo}
                                 required={true}
-                                autoFocus={false}
+                                isAutoFocus={false}
                             />
                         </div>
                         <div className='AddNewItemForm--select'>
@@ -125,7 +125,7 @@ export function AddNewItemForm() {
                                 setValue={setBrand}
                                 options={brands}
                                 placeholder={'-- Seleccione la Marca --'}
-                                autoFocus={false}
+                                isAutoFocus={false}
                             />
                             <Button
                                 type={'button'}
@@ -140,7 +140,7 @@ export function AddNewItemForm() {
                                 setValue={setModel}
                                 options={models}
                                 placeholder={'-- Seleccione el Model --'}
-                                autoFocus={false}
+                                isAutoFocus={false}
                             />
                             <Button
                                 type={'button'}

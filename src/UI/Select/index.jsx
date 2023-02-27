@@ -1,13 +1,13 @@
 import React from 'react';
 
-export function Select({name, setValue, options, placeholder, isDisabled, autoFocus = false}) {    
+export function Select({name, setValue, options, placeholder, isDisabled, isAutoFocus = false}) {    
     return (
         <div className='AddNewItemForm--input'>
             <select 
                 defaultValue={'none'} 
                 name={name} id={name}
                 disabled={isDisabled}
-                autoFocus={autoFocus}
+                autoFocus={isAutoFocus ? true : undefined} 
                 onChange={({ target: { value } }) => setValue(value)} 
             >
                 <option value={'none'} disabled hidden>{placeholder}</option>

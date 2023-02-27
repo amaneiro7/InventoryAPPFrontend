@@ -32,6 +32,13 @@
     background-color: var(--blanco);
 }
 
+.AddNewItemForm--input select:focus {
+    outline: 0;
+    border-color: var(--naranja);
+    box-shadow: 0 0 1px 1px var(--naranja); 
+
+}
+
 .AddNewItemForm-btnContainer {
     display: flex;
     justify-content: space-evenly;

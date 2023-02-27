@@ -24,7 +24,7 @@ export function TableTitle() {
                 placeholder={"Categoria"}
                 value={searchValueCategory}
                 setInputValue={setSearchValueCategory} 
-                autoFocus={true}
+                isAutoFocus={true}
             />
             </th>
             <th>Serial<Input
@@ -33,7 +33,7 @@ export function TableTitle() {
                 placeholder={"Serial"}
                 value={searchValueSerial}
                 setInputValue={setSearchValueSerial} 
-                autoFocus={false}
+                isAutoFocus={false}
             />
             </th>
             <th>Activo<Input
@@ -42,7 +42,7 @@ export function TableTitle() {
                 placeholder={"Activo"}
                 value={searchValueActivo}
                 setInputValue={setSearchValueActivo} 
-                autoFocus={false}
+                isAutoFocus={false}
             />
             </th>
             <th>Marca<Input
@@ -51,7 +51,7 @@ export function TableTitle() {
                 placeholder={"Marca"}
                 value={searchValueBranch}
                 setInputValue={setSearchValueBranch} 
-                autoFocus={false}
+                isAutoFocus={false}
             />
             </th>
             <th>Modelo<Input
@@ -60,7 +60,7 @@ export function TableTitle() {
                 placeholder={"Modelo"}
                 value={searchValueModel}
                 setInputValue={setSearchValueModel} 
-                autoFocus={false}
+                isAutoFocus={false}
             />
             </th>
         </tr>

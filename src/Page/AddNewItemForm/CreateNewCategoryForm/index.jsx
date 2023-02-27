@@ -38,7 +38,7 @@ export function CreateNewCategoryForm() {
                         name={'name'}                        
                         value={input}
                         setInputValue={setInput}
-                        autoFocus={true}
+                        isAutoFocus={true}
                         required={true}
                     />
                 </div>
