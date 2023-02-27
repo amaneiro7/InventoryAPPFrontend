@@ -12,8 +12,9 @@ export function CreateNewBrandForm() {
     
     const onSubmit = (e) => {           
         const formData = new FormData(formRef.current)
+        const valueName = formData.get('name').trimStart().trimEnd().toLowerCase()
         const data = {
-            name: formData.get('name')
+            name: valueName
         }        
         createNewBrand(data)
         setInput('')
@@ -50,6 +51,7 @@ export function CreateNewBrandForm() {
                     <Button
                         type={'submit'}
                         name={'Añadir'}
+                        isDisabled={input === "" ? true : false}
                     />
                 </div>                
                 {(loading && !error) && <p>Se esta Enviando</p>}

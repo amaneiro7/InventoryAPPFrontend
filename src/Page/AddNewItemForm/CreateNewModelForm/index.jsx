@@ -13,8 +13,9 @@ export function CreateNewModelForm({ brands }) {
 
     const onSubmit = (e) => {        
         const formData = new FormData(formRef.current)
+        const valueName = formData.get('name').trimStart().trimEnd().toLowerCase()
         const data = {
-            name: formData.get('name'),
+            name: valueName,
             brandId: formData.get('brandId'),
         }
         createNewModel(data)
@@ -56,6 +57,7 @@ export function CreateNewModelForm({ brands }) {
                     <Button
                         type={'submit'}
                         name={'Añadir'}
+                        isDisabled={input === "" ? true : false}
                     />
                 </div>
                 {(loading && !error) && <p>Se esta Enviando</p>}

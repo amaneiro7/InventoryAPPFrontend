@@ -60,8 +60,8 @@ export function AddNewItemForm() {
 
     const onSubmit = (e) => {        
         const formData = new FormData(formRef.current)
-        const valueSerial = formData.get('serial') === "" ? null : formData.get('serial')
-        const valueActivo = formData.get('activo') === "" ? null : formData.get('activo')        
+        const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toLowerCase()
+        const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toLowerCase()
         const data = {
             serial: valueSerial,
             activo: valueActivo,
@@ -71,6 +71,8 @@ export function AddNewItemForm() {
         }
         createNewItem(data)
     }
+
+    console.log(statusData);
 
     return (
         <>

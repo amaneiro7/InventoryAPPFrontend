@@ -12,9 +12,10 @@ export function CreateNewCategoryForm() {
     
     const onSubmit = (e) => {             
         const formData = new FormData(formRef.current)
+        const valueName = formData.get('name').trimStart().trimEnd().toLowerCase()
         const data = {
-            name: formData.get('name')
-        }        
+            name: valueName
+        }         
         createNewCategory(data)
         setInput('')        
     }    
@@ -49,7 +50,8 @@ export function CreateNewCategoryForm() {
                     />
                     <Button
                         type={'submit'}
-                        name={'Añadir'}                        
+                        name={'Añadir'}
+                        isDisabled={input === "" ? true : false}                    
                     />
                 </div>
                 {(loading && !error) && <p>Se esta Enviando</p>}
