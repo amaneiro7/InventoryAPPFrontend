@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { getBrands, getCategories } from "../services/getData";
-import { useCreateAddData } from "./useCreateAddData";
+import {useEffect, useState } from "react";
+import { getAllItems } from "../services/api";
+import endPoints from "../services/endPoint";
 
-export function useGetAddData() {
-    const {upload} = useCreateAddData();
+
+export function useGetAddData({setLoading, setError, upload}) {
     const [categories, setCategories] = useState([])
     const [brands, setBrands] = useState([])
     const [models, setModels] = useState([])
@@ -12,19 +12,24 @@ export function useGetAddData() {
     const [activo, setActivo] = useState("")
     const [brand, setBrand] = useState("")
     const [model, setModel] = useState("")
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     
     useEffect(() => {
         setLoading(true)
-        setError(false)
-        getCategories()
-            .then(res => setCategories(res.data))            
-        getBrands()
-            .then(res => setBrands(res.data))
+        setError("")
+            getAllItems({path: endPoints.categories.getAllCategories})
+            .then(res => setCategories(res.data))
             .catch(error => setError(error))
             .finally(() => setLoading(false))
     }, [upload])
+
+    useEffect(() => {
+        setLoading(true)
+        setError(false)          
+        getAllItems({path: endPoints.brand.getAllBrands})
+            .then(res => setBrands(res.data))
+            .catch(error => setError(error))
+            .finally(() => setLoading(false))
+    }, [category, upload])
 
     useEffect(() => { 
         let filteredBrand = []            
@@ -38,8 +43,6 @@ export function useGetAddData() {
         }, [brand])
 
     return {
-        loading,
-        error,
         categories,
         brands,
         models,

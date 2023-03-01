@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { InventaryContext } from "../../Hooks";
 import { TableTitle } from "./TableTitle";
-import { Button } from "../../UI/Button";
 import { InventoryList } from './InventoryList/InventoryList';
+import { Button } from "../../UI/Button";
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
@@ -29,9 +29,9 @@ export function Home() {
                     {(!error && !loading) && <InventoryList />}
                 </tbody>
             </table>
-            {error && <p>Ha Ocurrirdo un error {error}</p>}
+            {(error && !loading) && <p>Ha Ocurrirdo un error {error}</p>}
             {(loading && !error) && <p>...Loading</p>}
-            {(!loading && searchedItems.length === 0) && <p>No se encuentra el elemento que esta buscando</p>}
+            {(!loading && !error && searchedItems.length === 0) && <p>No se encuentra el elemento que esta buscando</p>}
         </main>
     )
 }

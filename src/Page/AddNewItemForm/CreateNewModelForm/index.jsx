@@ -1,14 +1,13 @@
 import React, { useContext, useRef, useState } from 'react';
-import { useCreateAddData } from '../../../Hooks/useCreateAddData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
 import { Select } from '../../../UI/Select';
 import { InventaryContext } from '../../../Hooks';
+import endPoints from '../../../services/endPoint';
 
 export function CreateNewModelForm({ brands }) {
-    const { setOpenModal } = useContext(InventaryContext)
+    const {setOpenModal, statusData, createNewItem, loading, error} = useContext(InventaryContext)
     const [input, setInput ] = useState("");
-    const {createNewModel, loading, error, statusData} = useCreateAddData()
     const formRef = useRef(null)
 
     const onSubmit = (e) => {        
@@ -18,7 +17,7 @@ export function CreateNewModelForm({ brands }) {
             name: valueName,
             brandId: formData.get('brandId'),
         }
-        createNewModel(data)
+        createNewItem({path:endPoints.models.createModel, data})
         setInput('')
     }
 

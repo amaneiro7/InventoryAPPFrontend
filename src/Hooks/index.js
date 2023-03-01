@@ -1,44 +1,78 @@
-import React, {createContext, useState } from "react";
-import { useGetData } from "./useGetData";
-import { useGetSearch } from "./useGetSearch";
+import React, { createContext, useState } from "react";
+import { useCreateAddData } from "./useCreateAddData";
+import { useGetAddData } from "./useGetAddData";
+import { useGetSearch } from "./useGetDataHome";
 
 export const InventaryContext = createContext();
 
 export function InventaryProvider(props) {
-    const { items, loading, error } = useGetData();
-    const { searchedItems,
-        searchValueCategory, 
-        searchValueSerial, 
-        searchValueActivo, 
-        searchValueBranch, 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [upload, setUpload] = useState(false);
+
+    const {
+        searchedItems,
+        searchValueCategory,
+        searchValueSerial,
+        searchValueActivo,
+        searchValueBranch,
         searchValueModel,
         setSearchValueCategory,
         setSearchValueSerial,
         setSearchValueActivo,
         setSearchValueBranch,
-        setSearchValueModel, } = useGetSearch();    
+        setSearchValueModel,
+    } = useGetSearch({ setLoading, setError, upload });
+
+    const { categories, brands, models, category, serial, activo, brand, model, setCategory, setSerial, setActivo, setBrand, setModel } = useGetAddData({ setLoading, setError, upload });
+
+    const { statusData, createNewCategory, createNewBrand, createNewModel, createNewItem } = useCreateAddData({ setLoading, setError, setUpload });
+
     const [openModal, setOpenModal] = useState(false);
-    
+
     return (
-        <InventaryContext.Provider value={{
-            items,
-            loading,
-            error,
-            searchedItems,
-            searchValueCategory, 
-            setSearchValueCategory,
-            searchValueSerial,
-            setSearchValueSerial,
-            searchValueActivo, 
-            setSearchValueActivo,
-            searchValueBranch, 
-            setSearchValueBranch,
-            searchValueModel, 
-            setSearchValueModel,
-            openModal,
-            setOpenModal,
-            }}>
-                {props.children}
+        <InventaryContext.Provider
+            value={{
+                loading,
+                setLoading,
+                error,
+                setError,
+                searchedItems,
+                searchValueCategory,
+                setSearchValueCategory,
+                searchValueSerial,
+                setSearchValueSerial,
+                searchValueActivo,
+                setSearchValueActivo,
+                searchValueBranch,
+                setSearchValueBranch,
+                searchValueModel,
+                setSearchValueModel,
+                openModal,
+                setOpenModal,
+
+                categories,
+                brands,
+                models,
+                category,
+                serial,
+                activo,
+                brand,
+                model,
+                setCategory,
+                setSerial,
+                setActivo,
+                setBrand,
+                setModel,
+
+                statusData,
+                createNewCategory,
+                createNewBrand,
+                createNewModel,
+                createNewItem,
+            }}
+        >
+            {props.children}
         </InventaryContext.Provider>
-    )
+    );
 }

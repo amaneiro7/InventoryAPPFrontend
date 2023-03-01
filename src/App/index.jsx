@@ -1,8 +1,8 @@
 import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import { Dashboard } from '../Page/Dashboard';
 import { Home } from '../Page/Home';
 import { AddNewItemForm } from '../Page/AddNewItemForm';
+import { Dashboard } from '../Page/Dashboard';
 import { Menu } from '../UI/Menu';
 import { InventaryProvider } from '../Hooks';
 import './App.css';

@@ -1,13 +1,12 @@
 import React, { useContext, useRef, useState } from 'react';
-import { useCreateAddData } from '../../../Hooks/useCreateAddData';
 import { Button } from '../../../UI/Button';
 import { Input } from '../../../UI/Input';
 import { InventaryContext } from '../../../Hooks';
+import endPoints from '../../../services/endPoint';
 
 export function CreateNewCategoryForm() {
-    const {setOpenModal} = useContext(InventaryContext);
+    const {setOpenModal, statusData, createNewItem, loading, error} = useContext(InventaryContext)
     const [input, setInput ] = useState("");
-    const {createNewCategory, loading, error, statusData} = useCreateAddData()
     const formRef = useRef(null)
     
     const onSubmit = (e) => {             
@@ -16,7 +15,7 @@ export function CreateNewCategoryForm() {
         const data = {
             name: valueName
         }         
-        createNewCategory(data)
+        createNewItem({path:endPoints.categories.createCategory, data})
         setInput('')        
     }    
     const onClose = () => setOpenModal(false)

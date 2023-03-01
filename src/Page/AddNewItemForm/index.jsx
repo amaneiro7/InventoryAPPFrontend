@@ -1,8 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InventaryContext } from "../../Hooks";
-import { useCreateAddData } from '../../Hooks/useCreateAddData';
-import { useGetAddData } from '../../Hooks/useGetAddData';
 import { Button } from "../../UI/Button";
 import { Input } from "../../UI/Input";
 import { Select } from "../../UI/Select";
@@ -11,17 +9,16 @@ import { CreateNewBrandForm } from './CreateNewBrandForm';
 import { CreateNewCategoryForm } from './CreateNewCategoryForm';
 import { CreateNewModelForm } from './CreateNewModelForm';
 import './AddNewItemForm.css'
+import endPoints from '../../services/endPoint';
 
 
 export function AddNewItemForm() {
     const navigate = useNavigate()
     const formRef = useRef(null)
-    const { openModal, setOpenModal } = useContext(InventaryContext)
-    const [openModalCategoy,setOpenModalCategory] = useState(false);
-    const [openModalBrand,setOpenModalBrand] = useState(false);
-    const [openModalModel,setOpenModalModel] = useState(false);
-    const {createNewItem, loading, error, statusData} = useCreateAddData()
-    const {
+    const { openModal, 
+        setOpenModal, 
+        loading, 
+        error, 
         categories,
         brands,
         models,
@@ -34,9 +31,12 @@ export function AddNewItemForm() {
         setSerial,
         setActivo,
         setBrand,
-        setModel
-    } = useGetAddData()
-
+        setModel,
+        statusData,
+        createNewItem } = useContext(InventaryContext)
+    const [openModalCategoy, setOpenModalCategory] = useState(false);
+    const [openModalBrand, setOpenModalBrand] = useState(false);
+    const [openModalModel, setOpenModalModel] = useState(false);
 
     const onClose = () => { navigate('/') }
     const onOpenModalCategory = () => {
@@ -58,7 +58,7 @@ export function AddNewItemForm() {
         setOpenModal(true)
     }
 
-    const onSubmit = (e) => {        
+    const onSubmit = (e) => {
         const formData = new FormData(formRef.current)
         const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toUpperCase()
         const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toUpperCase()
@@ -69,7 +69,7 @@ export function AddNewItemForm() {
             brandId: formData.get('brandId'),
             modelId: formData.get('modelId'),
         }
-        createNewItem(data)
+        createNewItem({path:endPoints.items.createItem, data})
     }
 
     return (
@@ -160,7 +160,7 @@ export function AddNewItemForm() {
                     <Button
                         type={'submit'}
                         name={'Añadir'}
-                        isDisabled={((!category || !brand || !model) || (serial === "" && activo === "") ) ? true : false}
+                        isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
                     />
                 </div>
                 {(loading && !error) && <p>Se esta Enviando</p>}

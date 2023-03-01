@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useGetData } from "./useGetData";
+import { useEffect, useState } from "react";
+import { getAllItems } from "../services/api";
+import endPoints from "../services/endPoint";
 
-export function useGetSearch() {
-    const {items} = useGetData()    
+
+export function useGetSearch({setLoading, setError, upload}) {    
+    const [items, setItems] = useState([]);
     const [searchValueCategory, setSearchValueCategory] = useState("");
     const [searchValueSerial, setSearchValueSerial] = useState("");
     const [searchValueActivo, setSearchValueActivo] = useState("");
@@ -10,8 +12,20 @@ export function useGetSearch() {
     const [searchValueModel, setSearchValueModel] = useState("");
 
     let searchedItems = [];
-    let currentSearchValue = items;
+    let currentSearchValue = items
 
+    useEffect(() => {        
+        setLoading(true)
+        setError("")
+        console.log('Get reload home data');
+        getAllItems({path: endPoints.items.getAllItems})
+            .then(res => setItems(res.data))            
+            .catch(error =>  setError(error))
+            .finally(() => setLoading(false))
+            // eslint-disable-next-line
+    }, [upload])
+    
+    
     if (searchValueCategory.length >= 1) {
         searchedItems = currentSearchValue.filter((item) => {
             return item.category.name.toLowerCase().includes(searchValueCategory.toLowerCase());
