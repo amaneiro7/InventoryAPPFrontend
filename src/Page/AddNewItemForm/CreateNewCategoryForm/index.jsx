@@ -9,7 +9,8 @@ export function CreateNewCategoryForm() {
     const [input, setInput ] = useState("");
     const formRef = useRef(null)
     
-    const onSubmit = (e) => {             
+    const onSubmit = (e) => {
+        e.preventDefault();
         const formData = new FormData(formRef.current)
         const valueName = formData.get('name').trimStart().trimEnd().toLowerCase()
         const data = {

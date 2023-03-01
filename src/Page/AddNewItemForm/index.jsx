@@ -59,6 +59,7 @@ export function AddNewItemForm() {
     }
 
     const onSubmit = (e) => {
+        e.preventDefault();
         const formData = new FormData(formRef.current)
         const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toUpperCase()
         const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toUpperCase()

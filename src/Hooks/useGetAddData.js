@@ -22,13 +22,11 @@ export function useGetAddData({setLoading, setError, upload}) {
             .finally(() => setLoading(false))
     }, [upload])
 
-    useEffect(() => {
-        setLoading(true)
+    useEffect(() => {        
         setError(false)          
         getAllItems({path: endPoints.brand.getAllBrands})
             .then(res => setBrands(res.data))
-            .catch(error => setError(error))
-            .finally(() => setLoading(false))
+            .catch(error => setError(error))            
     }, [category, upload])
 
     useEffect(() => { 

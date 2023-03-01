@@ -4,8 +4,9 @@ export function Select({name, setValue, options, placeholder, isDisabled, isAuto
     return (
         <div className='AddNewItemForm--input'>
             <select 
-                defaultValue={'none'} 
-                name={name} id={name}
+                defaultValue={'none'}
+                name={name} 
+                id={name}                
                 disabled={isDisabled}
                 autoFocus={isAutoFocus ? true : undefined} 
                 onChange={({ target: { value } }) => setValue(value)} 

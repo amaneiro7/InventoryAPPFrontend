@@ -10,7 +10,7 @@ export function Input({name, placeholder, value, setInputValue, type = 'text', i
                 name={name}
                 type={type} 
                 placeholder={placeholder}
-                value={value}
+                value={value}                
                 onChange={onSearchValueChange}
                 autoFocus={isAutoFocus ? true : undefined}                    
             />
