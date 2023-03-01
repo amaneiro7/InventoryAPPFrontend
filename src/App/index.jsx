@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { Home } from '../Page/Home';
 import { AddNewItemForm } from '../Page/AddNewItemForm';
 import { Dashboard } from '../Page/Dashboard';
@@ -10,7 +10,7 @@ import './App.css';
 function App() {
   return (
     <InventaryProvider>
-      <HashRouter>
+      <BrowserRouter>
         <Menu />
         <Routes>
           <Route path="/" element={<Home/>} />
@@ -18,7 +18,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path='*' element={<p>Not Found</p>}/>
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </InventaryProvider>    
   );
 }
