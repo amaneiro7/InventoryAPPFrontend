@@ -26,7 +26,7 @@ export function InventaryProvider(props) {
 
     const { categories, brands, models, category, serial, activo, brand, model, setCategory, setSerial, setActivo, setBrand, setModel } = useGetAddData({ setLoading, setError, upload });
 
-    const { statusData, createNewCategory, createNewBrand, createNewModel, createNewItem } = useCreateAddData({ setLoading, setError, setUpload });
+    const { statusData, setStatusData, createNewItem } = useCreateAddData({ setLoading, setError, setUpload });
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -66,9 +66,7 @@ export function InventaryProvider(props) {
                 setModel,
 
                 statusData,
-                createNewCategory,
-                createNewBrand,
-                createNewModel,
+                setStatusData,
                 createNewItem,
             }}
         >

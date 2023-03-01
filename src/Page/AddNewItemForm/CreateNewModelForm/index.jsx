@@ -6,7 +6,7 @@ import { InventaryContext } from '../../../Hooks';
 import endPoints from '../../../services/endPoint';
 
 export function CreateNewModelForm({ brands }) {
-    const {setOpenModal, statusData, createNewItem, loading, error} = useContext(InventaryContext)
+    const {setOpenModal, setStatusData, statusData, createNewItem, loading, error} = useContext(InventaryContext)
     const [input, setInput ] = useState("");
     const formRef = useRef(null)
 
@@ -22,7 +22,10 @@ export function CreateNewModelForm({ brands }) {
         setInput('')
     }
 
-    const onClose = () => setOpenModal(false)
+    const onClose = () => {
+        setOpenModal(false) 
+        setStatusData("")
+    }
     return (
         <form
             className='AddNewItemForm'

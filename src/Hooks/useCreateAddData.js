@@ -23,8 +23,13 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
             })
     }
 
+    if (statusData !== "") {
+        setTimeout(() => setStatusData(""),5000)
+    }
+
     return {
         statusData,
+        setStatusData,
         createNewItem
     }
 }

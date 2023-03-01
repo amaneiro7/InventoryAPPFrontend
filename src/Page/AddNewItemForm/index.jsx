@@ -10,6 +10,9 @@ import { CreateNewCategoryForm } from './CreateNewCategoryForm';
 import { CreateNewModelForm } from './CreateNewModelForm';
 import './AddNewItemForm.css'
 import endPoints from '../../services/endPoint';
+import { AddIcon } from '../../UI/Icon/AddIcon';
+import { EditIcon } from '../../UI/Icon/EditIcon';
+import { DeleteIcon } from '../../UI/Icon/DeleteIcon';
 
 
 export function AddNewItemForm() {
@@ -27,6 +30,7 @@ export function AddNewItemForm() {
         activo,
         brand,
         model,
+        upload,
         setCategory,
         setSerial,
         setActivo,
@@ -70,6 +74,8 @@ export function AddNewItemForm() {
             brandId: formData.get('brandId'),
             modelId: formData.get('modelId'),
         }
+        setSerial("")
+        setActivo("")
         createNewItem({path:endPoints.items.createItem, data})
     }
 
@@ -89,11 +95,11 @@ export function AddNewItemForm() {
                                 placeholder={'-- Seleccione la categoria --'}
                                 isAutoFocus={true}
                             />
-                            <Button
-                                type={'button'}
-                                name={'+'}
+                            <AddIcon                                
                                 onHandle={onOpenModalCategory}
                             />
+                            <EditIcon/>
+                            <DeleteIcon/>
                         </div>
 
                         <div className='AddNewItemForm--input'>
@@ -128,11 +134,11 @@ export function AddNewItemForm() {
                                 placeholder={'-- Seleccione la Marca --'}
                                 isAutoFocus={false}
                             />
-                            <Button
-                                type={'button'}
-                                name={'+'}
+                            <AddIcon                                
                                 onHandle={onOpenModalBrand}
                             />
+                            <EditIcon/>
+                            <DeleteIcon/>
                         </div>
                         <div className='AddNewItemForm--select'>
                             <Select
@@ -143,11 +149,11 @@ export function AddNewItemForm() {
                                 placeholder={'-- Seleccione el Model --'}
                                 isAutoFocus={false}
                             />
-                            <Button
-                                type={'button'}
-                                name={'+'}
+                            <AddIcon                                
                                 onHandle={onOpenModalModel}
                             />
+                            <EditIcon/>
+                            <DeleteIcon/>
                         </div>
                     </div>}
 
@@ -164,7 +170,7 @@ export function AddNewItemForm() {
                         isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
                     />
                 </div>
-                {(loading && !error) && <p>Se esta Enviando</p>}
+                {(upload && !error) && <p>Se esta Enviando</p>}
                 {(!loading && statusData.status === 201) && <p>{statusData.statusText}</p>}
                 {(error && !loading) && <p>{statusData.error[0].message}</p>}
             </form>
