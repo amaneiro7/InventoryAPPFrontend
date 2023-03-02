@@ -1,24 +1,25 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InventaryContext } from "../../Hooks";
+import { CreateNewBrandForm } from './CreateNewBrandForm';
+import { CreateNewCategoryForm } from './CreateNewCategoryForm';
+import { CreateNewModelForm } from './CreateNewModelForm';
 import { Button } from "../../UI/Button";
 import { Input } from "../../UI/Input";
 import { Select } from "../../UI/Select";
 import { Modal } from "../../UI/Modal";
-import { CreateNewBrandForm } from './CreateNewBrandForm';
-import { CreateNewCategoryForm } from './CreateNewCategoryForm';
-import { CreateNewModelForm } from './CreateNewModelForm';
-import './AddNewItemForm.css'
-import endPoints from '../../services/endPoint';
 import { AddIcon } from '../../UI/Icon/AddIcon';
 import { EditIcon } from '../../UI/Icon/EditIcon';
 import { DeleteIcon } from '../../UI/Icon/DeleteIcon';
+import endPoints from '../../services/endPoint';
+import './AddNewItemForm.css'
 
 
 export function AddNewItemForm() {
     const navigate = useNavigate()
     const formRef = useRef(null)
-    const { openModal, 
+    const { 
+        openModal, 
         setOpenModal, 
         loading, 
         error, 
@@ -41,9 +42,11 @@ export function AddNewItemForm() {
     const [openModalCategoy, setOpenModalCategory] = useState(false);
     const [openModalBrand, setOpenModalBrand] = useState(false);
     const [openModalModel, setOpenModalModel] = useState(false);
+    const [mode, setMode] = useState("");
 
     const onClose = () => { navigate('/') }
-    const onOpenModalCategory = () => {
+    function onOpenModalCategory({modeUI}) {           
+        setMode(modeUI)  
         setOpenModalBrand(false)
         setOpenModalModel(false)
         setOpenModalCategory(true)
@@ -96,10 +99,14 @@ export function AddNewItemForm() {
                                 isAutoFocus={true}
                             />
                             <AddIcon                                
-                                onHandle={onOpenModalCategory}
+                                onHandle={() => onOpenModalCategory({modeUI: "add"})}                                
+                                />
+                            <EditIcon
+                                onHandle={() => onOpenModalCategory({modeUI: "edit"})}                                
+                                />
+                            <DeleteIcon
+                                onHandle={() => onOpenModalCategory({modeUI: "delete"})}                                
                             />
-                            <EditIcon/>
-                            <DeleteIcon/>
                         </div>
 
                         <div className='AddNewItemForm--input'>
@@ -175,7 +182,7 @@ export function AddNewItemForm() {
                 {(error && !loading) && <p>{statusData.error[0].message}</p>}
             </form>
             {openModal && <Modal>
-                {openModalCategoy && <CreateNewCategoryForm />}
+                {openModalCategoy && <CreateNewCategoryForm mode={mode} setMode={setMode}/>}
                 {openModalBrand && <CreateNewBrandForm />}
                 {openModalModel && <CreateNewModelForm brands={brands} />}
             </Modal>}

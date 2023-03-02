@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createItems } from "../services/api";
+import { createItems, deleteItem, updateItem } from "../services/api";
 
 
 export function useCreateAddData({setLoading, setError, setUpload}) {
@@ -22,6 +22,42 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
                 setUpload(false)
             })
     }
+    
+    const updatingItem = ({path, data}) => {
+        setLoading(true);
+        setUpload(true)
+        setError(false);
+        updateItem({path, data})
+            .then(res => {
+                setStatusData(res)
+            })
+            .catch(err => {
+                setError(true)
+                setStatusData(err.response.data)
+            })
+            .finally(() => {
+                setLoading(false)
+                setUpload(false)
+            })
+    
+        }
+    const deletingItem = ({path}) => {
+        setLoading(true);
+        setUpload(true)
+        setError(false);
+        deleteItem({path})
+            .then(res => {
+                setStatusData(res)
+            })
+            .catch(err => {
+                setError(true)
+                setStatusData(err.response.data)
+            })
+            .finally(() => {
+                setLoading(false)
+                setUpload(false)
+            })
+    }
 
     if (statusData !== "") {
         setTimeout(() => setStatusData(""),5000)
@@ -30,7 +66,9 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
     return {
         statusData,
         setStatusData,
-        createNewItem
+        createNewItem,
+        updatingItem,
+        deletingItem
     }
 }
 

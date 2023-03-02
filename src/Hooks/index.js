@@ -9,6 +9,7 @@ export function InventaryProvider(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [upload, setUpload] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     const {
         searchedItems,
@@ -24,11 +25,30 @@ export function InventaryProvider(props) {
         setSearchValueModel,
     } = useGetSearch({ setLoading, setError, upload });
 
-    const { categories, brands, models, category, serial, activo, brand, model, setCategory, setSerial, setActivo, setBrand, setModel } = useGetAddData({ setLoading, setError, upload });
+    const { 
+        categories, 
+        brands,
+        models, 
+        category, 
+        serial, 
+        activo, 
+        brand, 
+        model, 
+        setCategory, 
+        setSerial, 
+        setActivo, 
+        setBrand, 
+        setModel 
+    } = useGetAddData({ setLoading, setError, upload });
 
-    const { statusData, setStatusData, createNewItem } = useCreateAddData({ setLoading, setError, setUpload });
+    const { 
+        statusData, 
+        setStatusData, 
+        createNewItem,        
+        updatingItem,
+        deletingItem,
+    } = useCreateAddData({ setLoading, setError, setUpload });
 
-    const [openModal, setOpenModal] = useState(false);
 
     return (
         <InventaryContext.Provider
@@ -68,6 +88,8 @@ export function InventaryProvider(props) {
                 statusData,
                 setStatusData,
                 createNewItem,
+                updatingItem,
+                deletingItem,
             }}
         >
             {props.children}
