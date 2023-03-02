@@ -46,19 +46,21 @@ export function AddNewItemForm() {
 
     const onClose = () => { navigate('/') }
     function onOpenModalCategory({modeUI}) {           
-        setMode(modeUI)  
+        setMode(modeUI)
         setOpenModalBrand(false)
         setOpenModalModel(false)
         setOpenModalCategory(true)
         setOpenModal(true)
     }
-    const onOpenModalBrand = () => {
+    const onOpenModalBrand = ({modeUI}) => {
+        setMode(modeUI)
         setOpenModalModel(false)
         setOpenModalCategory(false)
         setOpenModalBrand(true)
         setOpenModal(true)
     }
-    const onOpenModalModel = () => {
+    const onOpenModalModel = ({modeUI}) => {
+        setMode(modeUI)
         setOpenModalBrand(false)
         setOpenModalCategory(false)
         setOpenModalModel(true)
@@ -142,10 +144,14 @@ export function AddNewItemForm() {
                                 isAutoFocus={false}
                             />
                             <AddIcon                                
-                                onHandle={onOpenModalBrand}
+                                onHandle={() => onOpenModalBrand({modeUI: "add"})}                                
+                                />
+                            <EditIcon
+                                onHandle={() => onOpenModalBrand({modeUI: "edit"})}                                
+                                />
+                            <DeleteIcon
+                                onHandle={() => onOpenModalBrand({modeUI: "delete"})}                                
                             />
-                            <EditIcon/>
-                            <DeleteIcon/>
                         </div>
                         <div className='AddNewItemForm--select'>
                             <Select
@@ -157,10 +163,14 @@ export function AddNewItemForm() {
                                 isAutoFocus={false}
                             />
                             <AddIcon                                
-                                onHandle={onOpenModalModel}
+                                onHandle={() => onOpenModalModel({modeUI: "add"})}                                
+                                />
+                            <EditIcon
+                                onHandle={() => onOpenModalModel({modeUI: "edit"})}                                
+                                />
+                            <DeleteIcon
+                                onHandle={() => onOpenModalModel({modeUI: "delete"})}                                
                             />
-                            <EditIcon/>
-                            <DeleteIcon/>
                         </div>
                     </div>}
 

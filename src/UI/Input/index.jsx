@@ -1,7 +1,7 @@
 import React from 'react';
 import './Input.css'
 
-export function Input({name, placeholder, value, setInputValue, type = 'text', isAutoFocus = false}) {
+export function Input({name, placeholder, value,defaultValue, setInputValue, type = 'text', isAutoFocus = false}) {
     const onSearchValueChange = ({target: {value}}) => setInputValue(value)    
     return (
         <>
@@ -10,9 +10,10 @@ export function Input({name, placeholder, value, setInputValue, type = 'text', i
                 name={name}
                 type={type} 
                 placeholder={placeholder}
-                value={value}                
+                // defaultValue={defaultValue}
+                defaulValue={value}
                 onChange={onSearchValueChange}
-                autoFocus={isAutoFocus ? true : undefined}                    
+                autoFocus={isAutoFocus ? true : undefined}
             />
         </>
     )

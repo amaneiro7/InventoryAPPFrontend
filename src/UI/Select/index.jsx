@@ -1,6 +1,13 @@
 import React from 'react';
 
-export function Select({name, setValue, options, placeholder, isDisabled, isAutoFocus = false}) {    
+export function Select({name, setValue, setValueName = null,options, placeholder, isDisabled, isAutoFocus = false}) {
+    const onHandle = ({target}) => {
+        console.log(target);
+        setValue(target.value)
+        if(setValueName !== null) {
+            setValueName(target.name)
+        }
+    }
     return (
         <div className='AddNewItemForm--input'>
             <select 
@@ -9,7 +16,7 @@ export function Select({name, setValue, options, placeholder, isDisabled, isAuto
                 id={name}                
                 disabled={isDisabled}
                 autoFocus={isAutoFocus ? true : undefined} 
-                onChange={({ target: { value } }) => setValue(value)} 
+                onChange={onHandle} 
             >
                 <option value={'none'} disabled hidden>{placeholder}</option>
                 {options?.map((elem, index) =>

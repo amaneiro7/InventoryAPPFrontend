@@ -22,6 +22,23 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
                 setUpload(false)
             })
     }
+    const getOneItem = ({path}) => {
+        setLoading(true);
+        setUpload(true)
+        setError(false);
+        getOneItem({path})
+            .then(res => {
+                setStatusData(res)
+            })
+            .catch(err => {
+                setError(true)
+                setStatusData(err.response.data)
+            })
+            .finally(() => {
+                setLoading(false)
+                setUpload(false)
+            })
+    }
     
     const updatingItem = ({path, data}) => {
         setLoading(true);
@@ -67,6 +84,7 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
         statusData,
         setStatusData,
         createNewItem,
+        getOneItem,
         updatingItem,
         deletingItem
     }

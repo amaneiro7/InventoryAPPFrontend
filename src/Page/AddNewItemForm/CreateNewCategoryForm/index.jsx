@@ -16,42 +16,36 @@ export function CreateNewCategoryForm({ mode, setMode }) {
     error,
     categories,
   } = useContext(InventaryContext);
-  const [input, setInput] = useState("");  
+  const [input, setInput] = useState("");
+  const [value, setValue] = useState("");
   const formRef = useRef(null);
   
 
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(formRef.current);
+    const valueName = formData.get("name") !== null && formData.get("name").trimStart().trimEnd().toLowerCase();
+    const id = Number(formData.get("id"))
+    const data = {
+        name: valueName,
+    };
     if (mode === "add") {
-        const valueName = formData.get("name").trimStart().trimEnd().toLowerCase();
-        const data = {
-            name: valueName,
-        };
-        console.log("Estes el add",mode, data);
         createNewItem({ path: endPoints.categories.createCategory, data });        
     }
     if (mode === "edit") {
-        const valueName = formData.get("name").trimStart().trimEnd().toLowerCase();
-        const data = {
-            name: valueName,
-        };        
-        const id = Number(formData.get("id"))
-        console.log("este es el edit",mode,id);
         updatingItem({path: endPoints.categories.updateCategory(id), data})
     }
     if (mode === "delete") {
-        const id = Number(formData.get("id"))
-        console.log("este el delete",mode, id);
         deletingItem({path: endPoints.categories.deleteCategory(id)})
     }
     setInput("");
   };
+  
   const onClose = () => {
     setOpenModal(false);
+    setInput("");
     setMode("");
   };
-
 
 
   return (
@@ -82,22 +76,24 @@ export function CreateNewCategoryForm({ mode, setMode }) {
             </div>
             <div className="AddNewItemForm--input">
               <Select
-                name={"id"}                
+                name={"id"}
+                setValue={setValue}
                 options={categories}
                 isDisabled={false}
                 placeholder={"-- Selecciona una Categoria --"}
                 isAutoFocus={true}
                 required={true}
               />
-              <Input
+              {value && <Input
+                name={"name"}
                 type={"text"}
                 placeholder={"Ingresa el nuevo Modelo"}
-                name={"name"}
+                defaultValue={value}
                 value={input}
                 setInputValue={setInput}
-                isAutoFocus={false}
+                isAutoFocus={true}
                 required={true}
-              />
+              />}
             </div>
           </>
         )}
