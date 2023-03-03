@@ -16,8 +16,7 @@ export function useGetSearch({setLoading, setError, upload}) {
 
     useEffect(() => {        
         setLoading(true)
-        setError("")
-        console.log('Get reload home data');
+        setError("")        
         getAllItems({path: endPoints.items.getAllItems})
             .then(res => setItems(res.data))            
             .catch(error =>  setError(error))

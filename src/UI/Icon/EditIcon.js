@@ -10,4 +10,3 @@ export function EditIcon({onHandle}) {
         />
     )    
 }
-

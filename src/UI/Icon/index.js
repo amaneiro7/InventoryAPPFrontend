@@ -17,12 +17,11 @@ const iconTypes = {
     
 }
 
-export function Icon({type, color, onClick, modeUI}) {
+export function Icon({type, color, onClick}) {
     return (
         <span
             className={`Icon-container Icon-container--${type}`}
-            onClick={onClick}
-            modeUI={modeUI}
+            onClick={onClick}            
         >
             {iconTypes[type](color)}
         </span>

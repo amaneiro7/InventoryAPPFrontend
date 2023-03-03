@@ -11,7 +11,7 @@ export function Input({name, placeholder, value,defaultValue, setInputValue, typ
                 type={type} 
                 placeholder={placeholder}
                 // defaultValue={defaultValue}
-                defaulValue={value}
+                defaultValue={value}
                 onChange={onSearchValueChange}
                 autoFocus={isAutoFocus ? true : undefined}
             />

@@ -4,6 +4,7 @@ import { InventaryContext } from "../../Hooks";
 import { CreateNewBrandForm } from './CreateNewBrandForm';
 import { CreateNewCategoryForm } from './CreateNewCategoryForm';
 import { CreateNewModelForm } from './CreateNewModelForm';
+import { FormModal } from './FormModal';
 import { Button } from "../../UI/Button";
 import { Input } from "../../UI/Input";
 import { Select } from "../../UI/Select";
@@ -42,14 +43,18 @@ export function AddNewItemForm() {
     const [openModalCategoy, setOpenModalCategory] = useState(false);
     const [openModalBrand, setOpenModalBrand] = useState(false);
     const [openModalModel, setOpenModalModel] = useState(false);
+    const [openModalFormModal, setOpenModalFormModal] = useState(false);
     const [mode, setMode] = useState("");
+    const [targetMode, setTargetMode] = useState("");
 
     const onClose = () => { navigate('/') }
-    function onOpenModalCategory({modeUI}) {           
+    function onOpenModalCategory({modeUI, targetModeUI}) {           
         setMode(modeUI)
+        setTargetMode(targetModeUI)
         setOpenModalBrand(false)
         setOpenModalModel(false)
-        setOpenModalCategory(true)
+        setOpenModalCategory(false)
+        setOpenModalFormModal(true)
         setOpenModal(true)
     }
     const onOpenModalBrand = ({modeUI}) => {
@@ -101,13 +106,13 @@ export function AddNewItemForm() {
                                 isAutoFocus={true}
                             />
                             <AddIcon                                
-                                onHandle={() => onOpenModalCategory({modeUI: "add"})}                                
+                                onHandle={() => onOpenModalCategory({modeUI: "add", targetModeUI: "Category"})}
                                 />
                             <EditIcon
-                                onHandle={() => onOpenModalCategory({modeUI: "edit"})}                                
+                                onHandle={() => onOpenModalCategory({modeUI: "edit", targetModeUI: "Category"})}
                                 />
                             <DeleteIcon
-                                onHandle={() => onOpenModalCategory({modeUI: "delete"})}                                
+                                onHandle={() => onOpenModalCategory({modeUI: "delete", targetModeUI: "Category"})}
                             />
                         </div>
 
@@ -193,6 +198,7 @@ export function AddNewItemForm() {
             </form>
             {openModal && <Modal>
                 {openModalCategoy && <CreateNewCategoryForm mode={mode} setMode={setMode}/>}
+                {openModalFormModal && <FormModal mode={mode} setMode={setMode} targetMode={targetMode} setTargetMode={setTargetMode} />}
                 {openModalBrand && <CreateNewBrandForm />}
                 {openModalModel && <CreateNewModelForm brands={brands} />}
             </Modal>}
