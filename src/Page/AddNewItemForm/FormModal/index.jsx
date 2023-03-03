@@ -5,10 +5,10 @@ import { Select } from "../../../UI/Select";
 import { Button } from "../../../UI/Button";
 import { getApiUrl } from "../../../services/config";
 
-
 export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
     const {
         setOpenModal,
+        openModal,
         statusData,
         createNewItem,
         updatingItem,
@@ -16,8 +16,9 @@ export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
         loading,
         error,
         categories,
-        brands,
-        models,
+        brands,        
+        models,        
+        setBrand
     } = useContext(InventaryContext);
 
     const [input, setInput] = useState("");
@@ -38,7 +39,7 @@ export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
         },
         "Model": {
             name: "Modelo",
-            pathTarget: "model",
+            pathTarget: "models",
             options: models
         }
     }
@@ -63,13 +64,23 @@ export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        let data = {}
         const pathTarget = modeUI[mode].pathEntry        
         const formData = new FormData(formRef.current);
         const valueName = formData.get("name") !== null && formData.get("name").trimStart().trimEnd().toLowerCase();
-        const id = Number(formData.get("id"))        
-        const data = {
-            name: valueName,
-        };
+        const id = Number(formData.get("id"))
+        const brandId = Number(formData.get("brandId"))
+        if (targetMode === "Model" && mode !== "delete") {
+            data = {
+                name: valueName,
+                brandId: brandId,
+            }
+        } else {
+            data = {
+                name: valueName,            
+            };
+        }
+        
         modeUI[mode].oper({path: `${pathTarget}/${id === 0 ? "" : id}`, data})
         setInput("");
     };
@@ -80,26 +91,40 @@ export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
         setMode("");
         setTargetMode("")
     };
-
+console.log(statusData);
     return (
         <form className="AddNewItemForm" ref={formRef} onSubmit={onSubmit}>
             <div className="AddNewItemForm--container">
                 <div className="AddNewItemForm--title">
                     <h2>{modeUI[mode].title} {targetModeUI[targetMode].name}</h2>
                 </div>
-                {(mode === "edit" || mode === "delete") && (
+                {(mode === "edit" || mode === "delete" || (targetMode === "Model" && mode === "add")) && (
                     <>
                         <div className="AddNewItemForm--input">
                             <Select
-                                name={"id"}
-                                setValue={setValue}
-                                options={targetModeUI[targetMode].options}
+                                name={targetMode === "Model" ? "brandId" : "id"}
+                                setValue={targetMode === "Model" ? setBrand : setValue}
+                                options={(targetMode === "Model") ? targetModeUI["Brand"].options : targetModeUI[targetMode].options}
                                 isDisabled={false}
-                                placeholder={`-- Selecciona una ${targetModeUI[targetMode].name} --`}
+                                placeholder={`-- Selecciona una ${targetMode === "Model" ? targetModeUI["Brand"].name : targetModeUI[targetMode].name} --`}
                                 isAutoFocus={true}
                                 required={true}
                             />
                         </div>
+                        
+                        {(targetMode === "Model" && mode !== "add") &&
+                            <div className="AddNewItemForm--input">
+                                <Select
+                                    name={"id"}
+                                    setValue={setValue}
+                                    options={targetModeUI["Model"].options}
+                                    isDisabled={false}
+                                    placeholder={`-- Selecciona una ${targetModeUI[targetMode].name} --`}
+                                    isAutoFocus={true}
+                                    required={true}
+                                />
+                            </div>
+                        }
                     </>
                 )}
                 {(mode === "add" || mode === "edit") && (
@@ -132,11 +157,12 @@ export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
                         isDisabled={false}
                     />
                 </div>
-                {loading && !error && <p>Se esta Enviando</p>}
-                {!loading && statusData.status === 201 && (
+                {openModal && loading && !error && <p>Se esta Enviando</p>}
+                {openModal && !loading && statusData.status === 201 && (
                     <p>{statusData.statusText}</p>
                 )}
-                {error && !loading && <p>{statusData.error[0].message}</p>}
+                {openModal && error && !loading && <p>{statusData.error[0].message}</p>}
+                
             </div>
         </form>
     )

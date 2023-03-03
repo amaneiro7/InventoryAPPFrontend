@@ -1,7 +1,6 @@
 import {useEffect, useState } from "react";
-import { getAllItems } from "../services/api";
-import endPoints from "../services/endPoint";
-
+import { getAllItems, getOneItem } from "../services/api";
+import { getApiUrl } from "../services/config";
 
 export function useGetAddData({setLoading, setError, upload}) {
     const [categories, setCategories] = useState([])
@@ -16,7 +15,7 @@ export function useGetAddData({setLoading, setError, upload}) {
     useEffect(() => {
         setLoading(true)
         setError("")
-            getAllItems({path: endPoints.categories.getAllCategories})
+            getAllItems({path: `${getApiUrl}categories`})
             .then(res => setCategories(res.data))
             .catch(error => setError(error))
             .finally(() => setLoading(false))
@@ -24,21 +23,21 @@ export function useGetAddData({setLoading, setError, upload}) {
 
     useEffect(() => {        
         setError(false)          
-        getAllItems({path: endPoints.brand.getAllBrands})
+        getAllItems({path: `${getApiUrl}brand`})
             .then(res => setBrands(res.data))
             .catch(error => setError(error))            
     }, [category, upload])
 
-    useEffect(() => { 
-        let filteredBrand = []            
-        if (brands.length >= 1) {
-            filteredBrand = brands.filter((model) => {
-                return model.id === Number(brand)
-            });
+    useEffect(() => {        
+        setError(false)
+        const id = Number(brand)        
+        if (id !== 0) {
+            getOneItem({path: `${getApiUrl}/brand/${id}`})
+                .then(res => setModels(res.data.model))
+                .catch(error => setError(error))
         }
-        const filteredModel = filteredBrand.map(elem => elem.model)
-        setModels(filteredModel[0])
-        }, [brand])
+    }, [brand, upload])
+
 
     return {
         categories,

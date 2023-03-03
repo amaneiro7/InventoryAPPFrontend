@@ -1,8 +1,7 @@
 import React from 'react';
 
 export function Select({name, setValue, setValueName = null,options, placeholder, isDisabled, isAutoFocus = false}) {
-    const onHandle = ({target}) => {
-        console.log(target);
+    const onHandle = ({target}) => {        
         setValue(target.value)
         if(setValueName !== null) {
             setValueName(target.name)

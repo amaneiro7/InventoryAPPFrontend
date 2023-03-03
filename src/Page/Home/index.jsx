@@ -5,13 +5,15 @@ import { InventoryList } from './InventoryList/InventoryList';
 import { Button } from "../../UI/Button";
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import { Loading } from '../../UI/Loading';
+import { Modal } from '../../UI/Modal';
 
 export function Home() {
     const navigate = useNavigate();
     const {
         searchedItems,
         loading,
-        error,
+        error,        
     } = useContext(InventaryContext)
     
     return (
@@ -30,8 +32,11 @@ export function Home() {
                 </tbody>
             </table>
             {(error && !loading) && <p>Ha Ocurrirdo un error {error}</p>}
-            {(loading && !error) && <p>...Loading</p>}
+            {(loading && !error) && <Loading />}
             {(!loading && !error && searchedItems.length === 0) && <p>No se encuentra el elemento que esta buscando</p>}
+            {loading && <Modal>                
+                {loading && <Loading/>}
+            </Modal>}        
         </main>
     )
 }
