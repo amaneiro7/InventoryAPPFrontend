@@ -1,0 +1,22 @@
+.AddNewItemForm--select select {
+    width: 314px;    
+    height: 50px;
+    padding: 0 .5rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #1e2022;
+    cursor: pointer;
+    outline: none;
+
+    border-radius: .25rem;
+    border: 1px solid #d5dae2;
+    background-color: var(--blanco);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.AddNewItemForm--select select:focus {
+    outline: 0;
+    border-color: var(--naranja);
+    box-shadow: 0 0 1px 1px var(--naranja);
+}
