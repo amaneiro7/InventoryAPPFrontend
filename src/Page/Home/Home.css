@@ -3,6 +3,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
 }
@@ -18,11 +19,12 @@
 }
 
 .main-table {
+    margin: 0 auto;
     border-collapse: collapse;
     width: 100%;
     background-color: transparent;
     border-spacing: 0;
-    display: table;
+    display: flex;
     text-transform: capitalize;
     text-indent: initial;
     border-color: gray;

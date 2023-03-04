@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createItems, deleteItem, updateItem } from "../services/api";
+import { getOneItem, createItems, deleteItem, updateItem } from "../services/api";
 
 
 export function useCreateAddData({setLoading, setError, setUpload}) {
@@ -22,7 +22,7 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
                 setUpload(false)
             })
     }
-    const getOneItem = ({path}) => {
+    const gettingOneItem = ({path}) => {
         setLoading(true);
         setUpload(true)
         setError(false);
@@ -84,7 +84,7 @@ export function useCreateAddData({setLoading, setError, setUpload}) {
         statusData,
         setStatusData,
         createNewItem,
-        getOneItem,
+        gettingOneItem,
         updatingItem,
         deletingItem
     }

@@ -16,12 +16,12 @@ export function InventaryProvider(props) {
         searchValueCategory,
         searchValueSerial,
         searchValueActivo,
-        searchValueBranch,
+        searchValueBrand,
         searchValueModel,
         setSearchValueCategory,
         setSearchValueSerial,
         setSearchValueActivo,
-        setSearchValueBranch,
+        setSearchValueBrand,
         setSearchValueModel,
     } = useGetSearch({ setLoading, setError, upload });
 
@@ -44,7 +44,8 @@ export function InventaryProvider(props) {
     const { 
         statusData, 
         setStatusData, 
-        createNewItem,        
+        createNewItem,  
+        gettingOneItem,      
         updatingItem,
         deletingItem,
     } = useCreateAddData({ setLoading, setError, setUpload });
@@ -64,8 +65,8 @@ export function InventaryProvider(props) {
                 setSearchValueSerial,
                 searchValueActivo,
                 setSearchValueActivo,
-                searchValueBranch,
-                setSearchValueBranch,
+                searchValueBrand,
+                setSearchValueBrand,
                 searchValueModel,
                 setSearchValueModel,
                 openModal,
@@ -88,6 +89,7 @@ export function InventaryProvider(props) {
                 statusData,
                 setStatusData,
                 createNewItem,
+                gettingOneItem,
                 updatingItem,
                 deletingItem,
             }}

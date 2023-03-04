@@ -4,9 +4,9 @@ import { TableTitle } from "./TableTitle";
 import { InventoryList } from './InventoryList/InventoryList';
 import { Button } from "../../UI/Button";
 import { useNavigate } from 'react-router-dom';
-import './Home.css';
 import { Loading } from '../../UI/Loading';
 import { Modal } from '../../UI/Modal';
+import './Home.css';
 
 export function Home() {
     const navigate = useNavigate();

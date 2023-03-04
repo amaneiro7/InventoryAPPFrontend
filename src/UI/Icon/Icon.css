@@ -10,19 +10,19 @@
 /* .Icon-container--check {
     position: absolute;
     left: 12px;
-}
+} */
 
 .Icon-container--delete {
-    position: absolute;
+    /* position: absolute; */
     top: -24px;
     right: 0;
 }
 
 .Icon-container--edit {
-    position: absolute;
+    /* position: absolute; */
     top: -24px;
     right: 48px;
-} */
+}
 
 .Icon-svg {
     width: 24px;

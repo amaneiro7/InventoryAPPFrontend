@@ -8,7 +8,7 @@ export function useGetSearch({setLoading, setError, upload}) {
     const [searchValueCategory, setSearchValueCategory] = useState("");
     const [searchValueSerial, setSearchValueSerial] = useState("");
     const [searchValueActivo, setSearchValueActivo] = useState("");
-    const [searchValueBranch, setSearchValueBranch] = useState("");
+    const [searchValueBrand, setSearchValueBrand] = useState("");
     const [searchValueModel, setSearchValueModel] = useState("");
 
     let searchedItems = [];
@@ -46,9 +46,9 @@ export function useGetSearch({setLoading, setError, upload}) {
         currentSearchValue = searchedItems;
     }
 
-    if (searchValueBranch.length >= 1) {
+    if (searchValueBrand.length >= 1) {
         searchedItems = currentSearchValue.filter((item) => {
-            return item.branch.name.toLowerCase().includes(searchValueBranch.toLowerCase());
+            return item.brand.name.toLowerCase().includes(searchValueBrand.toLowerCase());
         });
         currentSearchValue = searchedItems;
     }
@@ -60,7 +60,7 @@ export function useGetSearch({setLoading, setError, upload}) {
         currentSearchValue = searchedItems;
     }
 
-    const searchValueTrigger = searchValueCategory.length + searchValueSerial.length + searchValueActivo.length + searchValueBranch.length + searchValueModel.length;
+    const searchValueTrigger = searchValueCategory.length + searchValueSerial.length + searchValueActivo.length + searchValueBrand.length + searchValueModel.length;
 
     if (searchValueTrigger === 0) {
         searchedItems = items;
@@ -74,8 +74,8 @@ export function useGetSearch({setLoading, setError, upload}) {
         setSearchValueSerial,
         searchValueActivo, 
         setSearchValueActivo,
-        searchValueBranch, 
-        setSearchValueBranch,
+        searchValueBrand, 
+        setSearchValueBrand,
         searchValueModel, 
         setSearchValueModel
     }

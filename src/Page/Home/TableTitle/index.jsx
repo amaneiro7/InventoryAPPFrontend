@@ -7,18 +7,22 @@ export function TableTitle() {
         searchValueCategory,
         searchValueSerial,
         searchValueActivo,
-        searchValueBranch,
+        searchValueBrand,
         searchValueModel,
         setSearchValueCategory,
         setSearchValueSerial,
         setSearchValueActivo,
-        setSearchValueBranch,
+        setSearchValueBrand,
         setSearchValueModel,
     } = useContext(InventaryContext)
 
     return (
         <tr className='main-table--title'>
-            <th>Categoria<Input
+            <th>
+                <h3>
+                    Categoria
+                </h3>
+                <Input
                 name={''}
                 type={'text'}
                 placeholder={"Categoria"}
@@ -27,7 +31,9 @@ export function TableTitle() {
                 isAutoFocus={true}
             />
             </th>
-            <th>Serial<Input
+            <th>
+                <h3>Serial</h3>
+                <Input
                 name={''}
                 type={'text'}
                 placeholder={"Serial"}
@@ -36,7 +42,9 @@ export function TableTitle() {
                 isAutoFocus={false}
             />
             </th>
-            <th>Activo<Input
+            <th>
+                <h3>Activo</h3>
+                <Input
                 name={''}
                 type={'text'}
                 placeholder={"Activo"}
@@ -45,16 +53,20 @@ export function TableTitle() {
                 isAutoFocus={false}
             />
             </th>
-            <th>Marca<Input
+            <th>
+                <h3>Marca</h3>
+                <Input
                 name={''}
                 type={'text'}
                 placeholder={"Marca"}
-                value={searchValueBranch}
-                setInputValue={setSearchValueBranch} 
+                value={searchValueBrand}
+                setInputValue={setSearchValueBrand} 
                 isAutoFocus={false}
             />
             </th>
-            <th>Modelo<Input
+            <th>
+                <h3>Modelo</h3>
+                <Input
                 name={''}
                 type={'text'}
                 placeholder={"Modelo"}
