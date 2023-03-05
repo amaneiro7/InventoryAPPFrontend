@@ -3,10 +3,7 @@ import './Select.css'
 
 export function Select({name, defaultValue = 'none', setValue, setValueName = null,options, placeholder, isDisabled, isAutoFocus = false}) {
     const onHandle = ({target}) => {        
-        setValue(target.value)
-        if(setValueName !== null) {
-            setValueName(target.name)
-        }
+        setValue(target)
     }
     return (
         <div className='AddNewItemForm--select'>

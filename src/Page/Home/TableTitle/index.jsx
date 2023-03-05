@@ -26,7 +26,7 @@ export default function TableTitle() {
                 name={''}
                 type={'text'}
                 placeholder={"Categoria"}
-                value={searchValueCategory}
+                value={searchValueCategory.value}
                 setInputValue={setSearchValueCategory} 
                 isAutoFocus={true}
             />
@@ -37,7 +37,7 @@ export default function TableTitle() {
                 name={''}
                 type={'text'}
                 placeholder={"Serial"}
-                value={searchValueSerial}
+                value={searchValueSerial.value}
                 setInputValue={setSearchValueSerial} 
                 isAutoFocus={false}
             />
@@ -48,7 +48,7 @@ export default function TableTitle() {
                 name={''}
                 type={'text'}
                 placeholder={"Activo"}
-                value={searchValueActivo}
+                value={searchValueActivo.value}
                 setInputValue={setSearchValueActivo} 
                 isAutoFocus={false}
             />
@@ -59,7 +59,7 @@ export default function TableTitle() {
                 name={''}
                 type={'text'}
                 placeholder={"Marca"}
-                value={searchValueBrand}
+                value={searchValueBrand.value}
                 setInputValue={setSearchValueBrand} 
                 isAutoFocus={false}
             />
@@ -70,7 +70,7 @@ export default function TableTitle() {
                 name={''}
                 type={'text'}
                 placeholder={"Modelo"}
-                value={searchValueModel}
+                value={searchValueModel.value}
                 setInputValue={setSearchValueModel} 
                 isAutoFocus={false}
             />

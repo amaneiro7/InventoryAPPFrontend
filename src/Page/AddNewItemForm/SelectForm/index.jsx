@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import useGetAddData from 'Hooks/useGetAddData';
+import useGetAddData from 'Hooks/useGetData';
 import { AddIcon } from 'UI/Icon/AddIcon';
 import { DeleteIcon } from 'UI/Icon/DeleteIcon';
 import { EditIcon } from 'UI/Icon/EditIcon';
@@ -9,7 +9,7 @@ import { Loading } from 'UI/Loading';
 import FormModal from '../FormModal';
 import { InventaryContext } from 'context';
 
-export default function SelectForm({name, endPoint, placeholder, type}) {    
+export default function SelectForm({name, endPoint, placeholder, type, setValue, isDisabled}) {    
     const { loading, data, error } = useGetAddData({endPoint})
     const [mode, setMode] = useState("");
     const [targetMode, setTargetMode] = useState("");
@@ -28,8 +28,8 @@ export default function SelectForm({name, endPoint, placeholder, type}) {
             />
             <Select
                 name={name}
-                // setValue={setCategory}
-                isDisabled={false}
+                setValue={setValue}
+                isDisabled={isDisabled}
                 options={data}
                 placeholder={`-- Seleccione ${placeholder} --`}
                 isAutoFocus={true}

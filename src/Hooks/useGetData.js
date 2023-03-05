@@ -12,23 +12,17 @@ const initialState = {
 const reducer = (state, action) => {    
     return reducerOBJECT(state, action.payload)[action.type] || state
 }
-
-const actionTypes = {
-    start: "START",
-    success: 'SUCCESS',
-    error: 'ERROR',
-}
 const reducerOBJECT = (state, payload) => ({
-    [actionTypes.start]: {
+    'START': {
         ...state,
         loading: true,
     },
-    [actionTypes.success]: {
+    'SUCCESS': {
         ...state,
         loading: false,
         data: payload,
     },
-    [actionTypes.error]: {
+    'ERROR': {
         ...state,
         loading: false,
         error: payload,
@@ -38,9 +32,9 @@ const reducerOBJECT = (state, payload) => ({
 export default function useGetAddData({ endPoint }) {
 
     const [state, dispatch] = useReducer(reducer, initialState)
-    const onStart = () => dispatch({ type: actionTypes.start })
-    const onSuccess = (data) => dispatch({ type: actionTypes.success, payload: data })
-    const onError = (error) => dispatch({ type: actionTypes.error, payload: error })
+    const onStart = () => dispatch({ type: 'START' })
+    const onSuccess = (data) => dispatch({ type: 'SUCCESS', payload: data })
+    const onError = (error) => dispatch({ type: 'ERROR', payload: error })
 
 
     useEffect(() => {

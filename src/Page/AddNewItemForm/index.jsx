@@ -5,22 +5,30 @@ import { Input } from "UI/Input";
 import SelectForm from './SelectForm';
 import { Loading } from 'UI/Loading';
 import './AddNewItemForm.css';
+import {useReducerFromAddPage} from 'Hooks/useReducerFromAddPage';
 
 
 export default function AddNewItemForm() {
     const navigate = useNavigate()
     const formRef = useRef(null)
     const onClose = () => { navigate('/') }
+    const {state, dispatch} = useReducerFromAddPage()
+
+    const onHandleInput = (target) => {
+        console.log(target);
+        dispatch({type: 'CHANGEVALUE', payload: target})
+    }
+    
 
 
     const onSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(formRef.current)
-        // const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toUpperCase()
-        // const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toUpperCase()
+        const valueSerial = formData.get('serial') === "" ? null : (formData.get('serial')).trim().toUpperCase()
+        const valueActivo = formData.get('activo') === "" ? null : (formData.get('activo')).trim().toUpperCase()
         const data = {
-            // serial: valueSerial,
-            // activo: valueActivo,
+            serial: valueSerial,
+            activo: valueActivo,
             categoryId: formData.get('categoryId'),
             brandId: formData.get('brandId'),
             modelId: formData.get('modelId'),
@@ -30,7 +38,7 @@ export default function AddNewItemForm() {
         // setActivo("")
         // createNewItem({path: `${getApiUrl}`, data})
     }
-
+    console.log(state);
     return (
         <>
             <form className='AddNewItemForm' ref={formRef} onSubmit={onSubmit}>
@@ -38,8 +46,9 @@ export default function AddNewItemForm() {
 
                 <div className='AddNewItemForm--container'>
                     <SelectForm
-                        name={'categoryId'}
-                        type={"Category"}
+                        name={'category'}
+                        type={"Category"}                        
+                        setValue={onHandleInput}
                         endPoint={'categories'}
                         placeholder={'la Categoria'}
                     />
@@ -48,8 +57,8 @@ export default function AddNewItemForm() {
                             name={'serial'}
                             type={'text'}
                             placeholder={'-- Ingrese el Serial --'}
-                            // value={serial}
-                            // setInputValue={setSerial}
+                            value={state.serial}
+                            setInputValue={onHandleInput}
                             required={true}
                             isAutoFocus={false}
                         />
@@ -60,23 +69,27 @@ export default function AddNewItemForm() {
                             name={'activo'}
                             type={'text'}
                             placeholder={'-- Ingrese el Activo --'}
-                            // value={activo}
-                            // setInputValue={setActivo}
+                            value={state.activo}
+                            setInputValue={onHandleInput}
                             required={true}
                             isAutoFocus={false}
                         />
                     </div>
                     <SelectForm
-                        name={'brandId'}
+                        name={'brand'}
                         type={"Brand"}
-                        endPoint={'brand'}
+                        setValue={onHandleInput}
+                        endPoint={`brand?category=${state.category}`}
                         placeholder={'la Marca'}
-                    />
+                        isDisabled={state.category === '' && true}
+                        />
                     <SelectForm
-                        name={'modelId'}
+                        name={'model'}
                         type={"Model"}
-                        endPoint={'models'}
+                        setValue={onHandleInput}
+                        endPoint={`models?brandId=${state.brand}`}
                         placeholder={'el Modelo'}
+                        isDisabled={state.brand === '' && true}
                     />
                 </div>
 
