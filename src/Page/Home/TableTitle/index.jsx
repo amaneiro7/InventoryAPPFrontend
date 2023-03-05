@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { Input } from "../../../UI/Input"
-import { InventaryContext } from "../../../Hooks";
+import React from 'react';
+import useGetSearch from 'Hooks/useGetDataHome';
+import { Input } from "UI/Input"
 
-export function TableTitle() {
+export default function TableTitle() {
     const {
         searchValueCategory,
         searchValueSerial,
@@ -14,8 +14,8 @@ export function TableTitle() {
         setSearchValueActivo,
         setSearchValueBrand,
         setSearchValueModel,
-    } = useContext(InventaryContext)
-
+    } = useGetSearch()
+    console.log(searchValueSerial);
     return (
         <tr className='main-table--title'>
             <th>

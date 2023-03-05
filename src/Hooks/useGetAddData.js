@@ -1,57 +1,54 @@
-import {useEffect, useState } from "react";
-import { getAllItems, getOneItem } from "../services/api";
-import { getApiUrl } from "../services/config";
+import { useEffect, useReducer } from "react";
+import { getAllItems } from "services/api";
+import { getApiUrl } from "services/config";
 
-export function useGetAddData({setLoading, setError, upload}) {
-    const [categories, setCategories] = useState([])
-    const [brands, setBrands] = useState([])
-    const [models, setModels] = useState([])
-    const [category, setCategory] = useState("")
-    const [serial, setSerial] = useState("")
-    const [activo, setActivo] = useState("")
-    const [brand, setBrand] = useState("")
-    const [model, setModel] = useState("")
-    
-    useEffect(() => {
-        setLoading(true)
-        setError("")
-            getAllItems({path: `${getApiUrl}categories`})
-            .then(res => setCategories(res.data))
-            .catch(error => setError(error))
-            .finally(() => setLoading(false))
-    }, [upload])
+//Se Deffine el estado inicial
+const initialState = {
+    data: [],
+    loading: false,
+    error: null,
+}
 
-    useEffect(() => {        
-        setError(false)          
-        getAllItems({path: `${getApiUrl}brand`})
-            .then(res => setBrands(res.data))
-            .catch(error => setError(error))            
-    }, [category, upload])
+const reducer = (state, action) => {    
+    return reducerOBJECT(state, action.payload)[action.type] || state
+}
 
-    useEffect(() => {        
-        setError(false)
-        const id = Number(brand)        
-        if (id !== 0) {
-            getOneItem({path: `${getApiUrl}/brand/${id}`})
-                .then(res => setModels(res.data.model))
-                .catch(error => setError(error))
-        }
-    }, [brand, upload])
-
-
-    return {
-        categories,
-        brands,
-        models,
-        category,
-        serial,
-        activo,
-        brand,
-        model,
-        setCategory,
-        setSerial,
-        setActivo,
-        setBrand,
-        setModel
+const actionTypes = {
+    start: "START",
+    success: 'SUCCESS',
+    error: 'ERROR',
+}
+const reducerOBJECT = (state, payload) => ({
+    [actionTypes.start]: {
+        ...state,
+        loading: true,
+    },
+    [actionTypes.success]: {
+        ...state,
+        loading: false,
+        data: payload,
+    },
+    [actionTypes.error]: {
+        ...state,
+        loading: false,
+        error: payload,
     }
+})
+
+export default function useGetAddData({ endPoint }) {
+
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const onStart = () => dispatch({ type: actionTypes.start })
+    const onSuccess = (data) => dispatch({ type: actionTypes.success, payload: data })
+    const onError = (error) => dispatch({ type: actionTypes.error, payload: error })
+
+
+    useEffect(() => {
+        onStart()        
+        getAllItems({ path: `${getApiUrl}${endPoint}` })            
+            .then(res => onSuccess(res.data))
+            .catch(error => onError(error))
+    }, [endPoint]);
+    
+    return state
 }

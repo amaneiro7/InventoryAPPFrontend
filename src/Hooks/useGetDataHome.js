@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { getAllItems } from "../services/api";
-import endPoints from "../services/endPoint";
+import { getAllItems } from "services/api";
+import { getApiUrl } from "services/config";
 
 
-export function useGetSearch({setLoading, setError, upload}) {    
+
+export default function useGetSearch() {    
     const [items, setItems] = useState([]);
+    const [loading,  setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [searchValueCategory, setSearchValueCategory] = useState("");
     const [searchValueSerial, setSearchValueSerial] = useState("");
     const [searchValueActivo, setSearchValueActivo] = useState("");
@@ -17,12 +20,12 @@ export function useGetSearch({setLoading, setError, upload}) {
     useEffect(() => {        
         setLoading(true)
         setError("")        
-        getAllItems({path: endPoints.items.getAllItems})
+        getAllItems({path: `${getApiUrl}items`})
             .then(res => setItems(res.data))            
             .catch(error =>  setError(error))
             .finally(() => setLoading(false))
             // eslint-disable-next-line
-    }, [upload])
+    }, [])
     
     
     if (searchValueCategory.length >= 1) {
@@ -33,6 +36,7 @@ export function useGetSearch({setLoading, setError, upload}) {
     }
 
     if (searchValueSerial.length >= 1) {
+        console.log('me estan buscando');
         searchedItems = currentSearchValue.filter((item) => {
             return String(item.serial).toLowerCase().includes(searchValueSerial.toLowerCase());
         });
@@ -65,8 +69,10 @@ export function useGetSearch({setLoading, setError, upload}) {
     if (searchValueTrigger === 0) {
         searchedItems = items;
     }
-
+    
     return {
+        loading, 
+        error,
         searchedItems,
         searchValueCategory, 
         setSearchValueCategory,

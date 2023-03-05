@@ -1,12 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
-import { InventaryContext } from "../../../Hooks";
-import { Input } from "../../../UI/Input";
-import { Select } from "../../../UI/Select";
-import { Button } from "../../../UI/Button";
-import { getApiUrl } from "../../../services/config";
+import { InventaryContext } from "context";
+import { Input } from "UI/Input";
+import { Select } from "UI/Select";
+import { Button } from "UI/Button";
+import { getApiUrl } from "services/config";
 import "./FormModal.css";
 
-export function FormModal({ mode, setMode, targetMode, setTargetMode }) {
+export default function FormModal({ mode, setMode, targetMode, setTargetMode }) {
   const {
     setOpenModal,
     openModal,

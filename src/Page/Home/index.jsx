@@ -1,20 +1,15 @@
-import React, { useContext } from 'react';
-import { InventaryContext } from "../../Hooks";
-import { TableTitle } from "./TableTitle";
-import { InventoryList } from './InventoryList/InventoryList';
-import { Button } from "../../UI/Button";
+import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loading } from '../../UI/Loading';
-import { Modal } from '../../UI/Modal';
+import { Loading } from 'UI/Loading';
+import { Modal } from 'UI/Modal';
+import { Button } from "UI/Button";
 import './Home.css';
 
-export function Home() {
-    const navigate = useNavigate();
-    const {
-        searchedItems,
-        loading,
-        error,        
-    } = useContext(InventaryContext)
+const TableTitle = lazy(() => import('./TableTitle'))
+const InventoryList = lazy(() => import('./InventoryList/'))
+
+export default function Home() {
+    const navigate = useNavigate();        
     
     return (
         <main className='main-inputs'>
@@ -27,16 +22,22 @@ export function Home() {
             </div>
             <table className='main-table'>
                 <tbody>
-                    <TableTitle />
-                    {(!error && !loading) && <InventoryList />}
+                    <Suspense fallback={
+                        <Modal>
+                            <Loading/>
+                        </Modal>
+                    }>
+                        <TableTitle />                      
+                    </Suspense>
+                    <Suspense fallback={
+                        <Modal>
+                            <Loading/>
+                        </Modal>
+                    }>
+                        <InventoryList />
+                    </Suspense>
                 </tbody>
             </table>
-            {(error && !loading) && <p>Ha Ocurrirdo un error {error}</p>}
-            {(loading && !error) && <Loading />}
-            {(!loading && !error && searchedItems.length === 0) && <p>No se encuentra el elemento que esta buscando</p>}
-            {loading && <Modal>                
-                {loading && <Loading/>}
-            </Modal>}        
         </main>
     )
 }

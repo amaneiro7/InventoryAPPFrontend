@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Dashboard() {
+export default function Dashboard() {
     return (
         <p>Dashboard</p>
     )
