@@ -13,7 +13,7 @@ const FormBrand = lazy(() => import('Page/AddNewItemForm/FormBrand'))
 const FormModel = lazy(() => import('Page/AddNewItemForm/FormModel'))
 
 export default function SelectForm({ name, endPoint, placeholder, type, setValue, isDisabled }) {
-    const { loading, data, error } = useGetAddData({ endPoint })
+    const { loading, data} = useGetAddData({ endPoint })
     const { state, dispatch } = useReducerFromFormModal()
 
     function onOpenModal({ modeUI, targetModeUI }) {
