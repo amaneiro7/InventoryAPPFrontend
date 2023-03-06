@@ -14,8 +14,7 @@ export default function AddNewItemForm() {
     const onClose = () => { navigate('/') }
     const {state, dispatch} = useReducerFromAddPage()
 
-    const onHandleInput = (target) => {
-        console.log(target);
+    const onHandleInput = (target) => {        
         dispatch({type: 'CHANGEVALUE', payload: target})
     }
     
@@ -47,7 +46,7 @@ export default function AddNewItemForm() {
                 <div className='AddNewItemForm--container'>
                     <SelectForm
                         name={'category'}
-                        type={"Category"}                        
+                        type={"CATEGORY"}                        
                         setValue={onHandleInput}
                         endPoint={'categories'}
                         placeholder={'la Categoria'}
@@ -77,7 +76,7 @@ export default function AddNewItemForm() {
                     </div>
                     <SelectForm
                         name={'brand'}
-                        type={"Brand"}
+                        type={"BRAND"}
                         setValue={onHandleInput}
                         endPoint={`brand?category=${state.category}`}
                         placeholder={'la Marca'}
@@ -85,7 +84,7 @@ export default function AddNewItemForm() {
                         />
                     <SelectForm
                         name={'model'}
-                        type={"Model"}
+                        type={"MODEL"}
                         setValue={onHandleInput}
                         endPoint={`models?brandId=${state.brand}`}
                         placeholder={'el Modelo'}

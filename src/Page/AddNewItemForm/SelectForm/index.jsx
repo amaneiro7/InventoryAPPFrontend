@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import useGetAddData from 'Hooks/useGetData';
 import { AddIcon } from 'UI/Icon/AddIcon';
 import { DeleteIcon } from 'UI/Icon/DeleteIcon';
@@ -6,25 +6,22 @@ import { EditIcon } from 'UI/Icon/EditIcon';
 import { Select } from 'UI/Select';
 import { Modal } from 'UI/Modal';
 import { Loading } from 'UI/Loading';
-import FormModal from '../FormModal';
-import { InventaryContext } from 'context';
+import { useReducerFromFormModal } from 'Hooks/useReducerFromFormModal';
+import FormCategory from 'Page/AddNewItemForm/FormCategory';
 
 export default function SelectForm({name, endPoint, placeholder, type, setValue, isDisabled}) {    
     const { loading, data, error } = useGetAddData({endPoint})
-    const [mode, setMode] = useState("");
-    const [targetMode, setTargetMode] = useState("");
-    const { setOpenModal, openModal } = useContext(InventaryContext)
-
-    function onOpenModal({modeUI, targetModeUI}) {           
-        setMode(modeUI)
-        setTargetMode(targetModeUI)
-        setOpenModal(true)
-    }
+    const { state, dispatch } = useReducerFromFormModal()
+    
+    function onOpenModal({modeUI, targetModeUI}) {   
+        dispatch({type: targetModeUI, payload: data})
+        dispatch({type: modeUI, payload: data})
+    }    
     
     return (
         <div className='AddNewItemForm--field'>
             <AddIcon
-                onHandle={() => onOpenModal({ modeUI: "add", targetModeUI: {type} })}
+                onHandle={() => onOpenModal({ modeUI: "ADD", targetModeUI: type })}
             />
             <Select
                 name={name}
@@ -36,14 +33,14 @@ export default function SelectForm({name, endPoint, placeholder, type, setValue,
             />
             <div>
                 <EditIcon
-                    onHandle={() => onOpenModal({ modeUI: "edit", targetModeUI: {type} })}
+                    onHandle={() => onOpenModal({ modeUI: "EDIT", targetModeUI: type })}
                 />
                 <DeleteIcon
-                    onHandle={() => onOpenModal({ modeUI: "delete", targetModeUI: {type} })}
+                    onHandle={() => onOpenModal({ modeUI: "DELETE", targetModeUI: type })}
                 />
             </div>
-            {(openModal || loading) && <Modal>
-                {openModal &&<FormModal mode={mode} setMode={setMode} targetMode={targetMode} setTargetMode={setTargetMode} />}
+            {(state.openModal || loading) && <Modal>
+                {state.name === 'Categoria' && <FormCategory state={state} dispatch={dispatch} />}
                 {loading && <Loading/>}
             </Modal>}
         </div>

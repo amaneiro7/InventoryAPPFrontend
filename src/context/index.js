@@ -1,19 +1,4 @@
-import useGetSearch from "Hooks/useGetDataHome";
 import React, { createContext, useState } from "react";
-import { useCreateAddData } from "../Hooks/useCreateAddData";
-import { useGetAddData } from "../Hooks/useGetData";
-
-// const useCreateAddData = lazy(() => import('./useCreateAddData').then(module => {
-//     return { default: module.useCreateAddData }
-// }))
-
-// const useGetAddData = lazy(() => import('./useGetAddData').then(module => {
-//     return { default: module.useGetAddData }
-// }))
-
-// const useGetSearch = lazy(() => import('./useGetDataHome').then(module => {
-//     return { default: module.useGetSearch }
-// }))
 
 export const InventaryContext = createContext();
 
@@ -23,14 +8,6 @@ export function InventaryProvider(props) {
     const [upload, setUpload] = useState(false);
     const [openModal, setOpenModal] = useState(false);
 
-    const { 
-        statusData, 
-        setStatusData, 
-        createNewItem,  
-        gettingOneItem,      
-        updatingItem,
-        deletingItem,
-    } = useCreateAddData({ setLoading, setError, setUpload });
 
 
     return (
@@ -44,12 +21,6 @@ export function InventaryProvider(props) {
                 openModal,
                 setOpenModal,
 
-                statusData,
-                setStatusData,
-                createNewItem,
-                gettingOneItem,
-                updatingItem,
-                deletingItem,
             }}
         >
             {props.children}
