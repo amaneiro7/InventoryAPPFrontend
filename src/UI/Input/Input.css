@@ -9,7 +9,8 @@
     outline: none;
     border-radius: .25rem;
     border: 1px solid #d5dae2;
-    background-color: var(--blanco);    ;
+    background-color: var(--blanco);
+    text-transform: uppercase;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 

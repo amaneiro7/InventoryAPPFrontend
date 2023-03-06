@@ -11,7 +11,7 @@ export default function FormCategory({ state, dispatch }) {
     const { data } = useGetAddData({endPoint})
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
-    const { fetchState, createData, deleteData, updateData } = useFetchingData();    
+    const { fetchState, createData, deleteData, updateData } = useFetchingData();
 
     const onSubmit = (e) => {
         e.preventDefault();

@@ -8,6 +8,7 @@
     color: #1e2022;
     cursor: pointer;
     outline: none;
+    text-transform: capitalize;
 
     border-radius: .25rem;
     border: 1px solid #d5dae2;

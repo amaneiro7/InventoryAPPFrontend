@@ -6,12 +6,14 @@ import SelectForm from './SelectForm';
 import './AddNewItemForm.css';
 import './FormAddNewItem.css';
 import { useReducerFromAddPage } from 'Hooks/useReducerFromAddPage';
+import useFetchingData from 'Hooks/useFetchingData';
 
 export default function AddNewItemForm() {
     const navigate = useNavigate()
     const formRef = useRef(null)
     const onClose = () => { navigate('/') }
     const { state, dispatch } = useReducerFromAddPage()
+    const { fetchState, createData } = useFetchingData();
 
     const onHandleInput = (target) => {
         dispatch({ type: 'CHANGEVALUE', payload: target })
@@ -25,13 +27,12 @@ export default function AddNewItemForm() {
         const data = {
             serial: valueSerial,
             activo: valueActivo,
-            categoryId: formData.get('categoryId'),
-            brandId: formData.get('brandId'),
-            modelId: formData.get('modelId'),
+            categoryId: formData.get('category'),
+            brandId: formData.get('brand'),
+            modelId: formData.get('model'),
         }
-        console.log(data);
-        // setSerial("")
-        // setActivo("")
+        createData({ endPoint: 'items',data })
+        dispatch({ type: 'RESET' })
         // createNewItem({path: `${getApiUrl}`, data})
     }
 
