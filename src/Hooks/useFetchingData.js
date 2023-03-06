@@ -39,6 +39,8 @@ const reducerOBJECT = (fetchState, payload) => ({
         ...fetchState,
         loading: false,
         error: payload,
+        status: payload?.statusText,
+        statusInfo: payload?.status
     }
 })
 
@@ -48,25 +50,27 @@ export default function useFetchingData() {
     const onCreate = (res) => dispatch({ type: 'CREATE', payload: res})
     const onUpdate = (res) => dispatch({ type: 'UPDATE', payload: res})
     const onDelete = (res) => dispatch({ type: 'DELETE', payload: res})
-    const onError = (error) => dispatch({ type: 'ERROR', payload: error })
+    const onError = (error) => {console.log(error);
+        dispatch({ type: 'ERROR', payload: error })
+}
     
     const createData = ({ endPoint, data }) => {
         onStart()        
         createItems({ path: `${getApiUrl}${endPoint}`, data })            
             .then(res => onCreate(res))
-            .catch(error => onError(error))
+            .catch(error => onError(error.response))
     }
     const deleteData = ({ endPoint }) => {
         onStart()        
         deleteItem({ path: `${getApiUrl}${endPoint}` })            
             .then(res => onDelete(res))
-            .catch(error => onError(error))
+            .catch(error => onError(error.response))
     }
     const updateData = ({ endPoint, data }) => {
         onStart()        
         updateItem({ path: `${getApiUrl}${endPoint}`, data })            
             .then(res => onUpdate(res))
-            .catch(error => onError(error))
+            .catch(error => onError(error.response))
     }
     
     

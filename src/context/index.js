@@ -13,7 +13,8 @@ export function InventaryProvider(props) {
     return (
         <InventaryContext.Provider
             value={{
-
+                upload,
+                setUpload,
                 loading,
                 setLoading,
                 error,

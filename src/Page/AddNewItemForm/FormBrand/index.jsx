@@ -1,12 +1,12 @@
-import React, { useRef, useState } from "react";
-import useFetchingData from "Hooks/useFetchingData";
-import useGetAddData from "Hooks/useGetData";
+import React, { useRef, useState, Suspense } from "react";
 import { Input } from "UI/Input";
 import { Select } from "UI/Select";
 import { Button } from "UI/Button";
+import useFetchingData from "Hooks/useFetchingData";
+import useGetAddData from "Hooks/useGetData";
 import { Loading } from "UI/Loading";
 
-export default function FormCategory({ state, dispatch }) {
+export default function FormBrand({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint } = state;
     const { data } = useGetAddData({endPoint})
     const formRef = useRef(null);    
@@ -50,8 +50,10 @@ return (
                 </h2>
             </div>
             {fetchState.loading && <Loading />}
-            {!fetchState.loading && <>
-                {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
+            {!fetchState.loading &&
+            <Suspense fallback={<Loading/>}>
+                {(modeUI === 'EDIT' || modeUI === 'DELETE') && 
+                <Select
                     name={"id"}
                     setValue={setValue}
                     options={data}
@@ -61,18 +63,17 @@ return (
                     required={true}
                 />}
                 {(modeUI === 'ADD' || modeUI ==='EDIT') &&
-                <div className="AddNewItemForm--field">
-                    <Input
-                        type="text"
-                        placeholder={`Ingresa la ${name}`}
-                        name={"name"}
-                        value={value}
-                        setInputValue={setValue}
-                        isAutoFocus={true}
-                        required={true}
-                    />
-                    </div>}
-            </>}
+                <Input
+                    type="text"
+                    placeholder={`Ingresa la ${name}`}
+                    name={"name"}
+                    value={value}
+                    setInputValue={setValue}
+                    isAutoFocus={true}
+                    required={true}
+                    />}
+            </Suspense>}
+            
             <div className="AddNewItem--Form-btnContainer">
                 <Button
                     type={"button"}

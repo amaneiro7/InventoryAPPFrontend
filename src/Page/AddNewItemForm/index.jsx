@@ -1,24 +1,21 @@
-import React, { lazy, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "UI/Button";
 import { Input } from "UI/Input";
 import SelectForm from './SelectForm';
-import { Loading } from 'UI/Loading';
 import './AddNewItemForm.css';
-import {useReducerFromAddPage} from 'Hooks/useReducerFromAddPage';
-
+import './FormAddNewItem.css';
+import { useReducerFromAddPage } from 'Hooks/useReducerFromAddPage';
 
 export default function AddNewItemForm() {
     const navigate = useNavigate()
     const formRef = useRef(null)
     const onClose = () => { navigate('/') }
-    const {state, dispatch} = useReducerFromAddPage()
+    const { state, dispatch } = useReducerFromAddPage()
 
-    const onHandleInput = (target) => {        
-        dispatch({type: 'CHANGEVALUE', payload: target})
+    const onHandleInput = (target) => {
+        dispatch({ type: 'CHANGEVALUE', payload: target })
     }
-    
-
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -37,7 +34,7 @@ export default function AddNewItemForm() {
         // setActivo("")
         // createNewItem({path: `${getApiUrl}`, data})
     }
-    console.log(state);
+
     return (
         <>
             <form className='AddNewItemForm' ref={formRef} onSubmit={onSubmit}>
@@ -46,7 +43,7 @@ export default function AddNewItemForm() {
                 <div className='AddNewItemForm--container'>
                     <SelectForm
                         name={'category'}
-                        type={"CATEGORY"}                        
+                        type={"CATEGORY"}
                         setValue={onHandleInput}
                         endPoint={'categories'}
                         placeholder={'la Categoria'}
@@ -81,7 +78,7 @@ export default function AddNewItemForm() {
                         endPoint={`brand?category=${state.category}`}
                         placeholder={'la Marca'}
                         isDisabled={state.category === '' && true}
-                        />
+                    />
                     <SelectForm
                         name={'model'}
                         type={"MODEL"}
@@ -105,14 +102,7 @@ export default function AddNewItemForm() {
                     // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
                     />
                 </div>
-                {/* {(!openModal && upload && !error) && <p>Se esta Enviando</p>}
-                {(!openModal && !loading && statusData.status === 201) && <p>{statusData.statusText}</p>}
-                {!openModal && (error && !loading) && <p>{statusData.error[0].message}</p>} */}
             </form>
-            {/* {(openModal || loading) && <Modal>
-                {openModal &&<FormModal mode={mode} setMode={setMode} targetMode={targetMode} setTargetMode={setTargetMode} />}
-                {loading && <Loading/>}
-            </Modal>} */}
         </>
     )
 }
