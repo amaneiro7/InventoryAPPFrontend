@@ -5,30 +5,30 @@ const initialState = {
     serial: "",
     activo: "",
     brand: "",
-    model:"",
+    model: "",
 }
 
-const reducer = (state, action ) => {
+const reducer = (state, action) => {
+    console.log(action);
     return reducerOBJECT(state, action.payload)[action.type] || state
 }
 
-const reducerOBJECT = (state, payload) => ({
-    'CHANGEVALUE': {
+const reducerOBJECT = (state, payload) => ({ 
+    'CHANGEVALUE': { 
         ...state, 
-        [payload?.name]: payload?.value
+        [payload?.name]: payload?.value 
     },
-    'RESET': {
-        ...state, 
-        serial: "",
-        activo: "",
+    'RESET': { 
+        ...state,
+        serial: '', 
+        activo: '', 
     },
-    validate: (state, action) => ({...state, errors: action.errors})    
 })
 
 export function useReducerFromAddPage() {
-    
-    const [state, dispatch] = useReducer(reducer, initialState)
-    
 
-    return {state, dispatch}
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+
+    return { state, dispatch }
 }

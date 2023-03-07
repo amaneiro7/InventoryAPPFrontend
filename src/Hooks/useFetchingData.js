@@ -41,6 +41,12 @@ const reducerOBJECT = (fetchState, payload) => ({
         error: payload,
         status: payload?.statusText,
         statusInfo: payload?.status
+    },
+    'RESET': {
+        status: "",
+        statusInfo: "",
+        loading: false,
+        error: null,
     }
 })
 
@@ -50,9 +56,8 @@ export default function useFetchingData() {
     const onCreate = (res) => dispatch({ type: 'CREATE', payload: res})
     const onUpdate = (res) => dispatch({ type: 'UPDATE', payload: res})
     const onDelete = (res) => dispatch({ type: 'DELETE', payload: res})
-    const onError = (error) => {console.log(error);
-        dispatch({ type: 'ERROR', payload: error })
-}
+    const onError = (error) => dispatch({ type: 'ERROR', payload: error })
+    const onReset = (error) => dispatch({ type: 'RESET' })
     
     const createData = ({ endPoint, data }) => {
         onStart()        
@@ -71,6 +76,17 @@ export default function useFetchingData() {
         updateItem({ path: `${getApiUrl}${endPoint}`, data })            
             .then(res => onUpdate(res))
             .catch(error => onError(error.response))
+    }
+
+    wait(3000, (fetchState.status !== ""), onReset)
+
+
+    function wait(time, condition, callback) {
+        setTimeout(function() {
+            if (condition) {
+                callback();
+            }
+        }, time);
     }
     
     

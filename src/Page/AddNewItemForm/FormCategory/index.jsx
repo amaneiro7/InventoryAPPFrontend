@@ -91,6 +91,7 @@ export default function FormCategory({ state, dispatch }) {
                         onHandle={onClose}
                     />
                     <Button
+                        key={'onSubmitCategory'}
                         type={"submit"}
                         name={"Añadir"}
                         isDisabled={value === "" ? true : false}

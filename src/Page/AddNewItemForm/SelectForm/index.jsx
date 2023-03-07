@@ -46,7 +46,7 @@ export default function SelectForm({ name, endPoint, placeholder, type, setValue
                 <Suspense fallback={<Loading/>}>
                     {state.name === 'Categoria' && <FormCategory state={state} dispatch={dispatch} />}
                     {state.name === 'Marca' && <FormBrand state={state} dispatch={dispatch} />}
-                    {state.name === 'Model' && <FormModel state={state} dispatch={dispatch} />}
+                    {state.name === 'Modelo' && <FormModel state={state} dispatch={dispatch} />}
                 </Suspense>
                 {loading && <Loading />}
             </Modal>}

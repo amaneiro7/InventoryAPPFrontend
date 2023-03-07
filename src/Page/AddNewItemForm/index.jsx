@@ -1,38 +1,54 @@
 import React, { Suspense, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useReducerFromAddPage } from "Hooks/useReducerFromAddPage";
+import useFetchingData from "Hooks/useFetchingData";
 import { Button } from "UI/Button";
 import { Input } from "UI/Input";
 import SelectForm from "./SelectForm";
-import { useReducerFromAddPage } from "Hooks/useReducerFromAddPage";
-import useFetchingData from "Hooks/useFetchingData";
+import { MessageStatus } from "UI/MessageStatus";
 import "./AddNewItemForm.css";
 import "./FormAddNewItem.css";
-import { MessageStatus } from "UI/MessageStatus";
 
 export default function AddNewItemForm() {
-  const navigate = useNavigate();
-  const formRef = useRef(null);
-  const onClose = () => {
-    navigate("/");
-  };
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
-
+  const navigate = useNavigate();
+  const formRef = useRef(null);
+  
   const onHandleInput = (target) => {
     dispatch({ type: "CHANGEVALUE", payload: target });
   };
 
+  const onReset = () => {
+    let target
+    target= {
+      name: "serial",
+      value: ""
+    }
+    dispatch({ type: "CHANGEVALUE", payload: target })
+    target= {
+      name: "activo",
+      value: ""
+    }
+    dispatch({ type: "CHANGEVALUE", payload: target })
+    console.log(state);
+    };
+
+  const onClose = () => {  
+    navigate("/");
+  };
+
   const onSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(formRef.current);
-    const valueSerial =
+      e.preventDefault();
+      const formData = new FormData(formRef.current);
+      const valueSerial =
       formData.get("serial") === ""
-        ? null
-        : formData.get("serial").trim().toUpperCase();
+      ? null
+      : formData.get("serial").trim().toUpperCase();
     const valueActivo =
       formData.get("activo") === ""
-        ? null
-        : formData.get("activo").trim().toUpperCase();
+      ? null
+      : formData.get("activo").trim().toUpperCase();
     const data = {
       serial: valueSerial,
       activo: valueActivo,
@@ -40,9 +56,9 @@ export default function AddNewItemForm() {
       brandId: formData.get("brand"),
       modelId: formData.get("model"),
     };
-    createData({ endPoint: "items", data });
-    dispatch({ type: "RESET" });
-  };
+    onReset()
+    createData({ endPoint: "items", data });    
+  };  
 
   return (
     <>
@@ -102,12 +118,14 @@ export default function AddNewItemForm() {
 
           <div className="AddNewItemForm-btnContainer">
             <Button
+              key={'cancel'}
               type={"button"}
               name={"Cerrar"}
               action={"cancelType"}
               onHandle={onClose}
             />
             <Button
+              key={'onSubmitItem'}
               type={"submit"}
               name={"Añadir"}
               // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}

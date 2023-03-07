@@ -1,15 +1,12 @@
 import { useReducer } from "react";
 
 const initialState = {   
-    targetModeUI: "",
     modeUI: "",
-    name: "",
+    name: "Item",
     nameTitle: "",
     endPoint: "",
     openModal: false, 
     title: "",
-    oper: "",
-    options: [],
 }
 
 const reducer = (state, action ) => {    
@@ -21,22 +18,19 @@ const reducerOBJECT = (state, payload) => ({
         ...state,
         name: "Categoria",
         nameTitle:"una Categoria",
-        endPoint: "categories",
-        targetModeUI: "CATEGORY",
+        endPoint: "categories",        
     },
     'BRAND': {
         ...state,
         name: "Marca",
         nameTitle:"una Marca",
-        endPoint: "brand",
-        targetModeUI: "BRAND",
+        endPoint: "brand",        
     },
     'MODEL': {
         ...state,
-        name: "Model",
+        name: "Modelo",
         nameTitle:"un Modelo",
-        endPoint: "models",
-        targetModeUI: "MODEL",
+        endPoint: "models",        
     },
     'ADD': {
         ...state,
@@ -58,14 +52,12 @@ const reducerOBJECT = (state, payload) => ({
     },
     'RESET': {
         ...state,
-        targetModeUI: "",
         modeUI: "",
         name: "",
+        nameTitle: "",
         endPoint: "",
         openModal: false, 
         title: "",
-        oper: "",
-        options: [],
     }
 })
 
