@@ -5,7 +5,6 @@ import { Button } from "UI/Button";
 import useFetchingData from "Hooks/useFetchingData";
 import useGetAddData from "Hooks/useGetData";
 import { Loading } from "UI/Loading";
-import { MessageStatus } from "UI/MessageStatus";
 
 export default function FormBrand({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint } = state;
@@ -88,14 +87,8 @@ return (
                     isDisabled={(value === "") ? true : false}
                 />
             </div>
-            {fetchState.status !== "" && 
-                <Suspense>
-                    <MessageStatus 
-                        status={fetchState?.error === null ? 'success' : 'error'}
-                        message={fetchState.status}
-                        messageInfo={fetchState?.error !== null && fetchState.statusInfo}
-                    />
-                </Suspense>}
+            {fetchState.status !== "" && <p>{fetchState.status}</p>}
+            {fetchState?.error !== null && <p>{fetchState.statusInfo}</p> }
         </div>
     </form>
 );

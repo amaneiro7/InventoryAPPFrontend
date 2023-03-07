@@ -15,7 +15,7 @@ const reducer = (state, action ) => {
 const reducerOBJECT = (state, payload) => ({
     'CHANGEVALUE': {
         ...state, 
-        [payload?.name]: payload?.value
+        [payload.name]: payload.value
     },
     'RESET': {
         ...state, 

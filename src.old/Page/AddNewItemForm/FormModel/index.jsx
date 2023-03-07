@@ -5,11 +5,10 @@ import { Button } from "UI/Button";
 import useFetchingData from "Hooks/useFetchingData";
 import useGetAddData from "Hooks/useGetData";
 import { Loading } from "UI/Loading";
-import { MessageStatus } from "UI/MessageStatus";
 
 
 export default function FormModel({ state, dispatch }) {
-    const { modeUI, title, nameTitle, endPoint } = state;
+    const { modeUI, title, name, nameTitle, endPoint } = state;
     const { data: dataBrand } = useGetAddData({ endPoint: 'brand' })
     const { data: dataMOdels } = useGetAddData({ endPoint: endPoint })
     const formRef = useRef(null);
@@ -20,7 +19,6 @@ export default function FormModel({ state, dispatch }) {
     
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(endPoint);
         let data = {};
         const formData = new FormData(formRef.current);
         const valueName = formData?.get("name")?.trimStart().trimEnd().toLowerCase();
@@ -79,7 +77,7 @@ export default function FormModel({ state, dispatch }) {
                             setValue={setValue}
                             options={dataMOdels}
                             isDisabled={false}
-                            placeholder={`-- Selecciona un Modelo --`}
+                            placeholder={`-- Selecciona una ${name} --`}
                             isAutoFocus={false}
                             required={true}
                         />}
@@ -88,7 +86,7 @@ export default function FormModel({ state, dispatch }) {
                         <div className="AddNewItemForm--field">
                             <Input
                                 type="text"
-                                placeholder={`Ingresa el Modelo`}
+                                placeholder={`Ingresa la ${name}`}
                                 name={"name"}
                                 value={modeUI === 'ADD' ? input : value}
                                 setInputValue={setInput}
@@ -111,15 +109,8 @@ export default function FormModel({ state, dispatch }) {
                         isDisabled={(input === "") ? true : false}
                     />
                 </div>
-                {fetchState.status !== "" && 
-                    <Suspense>
-                        <MessageStatus 
-                            status={fetchState?.error === null ? 'success' : 'error'}
-                            message={fetchState.status}
-                            messageInfo={fetchState?.error !== null && fetchState.statusInfo}
-                        />
-                    </Suspense>
-                }
+                {fetchState.status !== "" && <p>{fetchState.status}</p>}
+                {fetchState?.error !== null && <p>{fetchState.statusInfo}</p>}
             </div>
         </form>
     );

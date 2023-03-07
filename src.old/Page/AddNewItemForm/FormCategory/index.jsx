@@ -1,18 +1,17 @@
-import React, { useRef, useState, Suspense } from "react";
+import React, { useRef, useState } from "react";
+import useFetchingData from "Hooks/useFetchingData";
+import useGetAddData from "Hooks/useGetData";
 import { Input } from "UI/Input";
 import { Select } from "UI/Select";
 import { Button } from "UI/Button";
-import useFetchingData from "Hooks/useFetchingData";
-import useGetAddData from "Hooks/useGetData";
 import { Loading } from "UI/Loading";
-import { MessageStatus } from "UI/MessageStatus";
 
-export default function FormBrand({ state, dispatch }) {
+export default function FormCategory({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint } = state;
     const { data } = useGetAddData({endPoint})
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
-    const { fetchState, createData, deleteData, updateData } = useFetchingData();    
+    const { fetchState, createData, deleteData, updateData } = useFetchingData();
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -51,10 +50,8 @@ return (
                 </h2>
             </div>
             {fetchState.loading && <Loading />}
-            {!fetchState.loading &&
-            <Suspense fallback={<Loading/>}>
-                {(modeUI === 'EDIT' || modeUI === 'DELETE') && 
-                <Select
+            {!fetchState.loading && <>
+                {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
                     name={"id"}
                     setValue={setValue}
                     options={data}
@@ -64,17 +61,18 @@ return (
                     required={true}
                 />}
                 {(modeUI === 'ADD' || modeUI ==='EDIT') &&
-                <Input
-                    type="text"
-                    placeholder={`Ingresa la ${name}`}
-                    name={"name"}
-                    value={value}
-                    setInputValue={setValue}
-                    isAutoFocus={true}
-                    required={true}
-                    />}
-            </Suspense>}
-            
+                <div className="AddNewItemForm--field">
+                    <Input
+                        type="text"
+                        placeholder={`Ingresa la ${name}`}
+                        name={"name"}
+                        value={value}
+                        setInputValue={setValue}
+                        isAutoFocus={true}
+                        required={true}
+                    />
+                    </div>}
+            </>}
             <div className="AddNewItem--Form-btnContainer">
                 <Button
                     type={"button"}
@@ -88,14 +86,8 @@ return (
                     isDisabled={(value === "") ? true : false}
                 />
             </div>
-            {fetchState.status !== "" && 
-                <Suspense>
-                    <MessageStatus 
-                        status={fetchState?.error === null ? 'success' : 'error'}
-                        message={fetchState.status}
-                        messageInfo={fetchState?.error !== null && fetchState.statusInfo}
-                    />
-                </Suspense>}
+            {fetchState.status !== "" && <p>{fetchState.status}</p>}
+            {fetchState?.error !== null && <p>{fetchState.statusInfo}</p> }
         </div>
     </form>
 );
