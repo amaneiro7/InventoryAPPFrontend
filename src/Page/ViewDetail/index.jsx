@@ -1,60 +1,72 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { InventaryContext } from "context";
-import { getApiUrl } from "services/config";
 import { Button } from "UI/Button";
 import { Input } from 'UI/Input';
 import { Loading } from "UI/Loading";
 import { Modal } from "UI/Modal";
 import { Select } from "UI/Select";
+import useFetchingData from "Hooks/useFetchingData";
+import useGetAddData from "Hooks/useGetData";
+import { useReducerFromAddPage } from "Hooks/useReducerFromAddPage";
 
 export default function ViewDetail() {
-    const { openModal, setLoading, loading, gettingOneItem, deletingItem, categories, setCategory, brands, setBrand, models, setModel, serial, setSerial, activo, setActivo } = useContext(InventaryContext)
+    // const { openModal, setLoading, gettingOneItem, deletingItem, categories, setCategory, brands, setBrand, models, setModel, serial, setSerial, activo, setActivo } = useContext(InventaryContext)
+    
+    const { fetchState, getOneData, updateData, deleteData } = useFetchingData
+    const { state, dispatch } = useReducerFromAddPage();    
     const formRef = useRef(null)
     const location = useLocation();
     const navigate = useNavigate();
     const { id } = useParams();
-    let itemDetail
+    
+    useEffect(() => {
+        let itemDetail
+        if (location.state?.item) {            
+            itemDetail = (location.state.item)
+            console.log();   
+        } 
+        if ( itemDetail === "" ) {            
+            getOneData({ endPoint: `/items/${id}` })
+            itemDetail = fetchState.data
+        }        
+        dispatch({ type: 'VIEWDETAIL', payload: itemDetail})        
+    },[id])
 
-
-    if (location.state?.item) {
-        itemDetail = (location.state.item)
-    } else {
-        itemDetail = (itemDetail === "") && gettingOneItem({ path: `${getApiUrl}/items/${id}` })
-    }
-    setCategory(itemDetail?.category?.id)
-    setSerial(itemDetail?.serial)
-    setActivo(itemDetail?.activo)
-    setBrand(itemDetail?.brand?.id)
-    setModel(itemDetail?.model?.id)
+    // const onHandleInput = (target) => {
+    //     dispatch({ type: "CHANGEVALUE", payload: target });
+    // };
+    
+    const { data: dataCategory } = useGetAddData({ endPoint: 'categories' })
+    const { data: dataBrand } = useGetAddData({ endPoint: `brand?category=${state.category}` })
+    const { data: dataModels } = useGetAddData({ endPoint: `models?brandId=${state.brand}` })
 
     const onSubmit = () => {
 
     }
 
-    const onDelete = () => {
-        deletingItem({ path: `${getApiUrl}/items/${id}` })
-        setLoading(true)
-        setTimeout(() => {
-            navigate('/')
-            setLoading(false)
-            setCategory("")
-            setSerial("")
-            setActivo("")
-            setBrand("")
-            setModel("")
-        }, 1000)
-    }
+    // const onDelete = () => {
+    //     deletingItem({ path: `${getApiUrl}/items/${id}` })
+    //     setLoading(true)
+    //     setTimeout(() => {
+    //         navigate('/')
+    //         setLoading(false)
+    //         setCategory("")
+    //         setSerial("")
+    //         setActivo("")
+    //         setBrand("")
+    //         setModel("")
+    //     }, 1000)
+    // }
 
 
     const onClose = () => {
-        setCategory("")
-        setSerial("")
-        setActivo("")
-        setBrand("")
-        setModel("")
+        dispatch({type: 'RESETVIEWDETAIL'})
         navigate("/")
     }
+
+    console.log(dataCategory);
+    console.log(state.category.id);
+    console.log(state.model);
     return (
         <main className='main-inputs'>
             <div>
@@ -66,10 +78,10 @@ export default function ViewDetail() {
                         </div>
                         <Select
                             name={'categoryId'}
-                            defaultValue={itemDetail?.category?.id}
-                            setValue={setCategory}
+                            // setValue={onHandleInput}
                             isDisabled={false}
-                            options={categories}
+                            options={dataCategory}
+                            defaultValue={state.category.id}
                             placeholder={'-- Seleccione la categoria --'}
                             isAutoFocus={true}
                         />
@@ -81,8 +93,8 @@ export default function ViewDetail() {
                         <Input
                             name={'serial'}
                             type={'text'}
-                            value={serial}
-                            setInputValue={setSerial}
+                            value={state.serial}
+                            // setInputValue={onHandleInput}
                         />
                     </div>
                     <div>
@@ -92,8 +104,8 @@ export default function ViewDetail() {
                         <Input
                             name={'activo'}
                             type={'text'}
-                            value={activo}
-                            setInputValue={setActivo}
+                            value={state.activo}
+                            // setInputValue={onHandleInput}
                         />
                     </div>
                     <div>
@@ -102,10 +114,10 @@ export default function ViewDetail() {
                         </div>
                         <Select
                             name={'brandId'}
-                            defaultValue={itemDetail?.brand?.id}
-                            setValue={setBrand}
+                            defaultValue={state.brand.id}
+                            // setValue={onHandleInput}
                             isDisabled={false}
-                            options={brands}
+                            options={dataBrand}
                             placeholder={'-- Seleccione la categoria --'}
                             isAutoFocus={false}
                         />
@@ -116,10 +128,10 @@ export default function ViewDetail() {
                         </div>
                         <Select
                             name={'modelId'}
-                            defaultValue={itemDetail?.model?.id}
-                            setValue={setModel}
+                            defaultValue={state.model.id}
+                            // setValue={onHandleInput}
                             isDisabled={false}
-                            options={models}
+                            options={dataModels}
                             placeholder={'-- Seleccione la categoria --'}
                             isAutoFocus={false}
                         />
@@ -139,14 +151,14 @@ export default function ViewDetail() {
                         <Button
                             type={'button'}
                             name={'Eliminar'}
-                            onHandle={onDelete}
+                            // onHandle={onDelete}
                         // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
                         />
                     </div>
                 </form>
             </div>
-            {(openModal || loading) && <Modal>
-                {loading && <Loading />}
+            {(fetchState?.loading) && <Modal>
+                {<Loading />}
             </Modal>}
         </main>
     )

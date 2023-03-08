@@ -3,6 +3,7 @@ import { createItems,deleteItem, updateItem } from "services/api";
 import { getApiUrl } from "services/config";
 
 const initialState = {
+    data: [],
     status: "",
     statusInfo: "",
     loading: false,
@@ -18,6 +19,12 @@ const reducerOBJECT = (fetchState, payload) => ({
         loading: true,
     },
     'CREATE': {
+        ...fetchState,
+        loading: false,
+        status: "Elemento creado exitosamente",
+        statusInfo: payload
+    },
+    'GETONEDATA': {
         ...fetchState,
         loading: false,
         status: "Elemento creado exitosamente",
@@ -55,6 +62,7 @@ export default function useFetchingData() {
     const onStart = () => dispatch({ type: 'START' })
     const onCreate = (res) => dispatch({ type: 'CREATE', payload: res})
     const onUpdate = (res) => dispatch({ type: 'UPDATE', payload: res})
+    const onGet = (res) => dispatch({ type: 'GETONEDATA', payload: res})
     const onDelete = (res) => dispatch({ type: 'DELETE', payload: res})
     const onError = (error) => dispatch({ type: 'ERROR', payload: error })
     const onReset = (error) => dispatch({ type: 'RESET' })
@@ -65,16 +73,22 @@ export default function useFetchingData() {
             .then(res => onCreate(res))
             .catch(error => onError(error.response))
     }
-    const deleteData = ({ endPoint }) => {
+    const getOneData = ({ endPoint }) => {
         onStart()        
-        deleteItem({ path: `${getApiUrl}${endPoint}` })            
-            .then(res => onDelete(res))
+        updateItem({ path: `${getApiUrl}${endPoint}` })
+            .then(res => onGet(res))
             .catch(error => onError(error.response))
     }
     const updateData = ({ endPoint, data }) => {
         onStart()        
         updateItem({ path: `${getApiUrl}${endPoint}`, data })            
-            .then(res => onUpdate(res))
+        .then(res => onUpdate(res))
+        .catch(error => onError(error.response))
+    }
+    const deleteData = ({ endPoint }) => {
+        onStart()        
+        deleteItem({ path: `${getApiUrl}${endPoint}` })            
+            .then(res => onDelete(res))
             .catch(error => onError(error.response))
     }
 
@@ -90,5 +104,5 @@ export default function useFetchingData() {
     }
     
     
-    return { fetchState, createData, deleteData, updateData }
+    return { fetchState, createData, getOneData, deleteData, updateData }
 }

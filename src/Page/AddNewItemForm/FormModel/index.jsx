@@ -11,7 +11,7 @@ import { MessageStatus } from "UI/MessageStatus";
 export default function FormModel({ state, dispatch }) {
     const { modeUI, title, nameTitle, endPoint } = state;
     const { data: dataBrand } = useGetAddData({ endPoint: 'brand' })
-    const { data: dataMOdels } = useGetAddData({ endPoint: endPoint })
+    const { data: dataModels } = useGetAddData({ endPoint: endPoint })
     const formRef = useRef(null);
     const [input, setInput] = useState("");
     const [brandValue, setBrandValue] = useState("");
@@ -77,7 +77,7 @@ export default function FormModel({ state, dispatch }) {
                         {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
                             name={"id"}
                             setValue={setValue}
-                            options={dataMOdels}
+                            options={dataModels}
                             isDisabled={false}
                             placeholder={`-- Selecciona un Modelo --`}
                             isAutoFocus={false}

@@ -6,15 +6,13 @@ import { EditIcon } from 'UI/Icon/EditIcon';
 import { Select } from 'UI/Select';
 import { Modal } from 'UI/Modal';
 import { Loading } from 'UI/Loading';
-import { useReducerFromFormModal } from 'Hooks/useReducerFromFormModal';
 
 const FormCategory = lazy(() => import('Page/AddNewItemForm/FormCategory'))
 const FormBrand = lazy(() => import('Page/AddNewItemForm/FormBrand'))
 const FormModel = lazy(() => import('Page/AddNewItemForm/FormModel'))
 
-export default function SelectForm({ name, endPoint, placeholder, type, setValue, isDisabled }) {
-    const { loading, data} = useGetAddData({ endPoint })
-    const { state, dispatch } = useReducerFromFormModal()
+export default function SelectForm({ name, endPoint, placeholder, type, setValue, isDisabled, state, dispatch }) {
+    const { loading, data} = useGetAddData({ endPoint })    
 
     function onOpenModal({ modeUI, targetModeUI }) {
         dispatch({ type: targetModeUI, payload: data })

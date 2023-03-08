@@ -29,26 +29,36 @@ export default function AddNewItemForm() {
     target= {
       name: "activo",
       value: ""
-    }
-    dispatch({ type: "CHANGEVALUE", payload: target })
-    console.log(state);
-    };
+    }    
+  };
 
   const onClose = () => {  
     navigate("/");
   };
 
-  const onSubmit = (e) => {
-      e.preventDefault();
-      const formData = new FormData(formRef.current);
-      const valueSerial =
+const onSubmit = (e) => {
+    e.preventDefault();
+    if (state.openModal) {
+      return
+    }
+    
+    const formData = new FormData(formRef.current);
+    
+    const valueSerial =
       formData.get("serial") === ""
       ? null
       : formData.get("serial").trim().toUpperCase();
-    const valueActivo =
+    
+      const valueActivo =
       formData.get("activo") === ""
       ? null
       : formData.get("activo").trim().toUpperCase();
+
+    if (valueSerial === null && valueActivo === null) {
+      alert('Al menos uno de los campos serial o activo debe tener un valor')
+      return
+    }
+
     const data = {
       serial: valueSerial,
       activo: valueActivo,
@@ -57,7 +67,7 @@ export default function AddNewItemForm() {
       modelId: formData.get("model"),
     };
     onReset()
-    createData({ endPoint: "items", data });    
+    createData({ endPoint: "items", data });
   };  
 
   return (
@@ -71,6 +81,8 @@ export default function AddNewItemForm() {
             <SelectForm
               name={"category"}
               type={"CATEGORY"}
+              state={state}
+              dispatch={dispatch}
               setValue={onHandleInput}
               endPoint={"categories"}
               placeholder={"la Categoria"}
@@ -101,6 +113,8 @@ export default function AddNewItemForm() {
             <SelectForm
               name={"brand"}
               type={"BRAND"}
+              state={state}
+              dispatch={dispatch}
               setValue={onHandleInput}
               endPoint={`brand?category=${state.category}`}
               placeholder={"la Marca"}
@@ -109,6 +123,8 @@ export default function AddNewItemForm() {
             <SelectForm
               name={"model"}
               type={"MODEL"}
+              state={state}
+              dispatch={dispatch}
               setValue={onHandleInput}
               endPoint={`models?brandId=${state.brand}`}
               placeholder={"el Modelo"}
@@ -128,10 +144,10 @@ export default function AddNewItemForm() {
               key={'onSubmitItem'}
               type={"submit"}
               name={"Añadir"}
-              // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
+              isDisabled={((!state.category || !state.brand || !state.model) || (state.serial === "" && state.activo === "")) ? true : false}
             />
           </div>
-          {fetchState.status !== "" && (
+          {(fetchState.status !== "" && !state.openModal) && (
             <Suspense>
               <MessageStatus
                 status={fetchState?.error === null ? "success" : "error"}
