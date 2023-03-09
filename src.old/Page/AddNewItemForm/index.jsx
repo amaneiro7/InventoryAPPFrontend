@@ -14,45 +14,45 @@ export default function AddNewItemForm() {
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
   const formRef = useRef(null);
-
+  
   const onHandleInput = (target) => {
     dispatch({ type: "CHANGEVALUE", payload: target });
   };
 
   const onReset = () => {
     let target
-    target = {
+    target= {
       name: "serial",
       value: ""
     }
     dispatch({ type: "CHANGEVALUE", payload: target })
-    target = {
+    target= {
       name: "activo",
       value: ""
-    }
+    }    
   };
 
-  const onClose = () => {
+  const onClose = () => {  
     navigate("/");
   };
 
-  const onSubmit = (e) => {
+const onSubmit = (e) => {
     e.preventDefault();
     if (state.openModal) {
       return
     }
-
+    
     const formData = new FormData(formRef.current);
-
+    
     const valueSerial =
       formData.get("serial") === ""
-        ? null
-        : formData.get("serial").trim().toUpperCase();
-
-    const valueActivo =
+      ? null
+      : formData.get("serial").trim().toUpperCase();
+    
+      const valueActivo =
       formData.get("activo") === ""
-        ? null
-        : formData.get("activo").trim().toUpperCase();
+      ? null
+      : formData.get("activo").trim().toUpperCase();
 
     if (valueSerial === null && valueActivo === null) {
       alert('Al menos uno de los campos serial o activo debe tener un valor')
@@ -68,7 +68,7 @@ export default function AddNewItemForm() {
     };
     onReset()
     createData({ endPoint: "items", data });
-  };
+  };  
 
   return (
     <>

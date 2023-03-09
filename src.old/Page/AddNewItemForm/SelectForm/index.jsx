@@ -25,7 +25,6 @@ export default function SelectForm({ name, endPoint, placeholder, type, setValue
                 onHandle={() => onOpenModal({ modeUI: "ADD", targetModeUI: type })}
             />
             <Select
-                value={`${state}.${name}`}
                 name={name}
                 setValue={setValue}
                 isDisabled={isDisabled}
