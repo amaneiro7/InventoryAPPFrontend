@@ -85,9 +85,9 @@ export default function ViewDetail() {
         ? null
         : formData.get('serial').trim().toUpperCase();
     const valueActivo =
-      formData.get('serial') === ""
+      formData.get('activo') === ""
         ? null
-        : formData.get('serial').trim().toUpperCase();
+        : formData.get('activo').trim().toUpperCase();
 
     if (valueSerial === null && valueActivo === null) {
       alert('Al menos uno de los campos serial o activo debe tener un valor')
@@ -102,13 +102,17 @@ export default function ViewDetail() {
       modelId: formData.get('modelId'),
     };
     updateData({ endPoint: `items/${id}`, data })
-    navigate('/')
+    setTimeout(() => {
+      navigate('/')
+    }, 1500)
   };
 
   const onDelete = (e) => {
     e.preventDefault();
     deleteData({ endPoint: `items/${id}`})
-    navigate('/')
+    setTimeout(() => {
+      navigate('/')
+    }, 1500)
   }
 
   const onClose = () => {
@@ -215,14 +219,12 @@ export default function ViewDetail() {
             />
             <Button
               type={"submit"}
-              name={"Guardar"}
-            // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
+              name={"Guardar"}            
             />
             <Button
               type={"button"}
               name={"Eliminar"}
               onHandle={onDelete}
-            // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
             />
           </div>
           {(fetchState.status !== "" && !state.openModal) && (

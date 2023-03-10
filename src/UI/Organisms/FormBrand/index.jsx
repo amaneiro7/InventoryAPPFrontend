@@ -13,6 +13,7 @@ export default function FormBrand({ state, dispatch }) {
     const { data } = useGetAddData({endPoint})
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
+    const [input, setInput] = useState("");
     const { fetchState, createData, deleteData, updateData } = useFetchingData();    
 
     const onSubmit = (e) => {
@@ -37,11 +38,19 @@ export default function FormBrand({ state, dispatch }) {
                 break;
         }
         setValue("")
+        setInput("")
     }
 
-const onClose = () => {
-    dispatch({ type: 'RESET' })
-};
+    const onHandleInput = ( { target: { value } } ) => {        
+        setValue(value)
+        const dataIndex = data.findIndex(elem => elem.id === Number(value))
+        setInput(() => data[dataIndex].name)        
+    }
+
+    const onClose = () => {
+        dispatch({ type: "RESET" });
+    };
+
 
 return (
     <form className="AddNewItem--Form" ref={formRef} onSubmit={onSubmit}>
@@ -57,23 +66,25 @@ return (
                 {(modeUI === 'EDIT' || modeUI === 'DELETE') && 
                 <Select
                     name={"id"}
-                    setValue={setValue}
+                    value={value}
+                    onChange={onHandleInput}
                     options={data}
-                    isDisabled={false}
                     placeholder={`-- Selecciona una ${name} --`}
                     isAutoFocus={true}
-                    required={true}
+                    isDisabled={false}                    
                 />}
                 {(modeUI === 'ADD' || modeUI ==='EDIT') &&
-                <Input
-                    type="text"
-                    placeholder={`Ingresa la ${name}`}
-                    name={"name"}
-                    value={value}
-                    setInputValue={setValue}
-                    isAutoFocus={true}
-                    required={true}
-                    />}
+                    <div className="AddNewItemForm--field">
+                        <Input
+                            type="text"
+                            placeholder={`Ingresa la ${name}`}
+                            name={"name"}
+                            value={input}
+                            setInputValue={setInput}
+                            isAutoFocus={false}
+                            required={true}
+                        />
+                    </div>}
             </Suspense>}
             
             <div className="AddNewItem--Form-btnContainer">
@@ -86,7 +97,7 @@ return (
                 <Button
                     type={"submit"}
                     name={"Añadir"}
-                    isDisabled={(value === "") ? true : false}
+                    isDisabled={(input === "") ? true : false}
                 />
             </div>
             {fetchState.status !== "" && 

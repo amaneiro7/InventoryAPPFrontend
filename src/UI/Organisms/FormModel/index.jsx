@@ -18,7 +18,7 @@ export default function FormModel({ state, dispatch }) {
     const [brandValue, setBrandValue] = useState("");
     const [value, setValue] = useState("");
     const { fetchState, createData, deleteData, updateData } = useFetchingData();
-    
+
     const onSubmit = (e) => {
         e.preventDefault();
         console.log(endPoint);
@@ -27,8 +27,8 @@ export default function FormModel({ state, dispatch }) {
         const valueName = formData?.get("name")?.trimStart().trimEnd().toLowerCase();
         const id = Number(formData.get("id"));
         const brandId = Number(formData.get('brandId'))
-        data = { 
-            name: valueName, 
+        data = {
+            name: valueName,
             brandId: brandId
         };
 
@@ -50,6 +50,12 @@ export default function FormModel({ state, dispatch }) {
         setInput("")
     }
 
+    const onHandleInput = ({ target: { value } }) => {
+        setValue(value)
+        const dataIndex = dataModels.findIndex(elem => elem.id === Number(value))
+        setInput(() => dataModels[dataIndex].name)
+    }
+
     const onClose = () => {
         dispatch({ type: 'RESET' })
     };
@@ -64,39 +70,39 @@ export default function FormModel({ state, dispatch }) {
                 </div>
                 {fetchState.loading && <Loading />}
                 {!fetchState.loading &&
-                    <Suspense fallback={<Loading/>}>
+                    <Suspense fallback={<Loading />}>
                         {<Select
                             name={"brandId"}
-                            setValue={setBrandValue}
+                            value={brandValue}
+                            onChange={setBrandValue}
                             options={dataBrand}
-                            isDisabled={false}
                             placeholder={`-- Selecciona una Marca --`}
                             isAutoFocus={true}
-                            required={true}
+                            isDisabled={false}
                         />}
 
                         {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
                             name={"id"}
-                            setValue={setValue}
+                            value={value}
+                            onChange={onHandleInput}
                             options={dataModels}
-                            isDisabled={false}
                             placeholder={`-- Selecciona un Modelo --`}
-                            isAutoFocus={false}
-                            required={true}
+                            isAutoFocus={true}
+                            isDisabled={false}                            
                         />}
 
                         {(modeUI === 'ADD' || modeUI === 'EDIT') &&
-                        <div className="AddNewItemForm--field">
-                            <Input
-                                type="text"
-                                placeholder={`Ingresa el Modelo`}
-                                name={"name"}
-                                value={modeUI === 'ADD' ? input : value}
-                                setInputValue={setInput}
-                                isAutoFocus={brandValue !== "" ? true : false}
-                                required={true}
-                            />
-                        </div>}
+                            <div className="AddNewItemForm--field">
+                                <Input
+                                    type="text"
+                                    placeholder={`Ingresa el Modelo`}
+                                    name={"name"}
+                                    value={input}
+                                    setInputValue={setInput}
+                                    isAutoFocus={false}
+                                    required={true}
+                                />
+                            </div>}
                     </Suspense>}
 
                 <div className="AddNewItem--Form-btnContainer">
@@ -112,9 +118,9 @@ export default function FormModel({ state, dispatch }) {
                         isDisabled={(input === "") ? true : false}
                     />
                 </div>
-                {fetchState.status !== "" && 
+                {fetchState.status !== "" &&
                     <Suspense>
-                        <MessageStatus 
+                        <MessageStatus
                             status={fetchState?.error === null ? 'success' : 'error'}
                             message={fetchState.status}
                             messageInfo={fetchState?.error !== null && fetchState.statusInfo}

@@ -13,17 +13,14 @@ export default function FormCategory({ state, dispatch }) {
     const { data } = useGetAddData({ endPoint });
     const formRef = useRef(null);
     const [value, setValue] = useState("");
+    const [input, setInput] = useState("");
     const { fetchState, createData, deleteData, updateData } = useFetchingData();
 
     const onSubmit = (e) => {
         e.preventDefault();
         let data = {};
         const formData = new FormData(formRef.current);
-        const valueName = formData
-            ?.get("name")
-            ?.trimStart()
-            .trimEnd()
-            .toLowerCase();
+        const valueName = formData?.get("name")?.trimStart().trimEnd().toLowerCase();
         const id = Number(formData.get("id"));
         data = { name: valueName };
 
@@ -41,10 +38,13 @@ export default function FormCategory({ state, dispatch }) {
                 break;
         }
         setValue("");
+        setInput("")
     };
 
-    const onHandleInput = ( { target: { value } } ) => {        
+    const onHandleInput = ({ target: { value } }) => {
         setValue(value)
+        const dataIndex = data.findIndex(elem => elem.id === Number(value))
+        setInput(() => data[dataIndex].name)
     }
 
     const onClose = () => {
@@ -60,34 +60,33 @@ export default function FormCategory({ state, dispatch }) {
                     </h2>
                 </div>
                 {fetchState.loading && <Loading />}
-                {!fetchState.loading && (
-                    <>
+                {!fetchState.loading &&
+                    <Suspense fallback={<Loading />}>
                         {(modeUI === "EDIT" || modeUI === "DELETE") && (
                             <Select
                                 name={"id"}
                                 value={value}
                                 onChange={onHandleInput}
                                 options={data}
-                                placeholder={`-- Selecciona una ${name} --`}                                
+                                placeholder={`-- Selecciona una ${name} --`}
                                 isAutoFocus={true}
                                 isDisabled={false}
                             />
                         )}
-                        {(modeUI === "ADD" || modeUI === "EDIT") && (
+                        {(modeUI === "ADD" || modeUI === "EDIT") &&
                             <div className="AddNewItemForm--field">
                                 <Input
                                     type="text"
                                     placeholder={`Ingresa la ${name}`}
                                     name={"name"}
-                                    value={value}
-                                    setInputValue={setValue}
-                                    isAutoFocus={value !== "" ? true : false}
+                                    value={input}
+                                    setInputValue={setInput}
+                                    isAutoFocus={false}
                                     required={true}
                                 />
-                            </div>
-                        )}
-                    </>
-                )}
+                            </div>}
+                    </Suspense>}
+
                 <div className="AddNewItem--Form-btnContainer">
                     <Button
                         type={"button"}
@@ -99,7 +98,7 @@ export default function FormCategory({ state, dispatch }) {
                         key={'onSubmitCategory'}
                         type={"submit"}
                         name={"Añadir"}
-                        isDisabled={value === "" ? true : false}
+                        isDisabled={input === "" ? true : false}
                     />
                 </div>
                 {fetchState.status !== "" && (
