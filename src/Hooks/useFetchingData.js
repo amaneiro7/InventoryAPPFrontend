@@ -92,17 +92,9 @@ export default function useFetchingData() {
             .catch(error => onError(error.response))
     }
 
-    wait(3000, (fetchState.status !== ""), onReset)
+    import('Hooks/useWait.js').then(module => {
+        module.wait(3000, (fetchState.status !== ""), onReset)
+    })
 
-
-    function wait(time, condition, callback) {
-        setTimeout(function() {
-            if (condition) {
-                callback();
-            }
-        }, time);
-    }
-    
-    
     return { fetchState, createData, getOneData, deleteData, updateData }
 }
