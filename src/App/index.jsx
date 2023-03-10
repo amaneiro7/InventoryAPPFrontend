@@ -3,7 +3,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { InventaryProvider } from 'context';
 import './App.css';
 
-const Menu = lazy(() => import('UI/Menu'))
+const Menu = lazy(() => import('UI/Molecules/Menu'))
 const Home = lazy(() => import('Page/Home'))
 const AddNewItemForm  = lazy(() => import('Page/AddNewItemForm'))
 const Dashboard = lazy(() => import('Page/Dashboard'))

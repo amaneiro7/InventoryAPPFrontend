@@ -1,77 +1,115 @@
-import React, { useRef, useState, Suspense } from "react";
+import React, { useRef, Suspense, useReducer, useMemo, lazy } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useFetchingData from "Hooks/useFetchingData";
 import useGetAddData from "Hooks/useGetData";
-import { Button } from "UI/Button";
-import { Input } from "UI/Input";
-import { Loading } from "UI/Loading";
-import { Modal } from "UI/Modal";
-import { Select } from "UI/Select";
 import "./ViewDetail.css";
 
+const Button = lazy(() => import('UI/Atoms/Button'));
+const Input = lazy(() => import('UI/Atoms/Input'));
+const Select = lazy(() => import('UI/Atoms/Select'));
+const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
+const Loading = lazy(() => import("UI/Atoms/Loading"));
+const Modal = lazy(() => import("UI/Atoms/Modal"));
+
+const reducer = (state, action) => {
+  console.log(action.payload)
+  return reducerOBJECT(state, action.payload)[action.type] || state;
+};
+
+const reducerOBJECT = (state, payload) => ({
+  'CHANGEVALUE': {
+    ...state,
+    [payload.name]: payload.value
+  },
+});
+
+const useDynamicState = (dataAPI, dataLocation) => {
+  const initialState = useMemo(() => {
+    if (dataLocation && dataLocation.item) {
+      const itemDetail = dataLocation.item
+      return {
+        categoryId: itemDetail.category.id,
+        serial: itemDetail.serial,
+        activo: itemDetail.activo,
+        brandId: itemDetail.brand.id,
+        modelId: itemDetail.model.id,
+      }
+    } else if (dataAPI) {
+      const itemDetail = dataAPI;
+      return {
+        categoryId: itemDetail.category.id,
+        serial: itemDetail.serial,
+        activo: itemDetail.activo,
+        brandId: itemDetail.brand.id,
+        modelId: itemDetail.model.id,
+      }
+    } else {
+      return null
+    }
+  }, [dataAPI, dataLocation])
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return [state, dispatch]
+}
+
 export default function ViewDetail() {
-  const { fetchState, getOneData, updateData, deleteData } = useFetchingData;
+  const { fetchState, updateData, deleteData } = useFetchingData();
   const formRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
-  let itemDetail;
-  if (!itemDetail) {
-    if (location.state?.item) {
-      itemDetail = location.state.item;
-    } else {
-      getOneData({ endPoint: `/items/${id}` });
-      itemDetail = fetchState.data;
-    }
-  }
 
-  const [category, setCategory] = useState(itemDetail.category.id);
-  const [serial, setSerial] = useState(itemDetail.serial);
-  const [activo, setActivo] = useState(itemDetail.activo);
-  const [brand, setBrand] = useState(itemDetail.brand.id);
-  const [model, setModel] = useState(itemDetail.model.id);
+  const { data, loading } = useGetAddData({ endPoint: `/items/${id}` })
+  const [state, dispatch] = useDynamicState(data, location.state);
 
-  const setters = {
-    categoryId: setCategory,
-    serial: setSerial,
-    activo: setActivo,
-    brandId: setBrand,
-    modelId: setModel,
-  };
-
-  const onHandleInput = (target) => {
-    const { name, value } = target;
-    const setter = setters[name];
-    if (setter) {
-      setter(value);
-    }
+  const onHandleInput = ({ target }) => {
+    const { name, value } = target
+    dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
   };
 
   const { data: dataCategory } = useGetAddData({
     endPoint: "categories",
   });
   const { data: dataBrand } = useGetAddData({
-    endPoint: `brand?category=${itemDetail.category.id}`,
+    endPoint: `brand?category=${state.categoryId}`,
   });
   const { data: dataModels } = useGetAddData({
-    endPoint: `models?brandId=${itemDetail.brand.id}`,
+    endPoint: `models?brandId=${state.brandId}`,
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(formRef.current);
+    const valueSerial =
+      formData.get('serial') === ""
+        ? null
+        : formData.get('serial').trim().toUpperCase();
+    const valueActivo =
+      formData.get('serial') === ""
+        ? null
+        : formData.get('serial').trim().toUpperCase();
 
-  // const onDelete = () => {
-  //     deletingItem({ path: `${getApiUrl}/items/${id}` })
-  //     setLoading(true)
-  //     setTimeout(() => {
-  //         navigate('/')
-  //         setLoading(false)
-  //         setCategory("")
-  //         setSerial("")
-  //         setActivo("")
-  //         setBrand("")
-  //         setModel("")
-  //     }, 1000)
-  // }
+    if (valueSerial === null && valueActivo === null) {
+      alert('Al menos uno de los campos serial o activo debe tener un valor')
+      return
+    }
+
+    const data = {
+      serial: valueSerial,
+      activo: valueActivo,
+      categoryId: formData.get('categoryId'),
+      brandId: formData.get('brandId'),
+      modelId: formData.get('modelId'),
+    };
+    updateData({ endPoint: `items/${id}`, data })
+    navigate('/')
+  };
+
+  const onDelete = (e) => {
+    e.preventDefault();
+    deleteData({ endPoint: `items/${id}`})
+    navigate('/')
+  }
 
   const onClose = () => {
     navigate("/");
@@ -79,115 +117,127 @@ export default function ViewDetail() {
 
   return (
     <section className="ViewDetail">
-      <form className="ViewDetail--form" ref={formRef} onSubmit={onSubmit}>
-        <div className="ViewDetail--container">
-          <div className="ViewDetail--title">
-            <h1>Edita el elemento</h1>
-          </div>
-
-          {dataCategory ? (
-            <Suspense fallback={<Loading />}>
-              <div className="ViewDetail--field">
-                <label htmlFor="Categoria">Categoria</label>
-                <Select
-                  name={"categoryId"}
-                  defaultValue={category}
-                  setValue={onHandleInput}
-                  isDisabled={false}
-                  options={dataCategory}
-                  placeholder={"-- Seleccione la categoria --"}
-                  isAutoFocus={true}
-                />
-              </div>
-            </Suspense>
-          ) : (
-            <Loading />
-          )}
-
-          <div className="ViewDetail--field">
-            <label htmlFor="Serial">Serial</label>
-            <div className="ViewDetail--select">
-              <Input
-                name={"serial"}
-                type={"text"}
-                value={serial}
-                setInputValue={onHandleInput}
-              />
+      {!loading &&
+        <form className="ViewDetail--form" ref={formRef} onSubmit={onSubmit}>
+          <div className="ViewDetail--container">
+            <div className="ViewDetail--title">
+              <h1>Edita el elemento</h1>
             </div>
-          </div>
 
-          <div className="ViewDetail--field">
-            <label htmlFor="Activo">Activo</label>
-            <div className="ViewDetail--select">
-              <Input
-                name={"activo"}
-                type={"text"}
-                value={activo}
-                setInputValue={onHandleInput}
-              />
+            {dataCategory ? (
+              <Suspense fallback={<Loading />}>
+                <div className="ViewDetail--field">
+                  <label htmlFor="Categoria">Categoria</label>
+                  <Select
+                    name={"categoryId"}
+                    value={state.categoryId}
+                    onChange={onHandleInput}
+                    options={dataCategory}
+                    placeholder={"-- Seleccione la categoria --"}
+                    isDisabled={false}
+                    isAutoFocus={true}
+                  />
+                </div>
+              </Suspense>
+            ) : (
+              <Loading />
+            )}
+
+            <div className="ViewDetail--field">
+              <label htmlFor="Serial">Serial</label>
+              <div className="ViewDetail--select">
+                <Input
+                  name={"serial"}
+                  type={"text"}
+                  value={state.serial}
+                  setInputValue={onHandleInput}
+                />
+              </div>
             </div>
+
+            <div className="ViewDetail--field">
+              <label htmlFor="Activo">Activo</label>
+              <div className="ViewDetail--select">
+                <Input
+                  name={"activo"}
+                  type={"text"}
+                  value={state.activo}
+                  setInputValue={onHandleInput}
+                />
+              </div>
+            </div>
+
+            {dataBrand ? (
+              <Suspense fallback={<Loading />}>
+                <div className="ViewDetail--field">
+                  <label htmlFor="Marca">Marca</label>
+                  <Select
+                    name={"brandId"}
+                    value={state.brandId}
+                    options={dataBrand}
+                    onChange={onHandleInput}
+                    placeholder={"-- Seleccione la marca --"}
+                    isDisabled={false}
+                    isAutoFocus={false}
+                  />
+                </div>
+              </Suspense>
+            ) : (
+              <Loading />
+            )}
+
+            {dataModels ? (
+              <Suspense fallback={<Loading />}>
+                <div className="ViewDetail--field">
+                  <label htmlFor="Modelo">Modelo</label>
+                  <Select
+                    name={"modelId"}
+                    value={state.modelId}
+                    options={dataModels}
+                    onChange={onHandleInput}
+                    placeholder={"-- Seleccione el modelo --"}
+                    isDisabled={false}
+                    isAutoFocus={false}
+                  />
+                </div>
+              </Suspense>
+            ) : (
+              <Loading />
+            )}
           </div>
 
-          {dataBrand ? (
-            <Suspense fallback={<Loading />}>
-              <div className="ViewDetail--field">
-                <label htmlFor="Marca">Marca</label>
-                <Select
-                  name={"brandId"}
-                  defaultValue={brand}
-                  setValue={onHandleInput}
-                  isDisabled={false}
-                  options={dataBrand}
-                  placeholder={"-- Seleccione la marca --"}
-                  isAutoFocus={false}
-                />
-              </div>
-            </Suspense>
-          ) : (
-            <Loading />
-          )}
-
-          {dataModels ? (
-            <Suspense fallback={<Loading />}>
-              <div className="ViewDetail--field">
-                <label htmlFor="Modelo">Modelo</label>
-                <Select
-                  name={"modelId"}
-                  defaultValue={model}
-                  setValue={onHandleInput}
-                  isDisabled={false}
-                  options={dataModels}
-                  placeholder={"-- Seleccione el modelo --"}
-                  isAutoFocus={false}
-                />
-              </div>
-            </Suspense>
-          ) : (
-            <Loading />
-          )}
-        </div>
-
-        <div className="ViewDetail-btnContainer">
-          <Button
-            type={"button"}
-            name={"Cerrar"}
-            action={"cancelType"}
-            onHandle={onClose}
-          />
-          <Button
-            type={"submit"}
-            name={"Guardar"}
+          <div className="ViewDetail-btnContainer">
+            <Button
+              type={"button"}
+              name={"Cerrar"}
+              action={"cancelType"}
+              onHandle={onClose}
+            />
+            <Button
+              type={"submit"}
+              name={"Guardar"}
             // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
-          />
-          <Button
-            type={"button"}
-            name={"Eliminar"}
-            // onHandle={onDelete}
+            />
+            <Button
+              type={"button"}
+              name={"Eliminar"}
+              onHandle={onDelete}
             // isDisabled={((!category || !brand || !model) || (serial === "" && activo === "")) ? true : false}
-          />
-        </div>
-      </form>
-      {fetchState?.loading && <Modal>{<Loading />}</Modal>}
+            />
+          </div>
+          {(fetchState.status !== "" && !state.openModal) && (
+            <Suspense>
+              <MessageStatus
+                status={fetchState?.error === null ? "success" : "error"}
+                message={fetchState.status}
+                messageInfo={
+                  fetchState?.error !== null && fetchState.statusInfo
+                }
+              />
+            </Suspense>
+          )}
+        </form>}
+      {loading && <Modal>{<Loading />}</Modal>}
     </section>
   );
 }

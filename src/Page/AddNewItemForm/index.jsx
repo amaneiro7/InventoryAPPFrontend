@@ -1,13 +1,15 @@
-import React, { Suspense, useRef } from "react";
+import React, { lazy, Suspense, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReducerFromAddPage } from "Hooks/useReducerFromAddPage";
 import useFetchingData from "Hooks/useFetchingData";
-import { Button } from "UI/Button";
-import { Input } from "UI/Input";
-import SelectForm from "./SelectForm";
-import { MessageStatus } from "UI/MessageStatus";
+
 import "./AddNewItemForm.css";
 import "./FormAddNewItem.css";
+
+const Button = lazy(() => import('UI/Atoms/Button'));
+const Input = lazy(() => import('UI/Atoms/Input'));
+const SelectForm = lazy(() => import('UI/Molecules/SelectForm'));
+const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
   const { state, dispatch } = useReducerFromAddPage();
@@ -15,7 +17,7 @@ export default function AddNewItemForm() {
   const navigate = useNavigate();
   const formRef = useRef(null);
 
-  const onHandleInput = (target) => {
+  const onHandleInput = ({ target }) => {
     dispatch({ type: "CHANGEVALUE", payload: target });
   };
 
@@ -81,9 +83,10 @@ export default function AddNewItemForm() {
             <SelectForm
               name={"category"}
               type={"CATEGORY"}
+              value={state.category}
+              onChange={onHandleInput}
               state={state}
               dispatch={dispatch}
-              setValue={onHandleInput}
               endPoint={"categories"}
               placeholder={"la Categoria"}
             />
@@ -113,9 +116,10 @@ export default function AddNewItemForm() {
             <SelectForm
               name={"brand"}
               type={"BRAND"}
+              value={state.brand}
+              onChange={onHandleInput}
               state={state}
               dispatch={dispatch}
-              setValue={onHandleInput}
               endPoint={`brand?category=${state.category}`}
               placeholder={"la Marca"}
               isDisabled={state.category === "" && true}
@@ -123,9 +127,10 @@ export default function AddNewItemForm() {
             <SelectForm
               name={"model"}
               type={"MODEL"}
+              value={state.model}
               state={state}
               dispatch={dispatch}
-              setValue={onHandleInput}
+              onChange={onHandleInput}
               endPoint={`models?brandId=${state.brand}`}
               placeholder={"el Modelo"}
               isDisabled={state.brand === "" && true}
@@ -147,6 +152,7 @@ export default function AddNewItemForm() {
               isDisabled={((!state.category || !state.brand || !state.model) || (state.serial === "" && state.activo === "")) ? true : false}
             />
           </div>
+        </div>
           {(fetchState.status !== "" && !state.openModal) && (
             <Suspense>
               <MessageStatus
@@ -158,7 +164,6 @@ export default function AddNewItemForm() {
               />
             </Suspense>
           )}
-        </div>
       </form>
     </>
   );
