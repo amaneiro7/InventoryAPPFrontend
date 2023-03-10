@@ -82,14 +82,6 @@ const reducerOBJECT = (state, payload) => ({
         endPoint: "",
         openModal: false, 
         title: "",
-    },
-    'RESETVIEWDETAIL': {
-        ...state,
-        category: "",
-        serial: "",
-        activo: "",
-        brand: "",
-        model: "",
     }
 })
 

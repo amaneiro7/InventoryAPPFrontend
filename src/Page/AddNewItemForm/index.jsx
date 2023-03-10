@@ -18,7 +18,7 @@ export default function AddNewItemForm() {
   const formRef = useRef(null);
 
   const onHandleInput = ({ target }) => {
-    dispatch({ type: "CHANGEVALUE", payload: target });
+    dispatch({ type: "CHANGEVALUE", payload: target });    
   };
 
   const onReset = () => {
@@ -71,7 +71,10 @@ export default function AddNewItemForm() {
     onReset()
     createData({ endPoint: "items", data });
   };
-
+  // console.log(state.category !== "" && state.brand !== "" && state.model !== "")
+  console.log(state.activo === "")
+  console.log(state.serial === "")
+  console.log(state)
   return (
     <>
       <form className="AddNewItemForm" ref={formRef} onSubmit={onSubmit}>
@@ -149,7 +152,7 @@ export default function AddNewItemForm() {
               key={'onSubmitItem'}
               type={"submit"}
               name={"Añadir"}
-              isDisabled={((!state.category || !state.brand || !state.model) || (state.serial === "" && state.activo === "")) ? true : false}
+              isDisabled={((state.category !== "" && state.brand !== "" && state.model !== "") && (state.serial !== "" || state.activo !== "")) ? true : false}
             />
           </div>
         </div>
