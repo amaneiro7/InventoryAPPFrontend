@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import useGetAddData from "./useGetData";
 
 const initialState = {    
-    searchValueCategory: "",
+    searchValueCategory: "8",
     searchValueSerial: "",
     searchValueActivo: "",
     searchValueBrand:"",
@@ -16,7 +16,7 @@ const reducer = (state, action) => {
 const reducerOBJECT = (state, payload) => ({
     'CHANGEVALUE': {
         ...state, 
-        [payload.name]: payload.value
+        [payload?.name]: payload?.value
     },
 })
 

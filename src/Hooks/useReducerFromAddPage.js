@@ -34,7 +34,7 @@ const reducerOBJECT = (state, payload) => ({
     },
     'ALREADY_EXIST': {
         ...state,
-        [`${payload.name}Existed`]: payload.result,
+        [`${payload?.name}Existed`]: payload?.result,
     },
     'DEFAULTVALUE': { 
         ...state,

@@ -30,8 +30,6 @@ export default function AddNewItemForm() {
     })    
   };
 
-  console.log(state.activoExisted);
-
   const onClose = () => {
     navigate("/");
   };

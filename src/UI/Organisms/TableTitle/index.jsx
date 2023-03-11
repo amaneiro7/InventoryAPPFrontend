@@ -2,12 +2,9 @@ import React, { Suspense, lazy, useContext } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
 import useGetAddData from 'Hooks/useGetData';
-import Select from 'UI/Atoms/Select';
-import Input from 'UI/Atoms/Input';
 
-
-// const Input = lazy(() => import('UI/Atoms/Input'));
-// const Select = lazy(() => import('UI/Atoms/Select'));
+const Input = lazy(() => import('UI/Atoms/Input'));
+const Select = lazy(() => import('UI/Atoms/Select'));
 
 export default function TableTitle() {
     const {
