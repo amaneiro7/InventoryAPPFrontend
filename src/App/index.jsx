@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { InventaryProvider } from 'context';
 import './App.css';
+import ErrorBoundary from './ErrorBoundary';
 
 const Menu = lazy(() => import('UI/Molecules/Menu'))
 const Home = lazy(() => import('Page/Home'))
@@ -11,6 +12,7 @@ const ViewDetail = lazy(() => import('Page/ViewDetail'))
 
 function App() {
   return (
+    <ErrorBoundary>
     <InventaryProvider>
       <BrowserRouter>        
         <Routes>
@@ -24,6 +26,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </InventaryProvider>    
+    </ErrorBoundary>
   );
 }
 

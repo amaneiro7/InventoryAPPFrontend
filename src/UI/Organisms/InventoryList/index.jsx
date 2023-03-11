@@ -10,19 +10,16 @@ export default function InventoryList() {
     const navigate = useNavigate()
     
     return (
-        <>
+        <>  
             <Suspense fallback={<p>...Loading</p>}>
                 {searchedItems?.map(item => {
                     return (
                         <tr 
                             key={item?.id}
                             onDoubleClick={() => 
-                                // Envolvemos la navegacion en un transicion
-                                startTransition(() => 
-                                    navigate(`viewdetail/${item?.id}`, {
-                                        state: { item },
-                                    })
-                                )
+                                navigate(`viewdetail/${item?.id}`, {
+                                    state: { item },
+                                })
                             }
                         >
                             <td>{item?.category?.name}</td>
@@ -34,8 +31,6 @@ export default function InventoryList() {
                     )
                 })}
             </Suspense>
-            {/* Indicador para la transicion pendiente */}
-            {isPending ? <p>...Loading</p> : null}
         </>
     )
 }

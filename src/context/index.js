@@ -5,7 +5,8 @@ export const InventaryContext = createContext();
 
 export function InventaryProvider(props) {
     const {
-        state,         
+        data: items,
+        state,
         searchedItems,
         dispatch
     } = useGetSearch()
@@ -15,6 +16,7 @@ export function InventaryProvider(props) {
     return (
         <InventaryContext.Provider
             value={{
+                items,
                 state,                
                 searchedItems,
                 dispatch

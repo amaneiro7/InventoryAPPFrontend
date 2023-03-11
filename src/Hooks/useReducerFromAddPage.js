@@ -6,17 +6,16 @@ const initialState = {
     activo: "",
     brand: "",
     model: "",
-
+    activoExisted: false,
+    serialExisted: false,
     modeUI: "",
     name: "Item",
-    nameTitle: "",
     endPoint: "",
     openModal: false, 
     title: "",
 }
 
 const reducer = (state, action) => {
-    console.log(action.type);
     return reducerOBJECT(state, action.payload)[action.type] || state
 }
 
@@ -32,6 +31,10 @@ const reducerOBJECT = (state, payload) => ({
         activo: payload?.activo,
         brand: payload?.brand,
         model: payload?.model,
+    },
+    'ALREADY_EXIST': {
+        ...state,
+        [`${payload.name}Existed`]: payload.result,
     },
     'DEFAULTVALUE': { 
         ...state,

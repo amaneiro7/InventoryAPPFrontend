@@ -1,10 +1,11 @@
-import React, { lazy, Suspense, useRef } from "react";
+import React, { lazy, Suspense, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReducerFromAddPage } from "Hooks/useReducerFromAddPage";
 import useFetchingData from "Hooks/useFetchingData";
 
 import "./AddNewItemForm.css";
 import "./FormAddNewItem.css";
+import { InventaryContext } from "context";
 
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
@@ -12,14 +13,24 @@ const SelectForm = lazy(() => import('UI/Molecules/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
+  const { items } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
   const formRef = useRef(null);
 
   const onHandleInput = ({ target }) => {
-    dispatch({ type: "CHANGEVALUE", payload: target });    
+    const {name, value} = target
+    dispatch({ type: "CHANGEVALUE", payload: target });
+
+    import('Hooks/useIsExist.js')
+    .then(module => module.useIsExist(items, name, value))
+    .then(result => {      
+      dispatch({ type: 'ALREADY_EXIST', payload: {name, result}})
+    })    
   };
+
+  console.log(state.activoExisted);
 
   const onClose = () => {
     navigate("/");
@@ -61,8 +72,6 @@ export default function AddNewItemForm() {
   
   const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))
   
-
-
   return (
     <>
       <form className="AddNewItemForm" ref={formRef} onSubmit={onSubmit}>
@@ -145,6 +154,24 @@ export default function AddNewItemForm() {
             />
           </div>
         </div>
+          {(state.serialExisted && !state.openModal) && (
+            <Suspense>
+              <MessageStatus
+                status={"error"}
+                message={null}
+                messageInfo={'El serial introducido ya existe'}
+              />
+            </Suspense>
+          )}
+          {(state.activoExisted && !state.openModal) && (
+            <Suspense>
+              <MessageStatus
+                status={"error"}
+                message={null}
+                messageInfo={'El activo introducido ya existe'}
+              />
+            </Suspense>
+          )}
           {(fetchState.status !== "" && !state.openModal) && (
             <Suspense>
               <MessageStatus

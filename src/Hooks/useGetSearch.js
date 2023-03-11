@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import useGetAddData from "./useGetData";
 
 const initialState = {    
@@ -79,6 +79,7 @@ export default function useGetSearch() {
     }
 
     return {
+        data,
         searchedItems,
         state,
         dispatch

@@ -1,5 +1,5 @@
 .AddNewItemForm--select select {
-    width: 314px;    
+    width: 300px;
     height: 50px;
     padding: 0 .5rem;
     font-size: 1.2rem;
@@ -9,11 +9,15 @@
     cursor: pointer;
     outline: none;
     text-transform: capitalize;
-
+    
     border-radius: .25rem;
     border: 1px solid #d5dae2;
     background-color: var(--blanco);
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.AddNewItemForm--select.home select{
+    width: min-content;
 }
 
 .AddNewItemForm--select select:focus {
