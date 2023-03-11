@@ -1,7 +1,7 @@
 import React from 'react';
 import './Select.css'
 
-export default function Select({name, value, options, onChange, placeholder, isDisabled, isAutoFocus = false}) {
+export default function Select({name, value, options, onChange, placeholder, isDisabled, isAutoFocus = false, hidden=true, disabled=true}) {
 
     return (
         <div className='AddNewItemForm--select'>
@@ -12,7 +12,7 @@ export default function Select({name, value, options, onChange, placeholder, isD
                 autoFocus={isAutoFocus ? true : undefined}
                 disabled={isDisabled}
             >
-                <option value={''} disabled hidden>{placeholder}</option>
+                <option value={''} disabled={disabled} hidden={hidden}>{placeholder}</option>
                 {options?.map((elem, index) =>
                     <option 
                         key={index}                        

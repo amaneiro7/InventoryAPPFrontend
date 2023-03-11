@@ -7,16 +7,7 @@ export function InventaryProvider(props) {
     const {
         state,         
         searchedItems,
-        searchValueCategory, 
-        setSearchValueCategory,
-        searchValueSerial,
-        setSearchValueSerial,
-        searchValueActivo, 
-        setSearchValueActivo,
-        searchValueBrand, 
-        setSearchValueBrand,
-        searchValueModel, 
-        setSearchValueModel
+        dispatch
     } = useGetSearch()
 
 
@@ -26,16 +17,7 @@ export function InventaryProvider(props) {
             value={{
                 state,                
                 searchedItems,
-                searchValueCategory, 
-                setSearchValueCategory,
-                searchValueSerial,
-                setSearchValueSerial,
-                searchValueActivo, 
-                setSearchValueActivo,
-                searchValueBrand, 
-                setSearchValueBrand,
-                searchValueModel, 
-                setSearchValueModel
+                dispatch
             }}
         >
             {props.children}

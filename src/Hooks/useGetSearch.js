@@ -1,27 +1,50 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import useGetAddData from "./useGetData";
 
-export default function useGetSearch() {    
-    const [searchValueCategory, setSearchValueCategory] = useState("");
-    const [searchValueSerial, setSearchValueSerial] = useState("");
-    const [searchValueActivo, setSearchValueActivo] = useState("");
-    const [searchValueBrand, setSearchValueBrand] = useState("");
-    const [searchValueModel, setSearchValueModel] = useState("");
+const initialState = {    
+    searchValueCategory: "",
+    searchValueSerial: "",
+    searchValueActivo: "",
+    searchValueBrand:"",
+    searchValueModel:""
+}
+
+const reducer = (state, action) => {
+    return reducerOBJECT(state, action.payload)[action.type] || state
+}
+
+const reducerOBJECT = (state, payload) => ({
+    'CHANGEVALUE': {
+        ...state, 
+        [payload.name]: payload.value
+    },
+})
+
+export default function useGetSearch() {
+    const [state, dispatch] = useReducer(reducer, initialState)
+
     const { data } = useGetAddData({ endPoint: 'items' })
+    const {
+        searchValueCategory,
+        searchValueSerial,
+        searchValueActivo,
+        searchValueBrand,
+        searchValueModel,
+    } = state
+    
 
     let searchedItems = [];
     let currentSearchValue
     currentSearchValue = data
-    
+
     if (searchValueCategory.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return item.category.name.toLowerCase().includes(searchValueCategory.toLowerCase());
+        searchedItems = currentSearchValue.filter(item => {
+            return item.category.id === Number(searchValueCategory);
         });
-        currentSearchValue = searchedItems;
+        currentSearchValue = searchedItems
     }
 
-    if (searchValueSerial.length >= 1) {
-        console.log('me estan buscando');
+    if (searchValueSerial.length >= 1) {        
         searchedItems = currentSearchValue.filter((item) => {
             return String(item.serial).toLowerCase().includes(searchValueSerial.toLowerCase());
         });
@@ -36,15 +59,15 @@ export default function useGetSearch() {
     }
 
     if (searchValueBrand.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return item.brand.name.toLowerCase().includes(searchValueBrand.toLowerCase());
+        searchedItems = currentSearchValue.filter(item => {
+            return item.brand.id === Number(searchValueBrand);
         });
         currentSearchValue = searchedItems;
     }
 
     if (searchValueModel.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return item.model.name.toLowerCase().includes(searchValueModel.toLowerCase());
+        searchedItems = currentSearchValue.filter(item => {
+            return item.model.id === Number(searchValueModel);
         });
         currentSearchValue = searchedItems;
     }
@@ -54,18 +77,10 @@ export default function useGetSearch() {
     if (searchValueTrigger === 0) {
         searchedItems = data;
     }
-    
+
     return {
         searchedItems,
-        searchValueCategory, 
-        setSearchValueCategory,
-        searchValueSerial,
-        setSearchValueSerial,
-        searchValueActivo, 
-        setSearchValueActivo,
-        searchValueBrand, 
-        setSearchValueBrand,
-        searchValueModel, 
-        setSearchValueModel
+        state,
+        dispatch
     }
 }

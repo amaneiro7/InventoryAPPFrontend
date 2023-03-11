@@ -1,85 +1,105 @@
 import React, { Suspense, lazy, useContext } from 'react';
 import { InventaryContext } from 'context';
-import Modal from 'UI/Atoms/Modal';
-import Loading from 'UI/Atoms/Loading';
+import LoadingInput from 'UI/Atoms/LoadingInput';
+import Select from 'UI/Atoms/Select';
+import useGetAddData from 'Hooks/useGetData';
 
 const Input = lazy(() => import('UI/Atoms/Input'));
 
 export default function TableTitle() {
     const {
-        searchValueCategory,
-        searchValueSerial,
-        searchValueActivo,
-        searchValueBrand,
-        searchValueModel,
-        setSearchValueCategory,
-        setSearchValueSerial,
-        setSearchValueActivo,
-        setSearchValueBrand,
-        setSearchValueModel,
+        state,
+        dispatch
     } = useContext(InventaryContext)
 
+    const { data: dataCategory } = useGetAddData({ endPoint: 'categories' })
+    const { data: dataBrand } = useGetAddData({ endPoint: 'brand' })
+    const { data: dataModel } = useGetAddData({ endPoint: 'models' })
+
+    const onHandleInput = ({ target }) => {
+        const { name, value } = target
+        console.log(name, value);
+        dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+    };
+
     return (
-        <Suspense fallback={<Modal><Loading/></Modal>}>
-            <tr className='main-table--title'>
-                <th>
-                    <h3>
-                        Categoria
-                    </h3>
-                    <Input
-                        name={''}
-                        type={'text'}
-                        placeholder={"Categoria"}
-                        value={searchValueCategory}
-                        onChange={({ target: { value } }) => setSearchValueCategory(value)}
+        <tr className='main-table--title'>
+            <th>
+                <h3>
+                    Categoria
+                </h3>
+                <Suspense fallback={<LoadingInput />}>
+                    <Select
+                        name={'searchValueCategory'}
+                        value={state.searchValueCategory}
+                        options={dataCategory}
+                        placeholder={"-- Filtre por Categoria --"}
+                        hidden={false}
+                        disabled={false}
+                        onChange={onHandleInput}
+                        isDisabled={false}
                         isAutoFocus={false}
                     />
-                </th>
-                <th>
-                    <h3>Serial</h3>
+                </Suspense>
+            </th>
+            <th>
+                <h3>Serial</h3>
+                <Suspense fallback={<LoadingInput />}>
                     <Input
-                        name={''}
+                        name={'searchValueSerial'}
                         type={'text'}
                         placeholder={"Serial"}
-                        value={searchValueSerial}
-                        onChange={({ target: { value } }) => setSearchValueSerial(value)}
+                        value={state.searchValueSerial}
+                        onChange={onHandleInput}
                         isAutoFocus={true}
                     />
-                </th>
-                <th>
-                    <h3>Activo</h3>
+                </Suspense>
+            </th>
+            <th>
+                <h3>Activo</h3>
+                <Suspense fallback={<LoadingInput />}>
                     <Input
-                        name={''}
+                        name={'searchValueActivo'}
                         type={'text'}
                         placeholder={"Activo"}
-                        value={searchValueActivo}
-                        onChange={({ target: { value } }) => setSearchValueActivo(value)}
+                        value={state.searchValueActivo}
+                        onChange={onHandleInput}
                         isAutoFocus={false}
                     />
-                </th>
-                <th>
-                    <h3>Marca</h3>
-                    <Input
-                        name={''}
-                        type={'text'}
-                        placeholder={"Marca"}
-                        value={searchValueBrand}
-                        onChange={({ target: { value } }) => setSearchValueBrand(value)}
+                </Suspense>
+            </th>
+            <th>
+                <h3>Marca</h3>
+                <Suspense fallback={<LoadingInput />}>
+                    <Select
+                        name={'searchValueBrand'}
+                        value={state.searchValueBrand}
+                        options={dataBrand}                        
+                        placeholder={"-- Filtre por Marca --"}
+                        hidden={false}
+                        disabled={false}
+                        onChange={onHandleInput}
+                        isDisabled={false}
                         isAutoFocus={false}
                     />
-                </th>
-                <th>
-                    <h3>Modelo</h3>
-                    <Input
-                        name={''}
-                        type={'text'}
-                        placeholder={"Modelo"}
-                        value={searchValueModel}
-                        onChange={({ target: { value } }) => setSearchValueModel(value)}
+                </Suspense>
+            </th>
+            <th>
+                <h3>Modelo</h3>
+                <Suspense fallback={<LoadingInput />}>
+                    <Select
+                        name={'searchValueModel'}
+                        value={state.searchValueModel}
+                        options={dataModel}                        
+                        placeholder={"-- Filtre por Modelo --"}
+                        hidden={false}
+                        disabled={false}
+                        onChange={onHandleInput}
+                        isDisabled={false}
                         isAutoFocus={false}
                     />
-                </th>
-            </tr>
-        </Suspense>
+                </Suspense>
+            </th>
+        </tr>
     )
 }
