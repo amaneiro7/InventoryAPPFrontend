@@ -19,13 +19,9 @@ export default function FormModel({ state, dispatch }) {
     const [value, setValue] = useState("");
     const { fetchState, createData, deleteData, updateData } = useFetchingData();
 
-    const onCleanInputs = () => {
-        dispatch({ type: 'CLEAN_INPUTS'})
-        console.log(state);
-      };
-
     const onSubmit = (e) => {
-        e.preventDefault();        
+        e.preventDefault();
+        console.log(endPoint);
         let data = {};
         const formData = new FormData(formRef.current);
         const valueName = formData?.get("name")?.trimStart().trimEnd().toLowerCase();
@@ -48,7 +44,7 @@ export default function FormModel({ state, dispatch }) {
                 break;
             default:
                 break;
-        }        
+        }
         setValue("")
         setBrandValue("")
         setInput("")
@@ -78,7 +74,7 @@ export default function FormModel({ state, dispatch }) {
                         {<Select
                             name={"brandId"}
                             value={brandValue}
-                            onChange={({target: {value}}) => setBrandValue(value)}
+                            onChange={setBrandValue}
                             options={dataBrand}
                             placeholder={`-- Selecciona una Marca --`}
                             isAutoFocus={true}
@@ -102,7 +98,7 @@ export default function FormModel({ state, dispatch }) {
                                     placeholder={`Ingresa el Modelo`}
                                     name={"name"}
                                     value={input}
-                                    onChange={setInput}
+                                    setInputValue={setInput}
                                     isAutoFocus={false}
                                     required={true}
                                 />

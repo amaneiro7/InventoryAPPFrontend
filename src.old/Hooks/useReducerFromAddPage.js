@@ -15,8 +15,7 @@ const initialState = {
     title: "",
 }
 
-const reducer = (state, action) => {
-    console.log(action.type);
+const reducer = (state, action) => {    
     return reducerOBJECT(state, action.payload)[action.type] || state
 }
 
@@ -33,16 +32,12 @@ const reducerOBJECT = (state, payload) => ({
         brand: payload?.brand,
         model: payload?.model,
     },
-    'DEFAULTVALUE': { 
+    'CLEAN_INPUTS': { 
         ...state,
-        modeUI: "",
-        name: "",
-        nameTitle: "",
-        endPoint: "",
-        serial: "",
-        activo: "",
-        title: "",
+        serial: '', 
+        activo: '', 
     },
+
     'CATEGORY': {
         ...state,
         name: "Categoria",

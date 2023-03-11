@@ -80,7 +80,7 @@ return (
                             placeholder={`Ingresa la ${name}`}
                             name={"name"}
                             value={input}
-                            onChange={setInput}
+                            setInputValue={setInput}
                             isAutoFocus={false}
                             required={true}
                         />

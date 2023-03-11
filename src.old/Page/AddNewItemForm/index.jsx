@@ -21,6 +21,19 @@ export default function AddNewItemForm() {
     dispatch({ type: "CHANGEVALUE", payload: target });    
   };
 
+  const onReset = () => {
+    let target
+    target = {
+      name: "serial",
+      value: ""
+    }
+    dispatch({ type: "CHANGEVALUE", payload: target })
+    target = {
+      name: "activo",
+      value: ""
+    }
+  };
+
   const onClose = () => {
     navigate("/");
   };
@@ -55,14 +68,13 @@ export default function AddNewItemForm() {
       brandId: formData.get("brand"),
       modelId: formData.get("model"),
     };
-    dispatch({ type: "DEFAULTVALUE"})
+    onReset()
     createData({ endPoint: "items", data });
   };
-  
-  const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))
-  
-
-
+  // console.log(state.category !== "" && state.brand !== "" && state.model !== "")
+  console.log(state.activo === "")
+  console.log(state.serial === "")
+  console.log(state)
   return (
     <>
       <form className="AddNewItemForm" ref={formRef} onSubmit={onSubmit}>
@@ -80,7 +92,6 @@ export default function AddNewItemForm() {
               dispatch={dispatch}
               endPoint={"categories"}
               placeholder={"la Categoria"}
-              isAutoFocus={true}
             />
             <div className="AddNewItemForm--field">
               <Input
@@ -88,9 +99,9 @@ export default function AddNewItemForm() {
                 type={"text"}
                 placeholder={"-- Ingrese el Serial --"}
                 value={state.serial}
-                onChange={onHandleInput}
+                setInputValue={onHandleInput}
                 required={true}
-                isAutoFocus={state.category !== ""}
+                isAutoFocus={false}
               />
             </div>
 
@@ -99,8 +110,8 @@ export default function AddNewItemForm() {
                 name={"activo"}
                 type={"text"}
                 placeholder={"-- Ingrese el Activo --"}
-                value={state.activo === "" ? "" : state.activo}
-                onChange={onHandleInput}
+                value={state.activo}
+                setInputValue={onHandleInput}
                 required={true}
                 isAutoFocus={false}
               />
@@ -114,7 +125,7 @@ export default function AddNewItemForm() {
               dispatch={dispatch}
               endPoint={`brand?category=${state.category}`}
               placeholder={"la Marca"}
-              isDisabled={state.category === ""}
+              isDisabled={state.category === "" && true}
             />
             <SelectForm
               name={"model"}
@@ -125,7 +136,7 @@ export default function AddNewItemForm() {
               onChange={onHandleInput}
               endPoint={`models?brandId=${state.brand}`}
               placeholder={"el Modelo"}
-              isDisabled={state.brand === ""}
+              isDisabled={state.brand === "" && true}
             />
           </>
 
@@ -141,7 +152,7 @@ export default function AddNewItemForm() {
               key={'onSubmitItem'}
               type={"submit"}
               name={"Añadir"}
-              isDisabled={isDisabled}
+              isDisabled={((state.category !== "" && state.brand !== "" && state.model !== "") && (state.serial !== "" || state.activo !== "")) ? true : false}
             />
           </div>
         </div>

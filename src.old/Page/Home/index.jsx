@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useGetSearch from 'Hooks/useGetSearch';
 import './Home.css';
 
 const TableTitle = lazy(() => import('../../UI/Organisms/TableTitle'))
@@ -10,7 +9,7 @@ const Modal = lazy(() => import('UI/Atoms/Modal'));
 const Button = lazy(() => import('UI/Atoms/Button'));
 
 export default function Home() {
-    const navigate = useNavigate();  
+    const navigate = useNavigate();        
     
     return (
         <main className='main-inputs'>
@@ -28,7 +27,7 @@ export default function Home() {
                             <Loading/>
                         </Modal>
                     }>
-                        <TableTitle />
+                        <TableTitle />                      
                     </Suspense>
                     <Suspense fallback={
                         <Modal>

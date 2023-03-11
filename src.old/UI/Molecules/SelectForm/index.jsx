@@ -13,7 +13,7 @@ const Loading = lazy(() => import('UI/Atoms/Loading'));
 const Modal = lazy(() => import('UI/Atoms/Modal'));
 
 
-export default function SelectForm({ name, value, endPoint, placeholder, type, onChange, isDisabled, state, dispatch, isAutoFocus }) {
+export default function SelectForm({ name, value, endPoint, placeholder, type, onChange, isDisabled, state, dispatch }) {
     const { loading, data} = useGetAddData({ endPoint })    
 
     function onOpenModal({ modeUI, targetModeUI }) {
@@ -33,7 +33,7 @@ export default function SelectForm({ name, value, endPoint, placeholder, type, o
                 options={data}
                 placeholder={`-- Seleccione ${placeholder} --`}
                 isDisabled={isDisabled}
-                isAutoFocus={isAutoFocus}
+                isAutoFocus={true}
             />
             <div>
                 <EditIcon

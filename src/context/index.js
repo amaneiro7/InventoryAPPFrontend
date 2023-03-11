@@ -1,27 +1,41 @@
-import React, { createContext, useState } from "react";
+import useGetSearch from "Hooks/useGetSearch";
+import React, { createContext } from "react";
 
 export const InventaryContext = createContext();
 
 export function InventaryProvider(props) {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [upload, setUpload] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
+    const {
+        state,         
+        searchedItems,
+        searchValueCategory, 
+        setSearchValueCategory,
+        searchValueSerial,
+        setSearchValueSerial,
+        searchValueActivo, 
+        setSearchValueActivo,
+        searchValueBrand, 
+        setSearchValueBrand,
+        searchValueModel, 
+        setSearchValueModel
+    } = useGetSearch()
 
 
 
     return (
         <InventaryContext.Provider
             value={{
-                upload,
-                setUpload,
-                loading,
-                setLoading,
-                error,
-                setError,
-                openModal,
-                setOpenModal,
-
+                state,                
+                searchedItems,
+                searchValueCategory, 
+                setSearchValueCategory,
+                searchValueSerial,
+                setSearchValueSerial,
+                searchValueActivo, 
+                setSearchValueActivo,
+                searchValueBrand, 
+                setSearchValueBrand,
+                searchValueModel, 
+                setSearchValueModel
             }}
         >
             {props.children}

@@ -1,0 +1,27 @@
+.AddNewItem--Form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    max-width: max-content;
+    margin: 0 auto;
+    background-color: var(--blanco);
+    padding: 3rem;
+    color: var(--azul-oscuro);
+}
+
+.AddNewItem--Form--container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+    padding-bottom: 3rem;
+    margin: 0;
+}
+.AddNewItem--Form-btnContainer {
+    display: flex;    
+    gap: 18px;
+}

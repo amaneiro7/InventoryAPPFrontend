@@ -80,7 +80,7 @@ export default function FormCategory({ state, dispatch }) {
                                     placeholder={`Ingresa la ${name}`}
                                     name={"name"}
                                     value={input}
-                                    setInputValue={setInput}
+                                    onChange={setInput}
                                     isAutoFocus={false}
                                     required={true}
                                 />

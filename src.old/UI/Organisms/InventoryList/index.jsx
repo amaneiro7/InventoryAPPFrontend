@@ -1,14 +1,16 @@
-import React, { useTransition, Suspense, useContext } from 'react';
+import React, { useTransition, Suspense } from 'react';
+import useGetSearch from 'Hooks/useGetDataHome';
 import { useNavigate } from 'react-router-dom';
-import { InventaryContext } from 'context';
+import { Loading } from 'UI/Atoms/Loading';
+import { Modal } from 'UI/Atoms/Modal';
 
 
 export default function InventoryList() {
-    const { searchedItems } = useContext(InventaryContext)
-    const [ isPending, startTransition ] = useTransition();
+    const { searchedItems } = useGetSearch()
+    const [isPending, startTransition] = useTransition();
 
     const navigate = useNavigate()
-    
+
     return (
         <>
             <Suspense fallback={<p>...Loading</p>}>
