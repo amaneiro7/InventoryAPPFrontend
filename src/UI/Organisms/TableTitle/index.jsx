@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useContext } from 'react';
+import React, { Suspense, lazy, useContext, useTransition } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
 import useGetAddData from 'Hooks/useGetData';
@@ -7,20 +7,24 @@ const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
 
 export default function TableTitle() {
+    const [isPending, startTransition] = useTransition();
     const {
         state,
         dispatch
     } = useContext(InventaryContext)
-
+    
     const { loading: loadingCategory, data: dataCategory } = useGetAddData({ endPoint: 'categories' })
     const { loading: loadingBrand, data: dataBrand } = useGetAddData({ endPoint: 'brand' })
     const { loading: loadingModels, data: dataModel } = useGetAddData({ endPoint: 'models' })
 
     const onHandleInput = ({ target }) => {
         const { name, value } = target
-        console.log(name, value);
-        dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+        startTransition(() => {
+            dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+        })
     };
+
+    console.log(state.searchValueCategory);
 
     return (
         <tr className='main-table--title'>
@@ -29,20 +33,21 @@ export default function TableTitle() {
                     Categoria
                 </h3>
                 {loadingCategory && <LoadingInput/>}
-                    {dataCategory && 
+                <Suspense fallback={<LoadingInput />}>
+                    {dataCategory &&
                     <Select
                         name={'searchValueCategory'}
                         value={state.searchValueCategory}
-                        options={dataCategory}
+                        options={dataCategory}                        
                         placeholder={"-- Filtre por Categoria --"}
                         hidden={false}
                         disabled={false}
-                        size='home'
                         onChange={onHandleInput}
                         isDisabled={false}
                         isAutoFocus={false}
+                        size='home'
                     />}
-                
+                </Suspense>
             </th>
             <th>
                 <h3>Serial</h3>

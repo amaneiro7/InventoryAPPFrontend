@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import useGetAddData from "./useGetData";
 
 const initialState = {    
-    searchValueCategory: "8",
+    searchValueCategory: "5",
     searchValueSerial: "",
     searchValueActivo: "",
     searchValueBrand:"",

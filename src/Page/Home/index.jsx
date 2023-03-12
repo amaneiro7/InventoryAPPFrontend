@@ -1,3 +1,4 @@
+import ErrorBoundary from 'App/ErrorBoundary';
 import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -9,8 +10,8 @@ const Modal = lazy(() => import('UI/Atoms/Modal'));
 const Button = lazy(() => import('UI/Atoms/Button'));
 
 export default function Home() {
-    const navigate = useNavigate();  
-    
+    const navigate = useNavigate();
+
     return (
         <main className='main-inputs'>
             <div>
@@ -22,20 +23,25 @@ export default function Home() {
             </div>
             <table className='main-table'>
                 <tbody>
-                    <Suspense fallback={
-                        <Modal>
-                            <Loading/>
-                        </Modal>
-                    }>
-                        <TableTitle />
-                    </Suspense>
-                    <Suspense fallback={
-                        <Modal>
-                            <Loading/>
-                        </Modal>
-                    }>
-                        <InventoryList />
-                    </Suspense>
+
+                    <ErrorBoundary>
+                        <Suspense fallback={
+                            <Modal>
+                                <Loading />
+                            </Modal>
+                        }>
+                            <TableTitle />
+                        </Suspense>
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                        <Suspense fallback={
+                            <Modal>
+                                <Loading />
+                            </Modal>
+                        }>
+                            <InventoryList />
+                        </Suspense>
+                    </ErrorBoundary>
                 </tbody>
             </table>
         </main>
