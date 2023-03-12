@@ -3,6 +3,8 @@ import './loading.css'
 
 export default function Loading() {
     return (
-        <span className="Loading"></span>
+        <div className='Loading--container'>
+            <span className="Loading"></span>
+        </div>
     )
 }

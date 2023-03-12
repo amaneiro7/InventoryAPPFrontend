@@ -14,7 +14,7 @@ const ViewDetail = lazy(() => import('Page/ViewDetail'))
 function App() {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<p>...Loading</p>}>
+      <Suspense fallback={<Loading/>}>
         <InventaryProvider>
           <BrowserRouter>
             <Routes>
