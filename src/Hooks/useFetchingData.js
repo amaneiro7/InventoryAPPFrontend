@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import { createItems,deleteItem, updateItem } from "services/api";
 import { getApiUrl } from "services/config";
+import useGetData from "./useGetData";
 
 const initialState = {
     data: [],
@@ -19,12 +20,6 @@ const reducerOBJECT = (fetchState, payload) => ({
         loading: true,
     },
     'CREATE': {
-        ...fetchState,
-        loading: false,
-        status: "Elemento creado exitosamente",
-        statusInfo: payload
-    },
-    'GETONEDATA': {
         ...fetchState,
         loading: false,
         status: "Elemento creado exitosamente",
@@ -59,35 +54,33 @@ const reducerOBJECT = (fetchState, payload) => ({
 
 export default function useFetchingData() {
     const [fetchState, dispatch] = useReducer(reducer, initialState)
+    const { onReload }  = useGetData({ endPoint: null})
     const onStart = () => dispatch({ type: 'START' })
     const onCreate = (res) => dispatch({ type: 'CREATE', payload: res})
-    const onUpdate = (res) => dispatch({ type: 'UPDATE', payload: res})
-    const onGet = (res) => dispatch({ type: 'GETONEDATA', payload: res})
+    const onUpdate = (res) => dispatch({ type: 'UPDATE', payload: res})    
     const onDelete = (res) => dispatch({ type: 'DELETE', payload: res})
     const onError = (error) => dispatch({ type: 'ERROR', payload: error })
-    const onReset = (error) => dispatch({ type: 'RESET' })
+    const onReset = () => dispatch({ type: 'RESET' })
     
     const createData = ({ endPoint, data }) => {
-        onStart()        
+        onStart()
+        onReload(endPoint)
         createItems({ path: `${getApiUrl}${endPoint}`, data })            
             .then(res => onCreate(res))
             .catch(error => onError(error.response))
     }
-    const getOneData = ({ endPoint }) => {
-        onStart()        
-        updateItem({ path: `${getApiUrl}${endPoint}` })
-            .then(res => onGet(res))
-            .catch(error => onError(error.response))
-    }
-    const updateData = ({ endPoint, data }) => {
-        onStart()        
-        updateItem({ path: `${getApiUrl}${endPoint}`, data })            
+
+    const updateData = ({ endPoint, data, id }) => {
+        onStart()
+        onReload(endPoint)
+        updateItem({ path: `${getApiUrl}${endPoint}/${id}`, data })            
         .then(res => onUpdate(res))
         .catch(error => onError(error.response))
     }
-    const deleteData = ({ endPoint }) => {
-        onStart()        
-        deleteItem({ path: `${getApiUrl}${endPoint}` })            
+    const deleteData = ({ endPoint, id }) => {
+        onStart()
+        onReload(endPoint)
+        deleteItem({ path: `${getApiUrl}${endPoint}/${id}` })            
             .then(res => onDelete(res))
             .catch(error => onError(error.response))
     }
@@ -96,5 +89,5 @@ export default function useFetchingData() {
         module.wait(3000, (fetchState.status !== ""), onReset)
     })
 
-    return { fetchState, createData, getOneData, deleteData, updateData }
+    return { fetchState, createData, deleteData, updateData }
 }

@@ -1,7 +1,7 @@
 import React, { useRef, Suspense, useReducer, useMemo, lazy } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useFetchingData from "Hooks/useFetchingData";
-import useGetAddData from "Hooks/useGetData";
+import useGetData from "Hooks/useGetData";
 import "./ViewDetail.css";
 
 const Button = lazy(() => import('UI/Atoms/Button'));
@@ -59,7 +59,7 @@ export default function ViewDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data, loading } = useGetAddData({ endPoint: `/items/${id}` })
+  const { state: { data, loading } } = useGetData({ endPoint: `/items/${id}` })
   const [state, dispatch] = useDynamicState(data, location.state);
 
   const onHandleInput = ({ target }) => {
@@ -67,13 +67,13 @@ export default function ViewDetail() {
     dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
   };
 
-  const { data: dataCategory } = useGetAddData({
+  const { state: { data: dataCategory } } = useGetData({
     endPoint: "categories",
   });
-  const { data: dataBrand } = useGetAddData({
+  const { state: { data: dataBrand } } = useGetData({
     endPoint: `brand?category=${state.categoryId}`,
   });
-  const { data: dataModels } = useGetAddData({
+  const { state: { data: dataModels } } = useGetData({
     endPoint: `models?brandId=${state.brandId}`,
   });
 
@@ -101,7 +101,7 @@ export default function ViewDetail() {
       brandId: formData.get('brandId'),
       modelId: formData.get('modelId'),
     };
-    updateData({ endPoint: `items/${id}`, data })
+    updateData({ endPoint: `items`, data, id })
     setTimeout(() => {
       navigate('/')
     }, 1500)
@@ -109,7 +109,7 @@ export default function ViewDetail() {
 
   const onDelete = (e) => {
     e.preventDefault();
-    deleteData({ endPoint: `items/${id}`})
+    deleteData({ endPoint: `items`, data})
     setTimeout(() => {
       navigate('/')
     }, 1500)

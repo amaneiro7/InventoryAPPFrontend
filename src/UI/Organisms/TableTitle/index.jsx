@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useContext, useTransition } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
-import useGetAddData from 'Hooks/useGetData';
+import useGetData from 'Hooks/useGetData';
 
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
@@ -12,10 +12,10 @@ export default function TableTitle() {
         state,
         dispatch
     } = useContext(InventaryContext)
-    
-    const { loading: loadingCategory, data: dataCategory } = useGetAddData({ endPoint: 'categories' })
-    const { loading: loadingBrand, data: dataBrand } = useGetAddData({ endPoint: 'brand' })
-    const { loading: loadingModels, data: dataModel } = useGetAddData({ endPoint: 'models' })
+
+    const { state: { loading: loadingCategory, data: dataCategory } } = useGetData({ endPoint: 'categories' })
+    const { state: { loading: loadingBrand, data: dataBrand } } = useGetData({ endPoint: 'brand' })
+    const { state: { loading: loadingModels, data: dataModel } } = useGetData({ endPoint: 'models' })
 
     const onHandleInput = ({ target }) => {
         const { name, value } = target
@@ -32,21 +32,21 @@ export default function TableTitle() {
                 <h3>
                     Categoria
                 </h3>
-                {loadingCategory && <LoadingInput/>}
+                {loadingCategory && <LoadingInput />}
                 <Suspense fallback={<LoadingInput />}>
                     {dataCategory &&
-                    <Select
-                        name={'searchValueCategory'}
-                        value={state.searchValueCategory}
-                        options={dataCategory}                        
-                        placeholder={"-- Filtre por Categoria --"}
-                        hidden={false}
-                        disabled={false}
-                        onChange={onHandleInput}
-                        isDisabled={false}
-                        isAutoFocus={false}
-                        size='home'
-                    />}
+                        <Select
+                            name={'searchValueCategory'}
+                            value={state.searchValueCategory}
+                            options={dataCategory}
+                            placeholder={"-- Filtre por Categoria --"}
+                            hidden={false}
+                            disabled={false}
+                            onChange={onHandleInput}
+                            isDisabled={false}
+                            isAutoFocus={false}
+                            size='home'
+                        />}
                 </Suspense>
             </th>
             <th>
@@ -79,40 +79,40 @@ export default function TableTitle() {
             </th>
             <th>
                 <h3>Marca</h3>
-                {loadingBrand && <LoadingInput/>}
+                {loadingBrand && <LoadingInput />}
                 <Suspense fallback={<LoadingInput />}>
                     {dataBrand &&
-                    <Select
-                        name={'searchValueBrand'}
-                        value={state.searchValueBrand}
-                        options={dataBrand}                        
-                        placeholder={"-- Filtre por Marca --"}
-                        hidden={false}
-                        disabled={false}
-                        onChange={onHandleInput}
-                        isDisabled={false}
-                        isAutoFocus={false}
-                        size='home'
-                    />}
+                        <Select
+                            name={'searchValueBrand'}
+                            value={state.searchValueBrand}
+                            options={dataBrand}
+                            placeholder={"-- Filtre por Marca --"}
+                            hidden={false}
+                            disabled={false}
+                            onChange={onHandleInput}
+                            isDisabled={false}
+                            isAutoFocus={false}
+                            size='home'
+                        />}
                 </Suspense>
             </th>
             <th>
                 <h3>Modelo</h3>
-                {loadingModels && <LoadingInput/>}
+                {loadingModels && <LoadingInput />}
                 <Suspense fallback={<LoadingInput />}>
                     {dataModel &&
-                    <Select
-                        name={'searchValueModel'}
-                        value={state.searchValueModel}
-                        options={dataModel}                        
-                        placeholder={"-- Filtre por Modelo --"}
-                        hidden={false}
-                        disabled={false}
-                        onChange={onHandleInput}
-                        isDisabled={false}
-                        isAutoFocus={false}
-                        size='home'
-                    />}
+                        <Select
+                            name={'searchValueModel'}
+                            value={state.searchValueModel}
+                            options={dataModel}
+                            placeholder={"-- Filtre por Modelo --"}
+                            hidden={false}
+                            disabled={false}
+                            onChange={onHandleInput}
+                            isDisabled={false}
+                            isAutoFocus={false}
+                            size='home'
+                        />}
                 </Suspense>
             </th>
         </tr>

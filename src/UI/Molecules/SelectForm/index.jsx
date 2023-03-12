@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import useGetAddData from 'Hooks/useGetData';
+import useGetData from 'Hooks/useGetData';
 import { AddIcon } from 'UI/Atoms/Icon/AddIcon';
 import { DeleteIcon } from 'UI/Atoms/Icon/DeleteIcon';
 import { EditIcon } from 'UI/Atoms/Icon/EditIcon';
@@ -14,7 +14,7 @@ const Modal = lazy(() => import('UI/Atoms/Modal'));
 
 
 export default function SelectForm({ name, value, endPoint, placeholder, type, onChange, isDisabled, state, dispatch, isAutoFocus }) {
-    const { loading, data} = useGetAddData({ endPoint })    
+    const { state: { loading, data }} = useGetData({ endPoint })    
 
     function onOpenModal({ modeUI, targetModeUI }) {
         dispatch({ type: targetModeUI, payload: data })

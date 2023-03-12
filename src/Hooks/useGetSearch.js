@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import useGetAddData from "./useGetData";
+import useGetData from "./useGetData";
 
 const initialState = {    
     searchValueCategory: "5",
@@ -23,7 +23,7 @@ const reducerOBJECT = (state, payload) => ({
 export default function useGetSearch() {
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const { data } = useGetAddData({ endPoint: 'items' })
+    const { state: { data } } = useGetData({ endPoint: 'items' })
     const {
         searchValueCategory,
         searchValueSerial,

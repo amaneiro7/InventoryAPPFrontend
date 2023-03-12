@@ -1,6 +1,6 @@
 import React, { useRef, useState, Suspense, lazy } from "react";
 import useFetchingData from "Hooks/useFetchingData";
-import useGetAddData from "Hooks/useGetData";
+import useGetData from "Hooks/useGetData";
 
 const Input = lazy(() => import("UI/Atoms/Input"))
 const Select = lazy(() => import("UI/Atoms/Select"))
@@ -11,8 +11,8 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormModel({ state, dispatch }) {
     const { modeUI, title, nameTitle, endPoint } = state;
-    const { data: dataBrand } = useGetAddData({ endPoint: 'brand' })
-    const { data: dataModels } = useGetAddData({ endPoint: endPoint })
+    const { state: { data: dataBrand } } = useGetData({ endPoint: 'brand' })
+    const { state: { data: dataModels } } = useGetData({ endPoint: endPoint })
     const formRef = useRef(null);
     const [input, setInput] = useState("");
     const [brandValue, setBrandValue] = useState("");
@@ -22,7 +22,7 @@ export default function FormModel({ state, dispatch }) {
     const onCleanInputs = () => {
         dispatch({ type: 'CLEAN_INPUTS'})
         console.log(state);
-      };
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();        
@@ -41,10 +41,10 @@ export default function FormModel({ state, dispatch }) {
                 createData({ endPoint, data })
                 break;
             case 'EDIT':
-                updateData({ endPoint: `${endPoint}/${id}`, data })
+                updateData({ endPoint, data, id })
                 break;
             case 'DELETE':
-                deleteData({ endPoint: `${endPoint}/${id}`, data })
+                deleteData({ endPoint, data, id })
                 break;
             default:
                 break;

@@ -1,6 +1,6 @@
 import React, { useRef, useState, Suspense, lazy } from "react";
 import useFetchingData from "Hooks/useFetchingData";
-import useGetAddData from "Hooks/useGetData";
+import useGetData from "Hooks/useGetData";
 
 const Input = lazy(() => import("UI/Atoms/Input"))
 const Select = lazy(() => import("UI/Atoms/Select"))
@@ -10,7 +10,7 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormCategory({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint } = state;
-    const { data } = useGetAddData({ endPoint });
+    const { state: { data  }} = useGetData({ endPoint });
     const formRef = useRef(null);
     const [value, setValue] = useState("");
     const [input, setInput] = useState("");
@@ -29,10 +29,10 @@ export default function FormCategory({ state, dispatch }) {
                 createData({ endPoint, data });
                 break;
             case "EDIT":
-                updateData({ endPoint: `${endPoint}/${id}`, data });
+                updateData({ endPoint, data, id })
                 break;
             case "DELETE":
-                deleteData({ endPoint: `${endPoint}/${id}`, data });
+                deleteData({ endPoint, data, id })
                 break;
             default:
                 break;
