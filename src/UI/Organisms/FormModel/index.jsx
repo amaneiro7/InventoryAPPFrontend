@@ -10,7 +10,7 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 
 export default function FormModel({ state, dispatch }) {
-    const { modeUI, title, nameTitle, endPoint } = state;
+    const { modeUI, title, nameTitle, endPoint, button } = state;
     const { state: { data: dataBrand } } = useGetData({ endPoint: 'brand' })
     const { state: { data: dataModels } } = useGetData({ endPoint: endPoint })
     const formRef = useRef(null);
@@ -118,7 +118,7 @@ export default function FormModel({ state, dispatch }) {
                     />
                     <Button
                         type={"submit"}
-                        name={"Añadir"}
+                        name={button}
                         isDisabled={(input === "") ? true : false}
                     />
                 </div>

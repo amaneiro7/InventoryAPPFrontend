@@ -69,18 +69,21 @@ const reducerOBJECT = (state, payload) => ({
         openModal: true,
         modeUI: "ADD",
         title: "Cree",
+        button: "Añadir",
     },
     'EDIT': {
         ...state,
         openModal: true,
         modeUI: "EDIT",
         title: "Edite",
+        button: "Editar"
     },
     'DELETE': {
         ...state,
         openModal: true,
         modeUI: "DELETE",
         title: "Elimine",
+        button: "Eliminar"
     },
     'RESET': {
         ...state,

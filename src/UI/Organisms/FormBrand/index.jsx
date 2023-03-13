@@ -9,7 +9,7 @@ const Loading = lazy(() => import("UI/Atoms/Loading"))
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormBrand({ state, dispatch }) {
-    const { modeUI, title, name, nameTitle, endPoint } = state;
+    const { modeUI, title, name, nameTitle, endPoint, button } = state;
     const { state: { data } } = useGetData({endPoint})
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
@@ -96,7 +96,7 @@ return (
                 />
                 <Button
                     type={"submit"}
-                    name={"Añadir"}
+                    name={button}
                     isDisabled={(input === "") ? true : false}
                 />
             </div>
