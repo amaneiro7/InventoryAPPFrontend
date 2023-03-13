@@ -11,8 +11,7 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 const Loading = lazy(() => import("UI/Atoms/Loading"));
 const Modal = lazy(() => import("UI/Atoms/Modal"));
 
-const reducer = (state, action) => {
-  console.log(action.payload)
+const reducer = (state, action) => {  
   return reducerOBJECT(state, action.payload)[action.type] || state;
 };
 
@@ -127,6 +126,12 @@ export default function ViewDetail() {
             <div className="ViewDetail--title">
               <h1>Edita el elemento</h1>
             </div>
+            <Button
+              type={"button"}
+              name={"Cerrar"}
+              action={"cancelType"}
+              onHandle={onClose}
+            />
 
             {dataCategory ? (
               <Suspense fallback={<Loading />}>
@@ -211,12 +216,7 @@ export default function ViewDetail() {
           </div>
 
           <div className="ViewDetail-btnContainer">
-            <Button
-              type={"button"}
-              name={"Cerrar"}
-              action={"cancelType"}
-              onHandle={onClose}
-            />
+
             <Button
               type={"submit"}
               name={"Guardar"}            
@@ -224,6 +224,7 @@ export default function ViewDetail() {
             <Button
               type={"button"}
               name={"Eliminar"}
+              action={'deleteType'}
               onHandle={onDelete}
             />
           </div>
