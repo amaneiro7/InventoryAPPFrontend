@@ -1,5 +1,6 @@
 :root {
   --blanco: #fff;
+  --light: #f8f9fa;
   --negro: #333;
   --naranja: #ff8a00;
   --azul-oscuro: #062e5c;
@@ -43,4 +44,14 @@ img {
   max-width: 100%;
   vertical-align: middle;
   border: 0;
+}
+
+.main-inputs {
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }

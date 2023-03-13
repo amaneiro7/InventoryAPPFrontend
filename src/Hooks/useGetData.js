@@ -43,7 +43,6 @@ export default function useGetData({ endPoint }) {
     const onError = (error) => dispatch({ type: 'ERROR', payload: error })
     const onReload = (payload) => {
         endPoint = payload
-        console.log(endPoint);
         dispatch({type: 'RELOAD'})}
 
     useEffect(() => {

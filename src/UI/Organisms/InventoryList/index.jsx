@@ -1,12 +1,11 @@
-import React, { useTransition, Suspense, useContext } from 'react';
+import React, { Suspense, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InventaryContext } from 'context';
 
 
 export default function InventoryList() {
     const { searchedItems } = useContext(InventaryContext)
-    const [ isPending, startTransition ] = useTransition();
-
+    
     const navigate = useNavigate()
     
     return (
@@ -34,5 +33,3 @@ export default function InventoryList() {
         </>
     )
 }
-
-// <Modal><Loading /></Modal>

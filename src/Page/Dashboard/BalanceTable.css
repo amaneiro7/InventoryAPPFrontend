@@ -1,0 +1,35 @@
+.Balance__table {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    text-transform: capitalize;
+    text-align: left;    
+    border-spacing: 0;
+    border-radius: .35rem;    
+    box-shadow: 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%), 0 2px 4px -1px rgb(0 0 0 / 30%);
+}
+
+.Balance__table thead {
+    border-radius: .35rem .35rem 0 0;
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+}
+.Balance__table thead,
+.Balance__table tr,
+.Balance__table tfoot {
+    display: flex;    
+    justify-content: space-between;
+    padding: 6px 20px;    
+}
+
+.Balance__table tbody {
+    flex: 1;    
+}
+
+.Balance__table tfoot {
+    background-color: var(--light);
+}
+
+.Balance__table thead th {
+    border-radius: .35rem .35rem 0 0;
+}

@@ -5,6 +5,7 @@ import useGetData from 'Hooks/useGetData';
 
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
+const Loading = lazy(() => import('UI/Atoms/Loading'));
 
 export default function TableTitle() {
     const [isPending, startTransition] = useTransition();
@@ -22,9 +23,7 @@ export default function TableTitle() {
         startTransition(() => {
             dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
         })
-    };
-
-    console.log(state.searchValueCategory);
+    };   
 
     return (
         <tr className='main-table--title'>
@@ -32,6 +31,7 @@ export default function TableTitle() {
                 <h3>
                     Categoria
                 </h3>
+                {isPending && <Loading/>}
                 {loadingCategory && <LoadingInput />}
                 <Suspense fallback={<LoadingInput />}>
                     {dataCategory &&
