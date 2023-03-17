@@ -1,25 +1,32 @@
 import useGetSearch from "Hooks/useGetSearch";
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 
 export const InventaryContext = createContext();
 
 export function InventaryProvider(props) {
-    const {
-        data: items,
+    const [reload, setReload] = useState(false);
+    const {        
+        dataItems: items,
+        dataCategory,
+        dataBrand,
+        dataModel,
         state,
         searchedItems,
         dispatch
-    } = useGetSearch()
-
-
+    } = useGetSearch(reload)
 
     return (
         <InventaryContext.Provider
             value={{
                 items,
+                dataCategory,
+                dataBrand,
+                dataModel,
                 state,                
                 searchedItems,
-                dispatch
+                dispatch,
+                reload,
+                setReload
             }}
         >
             {props.children}

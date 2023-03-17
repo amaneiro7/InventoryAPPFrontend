@@ -1,7 +1,6 @@
 import React, { Suspense, lazy, useContext, useTransition } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
-import useGetData from 'Hooks/useGetData';
 
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
@@ -11,13 +10,12 @@ export default function TableTitle() {
     const [isPending, startTransition] = useTransition();
     const {
         state,
+        dataCategory,
+        dataBrand,
+        dataModel,
         dispatch
     } = useContext(InventaryContext)
-
-    const { state: { loading: loadingCategory, data: dataCategory } } = useGetData({ endPoint: 'categories' })
-    const { state: { loading: loadingBrand, data: dataBrand } } = useGetData({ endPoint: 'brand' })
-    const { state: { loading: loadingModels, data: dataModel } } = useGetData({ endPoint: 'models' })
-
+    
     const onHandleInput = ({ target }) => {
         const { name, value } = target
         startTransition(() => {
@@ -31,8 +29,7 @@ export default function TableTitle() {
                 <h3>
                     Categoria
                 </h3>
-                {isPending && <Loading/>}
-                {loadingCategory && <LoadingInput />}
+                {isPending && <Loading/>}                
                 <Suspense fallback={<LoadingInput />}>
                     {dataCategory &&
                         <Select
@@ -78,8 +75,7 @@ export default function TableTitle() {
                 </Suspense>
             </th>
             <th>
-                <h3>Marca</h3>
-                {loadingBrand && <LoadingInput />}
+                <h3>Marca</h3>                
                 <Suspense fallback={<LoadingInput />}>
                     {dataBrand &&
                         <Select
@@ -97,8 +93,7 @@ export default function TableTitle() {
                 </Suspense>
             </th>
             <th>
-                <h3>Modelo</h3>
-                {loadingModels && <LoadingInput />}
+                <h3>Modelo</h3>                
                 <Suspense fallback={<LoadingInput />}>
                     {dataModel &&
                         <Select
