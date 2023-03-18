@@ -1,12 +1,10 @@
-import useGetData from 'Hooks/useGetData';
-import React, { useEffect } from 'react';
+import { InventaryContext } from 'context';
+import React, { useContext } from 'react';
 import { BalanceTable } from './BalanceTable';
 import './Dashboard.css'
 
 export default function Dashboard() {
-    // useEffect(() => {
-    const { state: { data } } = useGetData({ endPoint: "categories" })
-    // }, [])
+const {dataCategory} = useContext(InventaryContext);
 
     return (
         <main className="main-inputs">
@@ -14,7 +12,7 @@ export default function Dashboard() {
                 <h1>Balance General</h1>
             </div>
             <section className='Balance__Container'>
-                {data.map(categories => {
+                {dataCategory.map(categories => {
                     return (
                         <BalanceTable
                             key={categories.id}

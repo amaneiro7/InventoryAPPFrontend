@@ -13,7 +13,7 @@ const SelectForm = lazy(() => import('UI/Molecules/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
-  const { items } = useContext(InventaryContext)
+  const { items, reload, setReload } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
@@ -66,6 +66,7 @@ export default function AddNewItemForm() {
     };
     dispatch({ type: "DEFAULTVALUE"})
     createData({ endPoint: "items", data });
+    setReload(!reload)
   };
   
   const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))

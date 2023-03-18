@@ -3,7 +3,7 @@ import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
-const TableTitle = lazy(() => import('Page/Home/TableTitle'))
+const TableTitle = lazy(() => import('Page/Home/InventoryList/TableTitle'))
 const InventoryList = lazy(() => import('Page/Home/InventoryList'))
 const Loading = lazy(() => import('UI/Atoms/Loading'));
 const Modal = lazy(() => import('UI/Atoms/Modal'));

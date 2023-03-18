@@ -1,8 +1,9 @@
-import React, { useRef, Suspense, useReducer, useMemo, lazy } from "react";
+import React, { useRef, Suspense, useReducer, useMemo, lazy, useContext } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useFetchingData from "Hooks/useFetchingData";
 import useGetData from "Hooks/useGetData";
 import "./ViewDetail.css";
+import { InventaryContext } from "context";
 
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
@@ -53,6 +54,7 @@ const useDynamicState = (dataAPI, dataLocation) => {
 
 export default function ViewDetail() {
   const { fetchState, updateData, deleteData } = useFetchingData();
+  const { dataCategory, dataBrand, dataModel} = useContext(InventaryContext)
   const formRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,16 +67,6 @@ export default function ViewDetail() {
     const { name, value } = target
     dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
   };
-
-  const { state: { data: dataCategory } } = useGetData({
-    endPoint: "categories",
-  });
-  const { state: { data: dataBrand } } = useGetData({
-    endPoint: `brand?category=${state.categoryId}`,
-  });
-  const { state: { data: dataModels } } = useGetData({
-    endPoint: `models?brandId=${state.brandId}`,
-  });
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -195,14 +187,14 @@ export default function ViewDetail() {
               <Loading />
             )}
 
-            {dataModels ? (
+            {dataModel ? (
               <Suspense fallback={<Loading />}>
                 <div className="ViewDetail--field">
                   <label htmlFor="Modelo">Modelo</label>
                   <Select
                     name={"modelId"}
                     value={state.modelId}
-                    options={dataModels}
+                    options={dataModel}
                     onChange={onHandleInput}
                     placeholder={"-- Seleccione el modelo --"}
                     isDisabled={false}

@@ -14,7 +14,7 @@ const Modal = lazy(() => import('UI/Atoms/Modal'));
 
 
 export default function SelectForm({ name, value, endPoint, placeholder, type, onChange, isDisabled, state, dispatch, isAutoFocus }) {
-    const { state: { loading, data }} = useGetData({ endPoint })    
+    const { state: { data }} = useGetData({ endPoint })
 
     function onOpenModal({ modeUI, targetModeUI }) {
         dispatch({ type: targetModeUI, payload: data })
@@ -43,13 +43,12 @@ export default function SelectForm({ name, value, endPoint, placeholder, type, o
                     onHandle={() => onOpenModal({ modeUI: "DELETE", targetModeUI: type })}
                 />
             </div>
-            {(state.openModal || loading) && <Modal>
+            {state.openModal && <Modal>
                 <Suspense fallback={<Loading/>}>
                     {state.name === 'Categoria' && <FormCategory state={state} dispatch={dispatch} />}
                     {state.name === 'Marca' && <FormBrand state={state} dispatch={dispatch} />}
                     {state.name === 'Modelo' && <FormModel state={state} dispatch={dispatch} />}
-                </Suspense>
-                {loading && <Loading />}
+                </Suspense>                
             </Modal>}
         </div>
     )

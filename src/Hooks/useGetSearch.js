@@ -48,7 +48,7 @@ export default function useGetSearch(reload) {
             try {
                 const [items, categories, brand, models] = await Promise.all(
                     Object.values(endPoints).map((endPoint) => 
-                       import('services/api').then(module =>
+                        import('services/api').then(module =>
                             module.getAllItems({ endPoint: endPoint })
                         )
                     )
