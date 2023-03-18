@@ -9,8 +9,7 @@ const initialState = {
     activoExisted: false,
     serialExisted: false,
     modeUI: "",
-    name: "Item",
-    endPoint: "",
+    name: "Item",    
     openModal: false, 
     title: "",
 }
@@ -49,20 +48,17 @@ const reducerOBJECT = (state, payload) => ({
     'CATEGORY': {
         ...state,
         name: "Categoria",
-        nameTitle:"una Categoria",
-        endPoint: "categories",        
+        nameTitle:"una Categoria",              
     },
     'BRAND': {
         ...state,
         name: "Marca",
-        nameTitle:"una Marca",
-        endPoint: "brand",        
+        nameTitle:"una Marca",             
     },
     'MODEL': {
         ...state,
         name: "Modelo",
-        nameTitle:"un Modelo",
-        endPoint: "models",        
+        nameTitle:"un Modelo",           
     },
     'ADD': {
         ...state,

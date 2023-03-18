@@ -4,7 +4,6 @@ import { AddIcon } from 'UI/Atoms/Icon/AddIcon';
 import { DeleteIcon } from 'UI/Atoms/Icon/DeleteIcon';
 import { EditIcon } from 'UI/Atoms/Icon/EditIcon';
 
-
 const FormCategory = lazy(() => import('UI/Organisms/FormCategory'));
 const FormBrand = lazy(() => import('UI/Organisms/FormBrand'));
 const FormModel = lazy(() => import('UI/Organisms/FormModel'));
@@ -13,12 +12,11 @@ const Loading = lazy(() => import('UI/Atoms/Loading'));
 const Modal = lazy(() => import('UI/Atoms/Modal'));
 
 
-export default function SelectForm({ name, value, endPoint, placeholder, type, onChange, isDisabled, state, dispatch, isAutoFocus }) {
-    const { state: { data }} = useGetData({ endPoint })
-
+export default function SelectForm({ name, value, data, placeholder, type, onChange, isDisabled, state, dispatch, isAutoFocus }) {
+    
     function onOpenModal({ modeUI, targetModeUI }) {
-        dispatch({ type: targetModeUI, payload: data })
-        dispatch({ type: modeUI, payload: data })
+        dispatch({ type: targetModeUI})
+        dispatch({ type: modeUI })
     }
 
     return (

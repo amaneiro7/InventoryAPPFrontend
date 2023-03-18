@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext, useRef } from "react";
+import React, { lazy, Suspense, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReducerFromAddPage } from "Hooks/useReducerFromAddPage";
 import useFetchingData from "Hooks/useFetchingData";
@@ -9,15 +9,17 @@ import { InventaryContext } from "context";
 
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
-const SelectForm = lazy(() => import('UI/Molecules/SelectForm'));
+const SelectForm = lazy(() => import('Page/AddNewItemForm/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
-  const { items, reload, setReload } = useContext(InventaryContext)
+  const { items, dataCategory, reload, setReload } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
   const formRef = useRef(null);
+  const [dataBrand, setDataBrand] = useState();
+  const [dataModel, setDataModel] = useState();
 
   const onHandleInput = ({ target }) => {
     const {name, value} = target
@@ -69,8 +71,32 @@ export default function AddNewItemForm() {
     setReload(!reload)
   };
   
+  
   const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))
   
+  useEffect(() => {
+    let brandList = []
+    const brandFiltered = items.filter(item => item.category.id === Number(state.category))  
+    
+    brandFiltered.forEach(item => {
+      if (!brandList.some(brand => brand.id === item.brand.id)) {
+        brandList.push(item.brand)
+      }      
+    });
+    setDataBrand(brandList)
+  },[items, state.category])
+
+  useEffect(() => {
+    let modelList = []
+    const modelFiltered = items.filter(item => item.category.id === Number(state.category) && item.brand.id === Number(state.brand))
+    modelFiltered.forEach(item => {
+      if (!modelList.some(model => model.id === item.model.id)) {
+        modelList.push(item.model)
+      }
+    })
+    setDataModel(modelList)    
+  },[items,state.category, state.brand])
+
   return (
     <>
       <form className="AddNewItemForm" ref={formRef} onSubmit={onSubmit}>
@@ -87,6 +113,7 @@ export default function AddNewItemForm() {
               state={state}
               dispatch={dispatch}
               endPoint={"categories"}
+              data={dataCategory}
               placeholder={"la Categoria"}
               isAutoFocus={true}
             />
@@ -120,6 +147,7 @@ export default function AddNewItemForm() {
               onChange={onHandleInput}
               state={state}
               dispatch={dispatch}
+              data={dataBrand}
               endPoint={`brand?category=${state.category}`}
               placeholder={"la Marca"}
               isDisabled={state.category === ""}
@@ -131,6 +159,7 @@ export default function AddNewItemForm() {
               state={state}
               dispatch={dispatch}
               onChange={onHandleInput}
+              data={dataModel}
               endPoint={`models?brandId=${state.brand}`}
               placeholder={"el Modelo"}
               isDisabled={state.brand === ""}
