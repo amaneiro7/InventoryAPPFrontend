@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useContext, useTransition } from 'react';
+import React, { Suspense, lazy, useContext, useTransition, useEffect, useState } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
 
@@ -8,20 +8,57 @@ const Loading = lazy(() => import('UI/Atoms/Loading'));
 
 export default function TableTitle() {
     const [isPending, startTransition] = useTransition();
+    const [setBrand, setDataBrand] = useState();
+    const [setModel, setDataModel] = useState();
     const {
         state,
         dataCategory,
+        items,
         dataBrand,
         dataModel,
         dispatch
     } = useContext(InventaryContext)
-    
+
+    useEffect(() => {
+        if (state.searchValueCategory === "") {
+            setDataBrand(dataBrand)
+            return
+        }
+        let brandList = []
+        const brandFiltered = items.filter(item => item.category.id === Number(state.searchValueCategory))
+
+        brandFiltered.forEach(item => {
+            if (!brandList.some(brand => brand.id === item.brand.id)) {
+                brandList.push(item.brand)
+            }
+        });
+        setDataBrand(brandList)
+    }, [items, state.searchValueCategory, dataBrand])
+
+    useEffect(() => {
+        if (state.searchValueCategory === "" && state.searchValueBrand === "") {
+            setDataModel(dataModel)
+            return
+        }
+        let modelList = []
+        const modelFiltered = items.filter(item => 
+            item.category.id === Number(state.searchValueCategory) || 
+            item.brand.id === Number(state.searchValueBrand)
+            )
+        modelFiltered.forEach(item => {
+            if (!modelList.some(model => model.id === item.model.id)) {
+                modelList.push(item.model)
+            }
+        })
+        setDataModel(modelList)
+    }, [items, state.searchValueCategory, state.searchValueBrand, dataModel])
+
     const onHandleInput = ({ target }) => {
         const { name, value } = target
         startTransition(() => {
             dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
         })
-    };   
+    };
 
     return (
         <tr className='main-table--title'>
@@ -29,7 +66,7 @@ export default function TableTitle() {
                 <h3>
                     Categoria
                 </h3>
-                {isPending && <Loading/>}                
+                {isPending && <Loading />}
                 <Suspense fallback={<LoadingInput />}>
                     {dataCategory &&
                         <Select
@@ -75,13 +112,13 @@ export default function TableTitle() {
                 </Suspense>
             </th>
             <th>
-                <h3>Marca</h3>                
+                <h3>Marca</h3>
                 <Suspense fallback={<LoadingInput />}>
                     {dataBrand &&
                         <Select
                             name={'searchValueBrand'}
                             value={state.searchValueBrand}
-                            options={dataBrand}
+                            options={setBrand}
                             placeholder={"-- Filtre por Marca --"}
                             hidden={false}
                             disabled={false}
@@ -93,13 +130,13 @@ export default function TableTitle() {
                 </Suspense>
             </th>
             <th>
-                <h3>Modelo</h3>                
+                <h3>Modelo</h3>
                 <Suspense fallback={<LoadingInput />}>
                     {dataModel &&
                         <Select
                             name={'searchValueModel'}
                             value={state.searchValueModel}
-                            options={dataModel}
+                            options={setModel}
                             placeholder={"-- Filtre por Modelo --"}
                             hidden={false}
                             disabled={false}

@@ -19,11 +19,6 @@ export default function FormModel({ state, dispatch }) {
     const [value, setValue] = useState("");
     const { fetchState, createData, deleteData, updateData } = useFetchingData();
 
-    const onCleanInputs = () => {
-        dispatch({ type: 'CLEAN_INPUTS'})
-        console.log(state);
-    };
-
     const onSubmit = (e) => {
         e.preventDefault();        
         let data = {};

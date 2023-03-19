@@ -1,5 +1,4 @@
 import React, { lazy, Suspense } from 'react';
-import useGetData from 'Hooks/useGetData';
 import { AddIcon } from 'UI/Atoms/Icon/AddIcon';
 import { DeleteIcon } from 'UI/Atoms/Icon/DeleteIcon';
 import { EditIcon } from 'UI/Atoms/Icon/EditIcon';

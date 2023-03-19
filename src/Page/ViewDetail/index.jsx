@@ -93,7 +93,7 @@ export default function ViewDetail() {
       modelId: formData.get('modelId'),
     };
     setReload(true)
-    updateData({ endPoint: `items`, data, id })
+    updateData({ endPoint: `/items`, data, id })
     setTimeout(() => {
       navigate('/')
     }, 1500)
@@ -101,7 +101,7 @@ export default function ViewDetail() {
 
   const onDelete = (e) => {
     e.preventDefault();
-    deleteData({ endPoint: `items/${id}` })
+    deleteData({ endPoint: `/items`, id })
     setReload(true)
     setTimeout(() => {
       navigate('/')
