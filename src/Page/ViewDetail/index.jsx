@@ -1,9 +1,9 @@
-import React, { useRef, Suspense, useReducer, useMemo, lazy, useContext, useEffect, useState } from "react";
+import React, { useRef, Suspense, useReducer, lazy, useContext, useEffect} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { InventaryContext } from "context";
 import useFetchingData from "Hooks/useFetchingData";
 import "./ViewDetail.css";
-import { InventaryContext } from "context";
-import { getOneItem } from "services/api";
+
 
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
@@ -58,8 +58,8 @@ useEffect(() => {
     dispatch({type: 'INITIAL', payload: location.state.item})
   } else {
     dispatch({type: 'START'})
-    getOneItem({endPoint: 'items', id})
-      .then(data => {dispatch({type: 'INITIAL', payload: data})})
+    import('services/api').then(module => module.getOneItem({endPoint: 'items', id})
+      .then(data => {dispatch({type: 'INITIAL', payload: data})}))
   }
 }, [id, location.state?.item])
 
