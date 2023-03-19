@@ -1,4 +1,4 @@
-import React, { useRef, Suspense, useReducer, lazy, useContext, useEffect} from "react";
+import React, { useRef, Suspense, useReducer, lazy, useContext, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { InventaryContext } from "context";
 import useFetchingData from "Hooks/useFetchingData";
@@ -20,7 +20,7 @@ const initialState = {
   loading: true,
 }
 
-const reducer = (state, action) => {  
+const reducer = (state, action) => {
   return reducerOBJECT(state, action.payload)[action.type] || state;
 };
 
@@ -47,21 +47,21 @@ const reducerOBJECT = (state, payload) => ({
 export default function ViewDetail() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { fetchState, updateData, deleteData } = useFetchingData();
-  const { dataCategory, dataBrand, dataModel} = useContext(InventaryContext)
+  const { dataCategory, dataBrand, dataModel, setReload } = useContext(InventaryContext)
   const formRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
-  
-useEffect(() => {
-  if (location.state?.item) {
-    dispatch({type: 'INITIAL', payload: location.state.item})
-  } else {
-    dispatch({type: 'START'})
-    import('services/api').then(module => module.getOneItem({endPoint: 'items', id})
-      .then(data => {dispatch({type: 'INITIAL', payload: data})}))
-  }
-}, [id, location.state?.item])
+
+  useEffect(() => {
+    if (location.state?.item) {
+      dispatch({ type: 'INITIAL', payload: location.state.item })
+    } else {
+      dispatch({ type: 'START' })
+      import('services/api').then(module => module.getOneItem({ endPoint: 'items', id })
+        .then(data => { dispatch({ type: 'INITIAL', payload: data }) }))
+    }
+  }, [id, location.state?.item])
 
   const onHandleInput = ({ target }) => {
     const { name, value } = target
@@ -92,6 +92,7 @@ useEffect(() => {
       brandId: formData.get('brandId'),
       modelId: formData.get('modelId'),
     };
+    setReload(true)
     updateData({ endPoint: `items`, data, id })
     setTimeout(() => {
       navigate('/')
@@ -100,7 +101,8 @@ useEffect(() => {
 
   const onDelete = (e) => {
     e.preventDefault();
-    deleteData({ endPoint: `items/${id}`})
+    deleteData({ endPoint: `items/${id}` })
+    setReload(true)
     setTimeout(() => {
       navigate('/')
     }, 1500)
@@ -112,7 +114,7 @@ useEffect(() => {
 
   return (
     <section className="ViewDetail">
-      {state.loading && <Loading/>}
+      {state.loading && <Loading />}
       {!state.loading &&
         <form className="ViewDetail--form" ref={formRef} onSubmit={onSubmit}>
           <div className="ViewDetail--container">
@@ -212,7 +214,7 @@ useEffect(() => {
 
             <Button
               type={"submit"}
-              name={"Guardar"}            
+              name={"Guardar"}
             />
             <Button
               type={"button"}
@@ -232,7 +234,7 @@ useEffect(() => {
               />
             </Suspense>
           )}
-        </form>}      
+        </form>}
     </section>
   );
 }

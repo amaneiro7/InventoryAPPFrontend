@@ -10,7 +10,7 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormCategory({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint } = state;
-    const { dataCategory } = useContext(InventaryContext);
+    const { dataCategory, setReload } = useContext(InventaryContext);
     const formRef = useRef(null);
     const [value, setValue] = useState("");
     const [input, setInput] = useState("");
@@ -37,8 +37,9 @@ export default function FormCategory({ state, dispatch }) {
             default:
                 break;
         }
+        setReload(true)
         setValue("");
-        setInput("")
+        setInput("");
     };
 
     const onHandleInput = ({ target: { value } }) => {

@@ -13,7 +13,7 @@ export function InventaryProvider(props) {
         state,
         searchedItems,
         dispatch
-    } = useGetSearch(reload)
+    } = useGetSearch(setReload, reload)
 
     return (
         <InventaryContext.Provider

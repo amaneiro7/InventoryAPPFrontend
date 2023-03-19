@@ -13,7 +13,7 @@ const SelectForm = lazy(() => import('Page/AddNewItemForm/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
-  const { items, dataCategory, reload, setReload } = useContext(InventaryContext)
+  const { items, dataCategory, setReload } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ export default function AddNewItemForm() {
     };
     dispatch({ type: "DEFAULTVALUE"})
     createData({ endPoint: "items", data });
-    setReload(!reload)
+    setReload(true)
   };
   
   

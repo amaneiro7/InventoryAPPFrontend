@@ -10,7 +10,7 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormBrand({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint, button } = state;
-    const { dataModel } = useContext(InventaryContext)
+    const { dataModel, setReload } = useContext(InventaryContext)
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
     const [input, setInput] = useState("");
@@ -39,6 +39,7 @@ export default function FormBrand({ state, dispatch }) {
         }
         setValue("")
         setInput("")
+        setReload(true)
     }
 
     const onHandleInput = ( { target: { value } } ) => {        

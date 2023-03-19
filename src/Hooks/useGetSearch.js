@@ -34,9 +34,9 @@ const reducerOBJECT = (state, payload) => ({
     },
 });
 
-export default function useGetSearch(reload) {
+export default function useGetSearch(setReload, reload) {
     const [state, dispatch] = useReducer(reducer, initialState);
-    console.log(reload);
+    
     useEffect(() => {
         const endPoints = {
             items: "items",
@@ -44,6 +44,7 @@ export default function useGetSearch(reload) {
             brand: "brand",
             models: "models",
         };
+        setReload(false)
         const fetchData = async () => {
             try {
                 const [items, categories, brand, models] = await Promise.all(
