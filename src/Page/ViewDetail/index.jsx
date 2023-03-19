@@ -1,16 +1,24 @@
-import React, { useRef, Suspense, useReducer, useMemo, lazy, useContext } from "react";
+import React, { useRef, Suspense, useReducer, useMemo, lazy, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useFetchingData from "Hooks/useFetchingData";
-import useGetData from "Hooks/useGetData";
 import "./ViewDetail.css";
 import { InventaryContext } from "context";
+import { getOneItem } from "services/api";
 
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 const Loading = lazy(() => import("UI/Atoms/Loading"));
-const Modal = lazy(() => import("UI/Atoms/Modal"));
+
+const initialState = {
+  categoryId: "",
+  serial: "",
+  activo: "",
+  brandId: "",
+  modelId: "",
+  loading: true,
+}
 
 const reducer = (state, action) => {  
   return reducerOBJECT(state, action.payload)[action.type] || state;
@@ -19,49 +27,41 @@ const reducer = (state, action) => {
 const reducerOBJECT = (state, payload) => ({
   'CHANGEVALUE': {
     ...state,
-    [payload.name]: payload.value
+    [payload?.name]: payload?.value
   },
+  'START': {
+    ...state,
+    loading: true
+  },
+  'INITIAL': {
+    ...state,
+    loading: false,
+    categoryId: payload?.categoryId,
+    serial: payload?.serial,
+    activo: payload?.activo,
+    brandId: payload?.brandId,
+    modelId: payload?.modelId,
+  }
 });
 
-const useDynamicState = (dataAPI, dataLocation) => {
-  const initialState = useMemo(() => {
-    if (dataLocation && dataLocation.item) {
-      const itemDetail = dataLocation.item
-      return {
-        categoryId: itemDetail.category.id,
-        serial: itemDetail.serial,
-        activo: itemDetail.activo,
-        brandId: itemDetail.brand.id,
-        modelId: itemDetail.model.id,
-      }
-    } else if (dataAPI) {
-      const itemDetail = dataAPI;
-      return {
-        categoryId: itemDetail.category.id,
-        serial: itemDetail.serial,
-        activo: itemDetail.activo,
-        brandId: itemDetail.brand.id,
-        modelId: itemDetail.model.id,
-      }
-    } else {
-      return null
-    }
-  }, [dataAPI, dataLocation])
-
-  const [state, dispatch] = useReducer(reducer, initialState);
-  return [state, dispatch]
-}
-
 export default function ViewDetail() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { fetchState, updateData, deleteData } = useFetchingData();
   const { dataCategory, dataBrand, dataModel} = useContext(InventaryContext)
   const formRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const { state: { data, loading } } = useGetData({ endPoint: `/items/${id}` })
-  const [state, dispatch] = useDynamicState(data, location.state);
+  
+useEffect(() => {
+  if (location.state?.item) {
+    dispatch({type: 'INITIAL', payload: location.state.item})
+  } else {
+    dispatch({type: 'START'})
+    getOneItem({endPoint: 'items', id})
+      .then(data => {dispatch({type: 'INITIAL', payload: data})})
+  }
+}, [id, location.state?.item])
 
   const onHandleInput = ({ target }) => {
     const { name, value } = target
@@ -100,7 +100,7 @@ export default function ViewDetail() {
 
   const onDelete = (e) => {
     e.preventDefault();
-    deleteData({ endPoint: `items`, data})
+    deleteData({ endPoint: `items/${id}`})
     setTimeout(() => {
       navigate('/')
     }, 1500)
@@ -112,7 +112,8 @@ export default function ViewDetail() {
 
   return (
     <section className="ViewDetail">
-      {!loading &&
+      {state.loading && <Loading/>}
+      {!state.loading &&
         <form className="ViewDetail--form" ref={formRef} onSubmit={onSubmit}>
           <div className="ViewDetail--container">
             <div className="ViewDetail--title">
@@ -125,13 +126,13 @@ export default function ViewDetail() {
               onHandle={onClose}
             />
 
-            {dataCategory ? (
+            {dataCategory && state ? (
               <Suspense fallback={<Loading />}>
                 <div className="ViewDetail--field">
                   <label htmlFor="Categoria">Categoria</label>
                   <Select
                     name={"categoryId"}
-                    value={state.categoryId}
+                    value={state?.categoryId}
                     onChange={onHandleInput}
                     options={dataCategory}
                     placeholder={"-- Seleccione la categoria --"}
@@ -150,7 +151,7 @@ export default function ViewDetail() {
                 <Input
                   name={"serial"}
                   type={"text"}
-                  value={state.serial}
+                  value={state?.serial}
                   setInputValue={onHandleInput}
                 />
               </div>
@@ -162,7 +163,7 @@ export default function ViewDetail() {
                 <Input
                   name={"activo"}
                   type={"text"}
-                  value={state.activo}
+                  value={state?.activo}
                   setInputValue={onHandleInput}
                 />
               </div>
@@ -174,7 +175,7 @@ export default function ViewDetail() {
                   <label htmlFor="Marca">Marca</label>
                   <Select
                     name={"brandId"}
-                    value={state.brandId}
+                    value={state?.brandId}
                     options={dataBrand}
                     onChange={onHandleInput}
                     placeholder={"-- Seleccione la marca --"}
@@ -193,7 +194,7 @@ export default function ViewDetail() {
                   <label htmlFor="Modelo">Modelo</label>
                   <Select
                     name={"modelId"}
-                    value={state.modelId}
+                    value={state?.modelId}
                     options={dataModel}
                     onChange={onHandleInput}
                     placeholder={"-- Seleccione el modelo --"}
@@ -231,8 +232,7 @@ export default function ViewDetail() {
               />
             </Suspense>
           )}
-        </form>}
-      {loading && <Modal>{<Loading />}</Modal>}
+        </form>}      
     </section>
   );
 }

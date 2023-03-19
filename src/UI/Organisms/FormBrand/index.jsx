@@ -1,6 +1,6 @@
-import React, { useRef, useState, Suspense, lazy } from "react";
+import React, { useRef, useState, Suspense, lazy, useContext } from "react";
 import useFetchingData from "Hooks/useFetchingData";
-import useGetData from "Hooks/useGetData";
+import { InventaryContext } from "context";
 
 const Input = lazy(() => import("UI/Atoms/Input"))
 const Select = lazy(() => import("UI/Atoms/Select"))
@@ -10,7 +10,7 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormBrand({ state, dispatch }) {
     const { modeUI, title, name, nameTitle, endPoint, button } = state;
-    const { state: { data } } = useGetData({endPoint})
+    const { dataModel } = useContext(InventaryContext)
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
     const [input, setInput] = useState("");
@@ -43,8 +43,8 @@ export default function FormBrand({ state, dispatch }) {
 
     const onHandleInput = ( { target: { value } } ) => {        
         setValue(value)
-        const dataIndex = data.findIndex(elem => elem.id === Number(value))
-        setInput(() => data[dataIndex].name)        
+        const dataIndex = dataModel.findIndex(elem => elem.id === Number(value))
+        setInput(() => dataModel[dataIndex].name)        
     }
 
     const onClose = () => {
@@ -68,7 +68,7 @@ return (
                     name={"id"}
                     value={value}
                     onChange={onHandleInput}
-                    options={data}
+                    options={dataModel}
                     placeholder={`-- Selecciona una ${name} --`}
                     isAutoFocus={true}
                     isDisabled={false}                    

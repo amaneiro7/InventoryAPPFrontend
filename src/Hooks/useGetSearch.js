@@ -36,7 +36,7 @@ const reducerOBJECT = (state, payload) => ({
 
 export default function useGetSearch(reload) {
     const [state, dispatch] = useReducer(reducer, initialState);
-
+    console.log(reload);
     useEffect(() => {
         const endPoints = {
             items: "items",
