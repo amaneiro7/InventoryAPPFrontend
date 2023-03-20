@@ -154,7 +154,7 @@ export default function ViewDetail() {
                   name={"serial"}
                   type={"text"}
                   value={state?.serial}
-                  setInputValue={onHandleInput}
+                  onChange={onHandleInput}
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function ViewDetail() {
                   name={"activo"}
                   type={"text"}
                   value={state?.activo}
-                  setInputValue={onHandleInput}
+                  onChange={onHandleInput}
                 />
               </div>
             </div>

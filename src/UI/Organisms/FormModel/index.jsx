@@ -50,11 +50,14 @@ export default function FormModel({ state, dispatch }) {
         setReload(true)
     }
 
-    const onHandleInput = ({ target: { value } }) => {
+    const onSetDefaultInput = ({ target: { value } }) => {
         setValue(value)
         const dataIndex = dataModel.findIndex(elem => elem.id === Number(value))
         setInput(() => dataModel[dataIndex].name)
     }
+
+    const onHandleInput = ({target: { value}}) => setInput(value)
+
 
     const onClose = () => {
         dispatch({ type: 'RESET' })
@@ -71,7 +74,7 @@ export default function FormModel({ state, dispatch }) {
                 {fetchState.loading && <Loading />}
                 {!fetchState.loading &&
                     <Suspense fallback={<Loading />}>
-                        {<Select
+                        {modeUI !== 'DELETE' && <Select
                             name={"brandId"}
                             value={brandValue}
                             onChange={({target: {value}}) => setBrandValue(value)}
@@ -84,7 +87,7 @@ export default function FormModel({ state, dispatch }) {
                         {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
                             name={"id"}
                             value={value}
-                            onChange={onHandleInput}
+                            onChange={onSetDefaultInput}
                             options={dataModel}
                             placeholder={`-- Selecciona un Modelo --`}
                             isAutoFocus={true}
@@ -98,7 +101,7 @@ export default function FormModel({ state, dispatch }) {
                                     placeholder={`Ingresa el Modelo`}
                                     name={"name"}
                                     value={input}
-                                    onChange={setInput}
+                                    onChange={onHandleInput}
                                     isAutoFocus={false}
                                     required={true}
                                 />

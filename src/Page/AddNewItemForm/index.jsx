@@ -13,12 +13,12 @@ const SelectForm = lazy(() => import('Page/AddNewItemForm/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
-  const { items, dataCategory, setReload } = useContext(InventaryContext)
+  const { items, dataCategory, dataBrand, setReload } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
   const formRef = useRef(null);
-  const [dataBrand, setDataBrand] = useState();
+  // const [dataBrand, setDataBrand] = useState();
   const [dataModel, setDataModel] = useState();
 
   const onHandleInput = ({ target }) => {
@@ -67,35 +67,29 @@ export default function AddNewItemForm() {
       modelId: formData.get("model"),
     };
     dispatch({ type: "DEFAULTVALUE"})
-    createData({ endPoint: "items", data });
+    createData({ endPoint: "/items", data });
     setReload(true)
   };
   
   
   const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))
   
-  useEffect(() => {
-    let brandList = []
-    const brandFiltered = items.filter(item => item.category.id === Number(state.category))  
+  // useEffect(() => {
+  //   let brandList = []
+  //   const brandFiltered = items.filter(item => item.category.id === Number(state.category))  
     
-    brandFiltered.forEach(item => {
-      if (!brandList.some(brand => brand.id === item.brand.id)) {
-        brandList.push(item.brand)
-      }      
-    });
-    setDataBrand(brandList)
-  },[items, state.category])
+  //   brandFiltered.forEach(item => {
+  //     if (!brandList.some(brand => brand.id === item.brand.id)) {
+  //       brandList.push(item.brand)
+  //     }      
+  //   });
+  //   setDataBrand(brandList)
+  // },[items, state.category])
 
-  useEffect(() => {
-    let modelList = []
-    const modelFiltered = items.filter(item => item.category.id === Number(state.category) && item.brand.id === Number(state.brand))
-    modelFiltered.forEach(item => {
-      if (!modelList.some(model => model.id === item.model.id)) {
-        modelList.push(item.model)
-      }
-    })
-    setDataModel(modelList)    
-  },[items,state.category, state.brand])
+  useEffect(() => {    
+    const modelFiltered = dataBrand.filter(brand => brand.id === Number(state.brand))
+    setDataModel(modelFiltered[0]?.model)    
+  },[dataBrand, state.brand])
 
   return (
     <>

@@ -42,11 +42,13 @@ export default function FormCategory({ state, dispatch }) {
         setInput("");
     };
 
-    const onHandleInput = ({ target: { value } }) => {
+    const onSetDefaultInput = ({ target: { value } }) => {
         setValue(value)
         const dataIndex = dataCategory.findIndex(elem => elem.id === Number(value))
         setInput(() => dataCategory[dataIndex].name)
     }
+
+    const onHandleInput = ({target: { value}}) => setInput(value)
 
     const onClose = () => {
         dispatch({ type: "RESET" });
@@ -67,7 +69,7 @@ export default function FormCategory({ state, dispatch }) {
                             <Select
                                 name={"id"}
                                 value={value}
-                                onChange={onHandleInput}
+                                onChange={onSetDefaultInput}
                                 options={dataCategory}
                                 placeholder={`-- Selecciona una ${name} --`}
                                 isAutoFocus={true}
@@ -81,7 +83,7 @@ export default function FormCategory({ state, dispatch }) {
                                     placeholder={`Ingresa la ${name}`}
                                     name={"name"}
                                     value={input}
-                                    onChange={setInput}
+                                    onChange={onHandleInput}
                                     isAutoFocus={false}
                                     required={true}
                                 />

@@ -42,11 +42,13 @@ export default function FormBrand({ state, dispatch }) {
         setReload(true)
     }
 
-    const onHandleInput = ( { target: { value } } ) => {        
+    const onSetDefaultInput = ( { target: { value } } ) => {        
         setValue(value)
         const dataIndex = dataModel.findIndex(elem => elem.id === Number(value))
         setInput(() => dataModel[dataIndex].name)        
     }
+
+    const onHandleInput = ({target: { value}}) => setInput(value)
 
     const onClose = () => {
         dispatch({ type: "RESET" });
@@ -68,7 +70,7 @@ return (
                 <Select
                     name={"id"}
                     value={value}
-                    onChange={onHandleInput}
+                    onChange={onSetDefaultInput}
                     options={dataModel}
                     placeholder={`-- Selecciona una ${name} --`}
                     isAutoFocus={true}
@@ -81,7 +83,7 @@ return (
                             placeholder={`Ingresa la ${name}`}
                             name={"name"}
                             value={input}
-                            onChange={setInput}
+                            onChange={onHandleInput}
                             isAutoFocus={false}
                             required={true}
                         />

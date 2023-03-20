@@ -10,7 +10,7 @@ export default function Input({name, placeholder, value, onChange, type = 'text'
                 name={name}
                 type={type} 
                 placeholder={placeholder}                
-                defaultValue={value}
+                value={value}
                 onChange={onChange}
                 onClick={({target}) => target.select()}
                 autoFocus={isAutoFocus ? true : undefined}
