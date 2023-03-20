@@ -1,4 +1,4 @@
-import React, { useRef, useState, Suspense, lazy, useContext, useEffect } from "react";
+import React, { useRef, useState, Suspense, lazy, useContext } from "react";
 import useFetchingData from "Hooks/useFetchingData";
 import { InventaryContext } from "context";
 
@@ -7,7 +7,6 @@ const Select = lazy(() => import("UI/Atoms/Select"))
 const Button = lazy(() => import("UI/Atoms/Button"))
 const Loading = lazy(() => import("UI/Atoms/Loading"))
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
-
 
 export default function FormModel({ state, dispatch }) {
     const { modeUI, title, nameTitle, endPoint, button, actionTypeButton } = state;
