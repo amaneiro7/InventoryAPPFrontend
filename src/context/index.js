@@ -15,9 +15,15 @@ export function InventaryProvider(props) {
         dispatch
     } = useGetSearch(setReload, reload)
 
+    const dataStatus = {
+        bueno: true,
+        malo: false
+    }
+
     return (
         <InventaryContext.Provider
             value={{
+                dataStatus,
                 items,
                 dataCategory,
                 dataBrand,

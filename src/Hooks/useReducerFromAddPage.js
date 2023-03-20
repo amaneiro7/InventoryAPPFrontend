@@ -6,6 +6,8 @@ const initialState = {
     activo: "",
     brand: "",
     model: "",
+    button: "",
+    actionTypeButton: "",
     activoExisted: false,
     serialExisted: false,
     modeUI: "",
@@ -70,20 +72,23 @@ const reducerOBJECT = (state, payload) => ({
         modeUI: "ADD",
         title: "Cree",
         button: "Añadir",
+        actionTypeButton: 'actionType'
     },
     'EDIT': {
         ...state,
         openModal: true,
         modeUI: "EDIT",
         title: "Edite",
-        button: "Editar"
+        button: "Editar",
+        actionTypeButton: 'saveType'
     },
     'DELETE': {
         ...state,
         openModal: true,
         modeUI: "DELETE",
         title: "Elimine",
-        button: "Eliminar"
+        button: "Eliminar",
+        actionTypeButton: 'deleteType'
     },
     'RESET': {
         ...state,

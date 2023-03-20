@@ -9,7 +9,7 @@ const Loading = lazy(() => import("UI/Atoms/Loading"))
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormCategory({ state, dispatch }) {
-    const { modeUI, title, name, nameTitle, endPoint } = state;
+    const { modeUI, title, name, nameTitle, endPoint, button, actionTypeButton } = state;
     const { dataCategory, setReload } = useContext(InventaryContext);
     const formRef = useRef(null);
     const [value, setValue] = useState("");
@@ -97,10 +97,10 @@ export default function FormCategory({ state, dispatch }) {
                         action={"cancelType"}
                         onHandle={onClose}
                     />
-                    <Button
-                        key={'onSubmitCategory'}
+                    <Button                        
                         type={"submit"}
-                        name={"Añadir"}
+                        name={button}
+                        action={actionTypeButton}
                         isDisabled={input === "" ? true : false}
                     />
                 </div>

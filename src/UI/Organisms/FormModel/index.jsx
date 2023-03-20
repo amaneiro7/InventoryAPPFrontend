@@ -1,4 +1,4 @@
-import React, { useRef, useState, Suspense, lazy, useContext } from "react";
+import React, { useRef, useState, Suspense, lazy, useContext, useEffect } from "react";
 import useFetchingData from "Hooks/useFetchingData";
 import { InventaryContext } from "context";
 
@@ -10,11 +10,12 @@ const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 
 export default function FormModel({ state, dispatch }) {
-    const { modeUI, title, nameTitle, endPoint, button } = state;
-    const { dataBrand, dataModel, setReload } = useContext(InventaryContext);
+    const { modeUI, title, nameTitle, endPoint, button, actionTypeButton } = state;
+    const { dataBrand, dataModel, dataCategory, setReload } = useContext(InventaryContext);
 
     const formRef = useRef(null);
     const [input, setInput] = useState("");
+    const [categoryValue, setCategoryValue] = useState("");
     const [brandValue, setBrandValue] = useState("");
     const [value, setValue] = useState("");
     const { fetchState, createData, deleteData, updateData } = useFetchingData();
@@ -26,8 +27,10 @@ export default function FormModel({ state, dispatch }) {
         const valueName = formData?.get("name")?.trimStart().trimEnd().toLowerCase();
         const id = Number(formData.get("id"));
         const brandId = Number(formData.get('brandId'))
+        const categoryId = Number(formData.get('categoryId'))
         data = {
             name: valueName,
+            categoryId: categoryId,
             brandId: brandId
         };
 
@@ -46,6 +49,7 @@ export default function FormModel({ state, dispatch }) {
         }        
         setValue("")
         setBrandValue("")
+        setCategoryValue("")
         setInput("")
         setReload(true)
     }
@@ -54,6 +58,8 @@ export default function FormModel({ state, dispatch }) {
         setValue(value)
         const dataIndex = dataModel.findIndex(elem => elem.id === Number(value))
         setInput(() => dataModel[dataIndex].name)
+        setCategoryValue(() => dataModel[dataIndex].categoryId)
+        setBrandValue(() => dataModel[dataIndex].brandId)
     }
 
     const onHandleInput = ({target: { value}}) => setInput(value)
@@ -74,6 +80,31 @@ export default function FormModel({ state, dispatch }) {
                 {fetchState.loading && <Loading />}
                 {!fetchState.loading &&
                     <Suspense fallback={<Loading />}>
+
+
+                        {/* Este Select es usado para buscar el modelo a editar o eliminar */}
+                        {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
+                            name={"id"}
+                            value={value}
+                            onChange={onSetDefaultInput}
+                            options={dataModel}
+                            placeholder={`-- Selecciona un Modelo --`}
+                            isAutoFocus={true}
+                            isDisabled={false}                            
+                        />}
+
+                        {/* Este select es usado para asociarlo una Categoria */}
+                        {modeUI !== 'DELETE' && <Select
+                            name={"categoryId"}
+                            value={categoryValue}
+                            onChange={({target: {value}}) => setCategoryValue(value)}
+                            options={dataCategory}
+                            placeholder={`-- Selecciona una Categoria --`}
+                            isAutoFocus={true}
+                            isDisabled={false}
+                        />}
+
+                        {/* Este select es usado para asociarlo una Marca */}
                         {modeUI !== 'DELETE' && <Select
                             name={"brandId"}
                             value={brandValue}
@@ -84,15 +115,6 @@ export default function FormModel({ state, dispatch }) {
                             isDisabled={false}
                         />}
 
-                        {(modeUI === 'EDIT' || modeUI === 'DELETE') && <Select
-                            name={"id"}
-                            value={value}
-                            onChange={onSetDefaultInput}
-                            options={dataModel}
-                            placeholder={`-- Selecciona un Modelo --`}
-                            isAutoFocus={true}
-                            isDisabled={false}                            
-                        />}
 
                         {(modeUI === 'ADD' || modeUI === 'EDIT') &&
                             <div className="AddNewItemForm--field">
@@ -118,6 +140,7 @@ export default function FormModel({ state, dispatch }) {
                     <Button
                         type={"submit"}
                         name={button}
+                        action={actionTypeButton}
                         isDisabled={(input === "") ? true : false}
                     />
                 </div>

@@ -21,7 +21,8 @@
     padding: 10px 0;
 }
 
-.AddNewItemForm--field input {
+.AddNewItemForm--field input,
+.status {
     grid-area: field;    
 }
 

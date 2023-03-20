@@ -21,7 +21,9 @@
     background-color: var(--naranja);  
 }
 
-.actionType:hover {
+.actionType:hover,
+.saveType:hover,
+.deleteType:hover {
     opacity: .7;
 }
 
@@ -35,6 +37,18 @@
     color: #377dff;
     border-color: #377dff;
 }
+
+.saveType {
+    color: var(--blanco);
+    border-color: #0757ea;
+    background-color: #1254d0;
+}
+.deleteType {
+    color: var(--blanco);
+    border-color: var( --rojo-claro);
+    background-color: var(--rojo);
+}
+
 
 .btn:active {
     box-shadow: 0 3px 5px rgba(0, 0, 0, .1);

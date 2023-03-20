@@ -1,7 +1,18 @@
 import React from 'react';
 import './Select.css'
 
-export default function Select({name, value, options, onChange, placeholder, isDisabled, isAutoFocus = false, hidden=true, disabled=true, size=undefined}) {
+export default function Select({
+    name, 
+    value, 
+    options, 
+    onChange, 
+    placeholder, 
+    isDisabled, 
+    isAutoFocus = false, 
+    hidden=true, 
+    disabled=true, 
+    size=undefined
+}) {
 
     return (
         <div className={`AddNewItemForm--select ${size}`}>

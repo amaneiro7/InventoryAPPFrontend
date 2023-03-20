@@ -134,6 +134,24 @@ export default function AddNewItemForm() {
                 isAutoFocus={false}
               />
             </div>
+
+            <div className="AddNewItemForm--field">
+              <div className={'AddNewItemForm--select status'}>
+                <select 
+                  name="status"
+                  defaultValue={true}
+                >
+                  <option 
+                    value={''}
+                    disabled
+                    
+                  >-- Seleccione el Estado del dispositivo--</option>
+                  <option value={"true"}>Bueno</option>
+                  <option value={"false"}>Dañado</option>
+                </select>
+              </div>
+            </div>
+
             <SelectForm
               name={"brand"}
               type={"BRAND"}
@@ -146,6 +164,7 @@ export default function AddNewItemForm() {
               placeholder={"la Marca"}
               isDisabled={state.category === ""}
             />
+            
             <SelectForm
               name={"model"}
               type={"MODEL"}

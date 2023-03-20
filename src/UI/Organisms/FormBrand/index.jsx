@@ -9,8 +9,8 @@ const Loading = lazy(() => import("UI/Atoms/Loading"))
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"))
 
 export default function FormBrand({ state, dispatch }) {
-    const { modeUI, title, name, nameTitle, endPoint, button } = state;
-    const { dataModel, setReload } = useContext(InventaryContext)
+    const { modeUI, title, name, nameTitle, endPoint, button, actionTypeButton } = state;
+    const { dataBrand, setReload } = useContext(InventaryContext)
     const formRef = useRef(null);    
     const [value, setValue] = useState("");
     const [input, setInput] = useState("");
@@ -44,8 +44,8 @@ export default function FormBrand({ state, dispatch }) {
 
     const onSetDefaultInput = ( { target: { value } } ) => {        
         setValue(value)
-        const dataIndex = dataModel.findIndex(elem => elem.id === Number(value))
-        setInput(() => dataModel[dataIndex].name)        
+        const dataIndex = dataBrand.findIndex(elem => elem.id === Number(value))
+        setInput(() => dataBrand[dataIndex].name)
     }
 
     const onHandleInput = ({target: { value}}) => setInput(value)
@@ -71,7 +71,7 @@ return (
                     name={"id"}
                     value={value}
                     onChange={onSetDefaultInput}
-                    options={dataModel}
+                    options={dataBrand}
                     placeholder={`-- Selecciona una ${name} --`}
                     isAutoFocus={true}
                     isDisabled={false}                    
@@ -84,7 +84,7 @@ return (
                             name={"name"}
                             value={input}
                             onChange={onHandleInput}
-                            isAutoFocus={false}
+                            isAutoFocus={value ? true : false}
                             required={true}
                         />
                     </div>}
@@ -100,6 +100,7 @@ return (
                 <Button
                     type={"submit"}
                     name={button}
+                    action={actionTypeButton}
                     isDisabled={(input === "") ? true : false}
                 />
             </div>

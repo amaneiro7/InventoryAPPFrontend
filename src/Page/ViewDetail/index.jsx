@@ -121,12 +121,7 @@ export default function ViewDetail() {
             <div className="ViewDetail--title">
               <h1>Edita el elemento</h1>
             </div>
-            <Button
-              type={"button"}
-              name={"Cerrar"}
-              action={"cancelType"}
-              onHandle={onClose}
-            />
+            
 
             {dataCategory && state ? (
               <Suspense fallback={<Loading />}>
@@ -171,6 +166,19 @@ export default function ViewDetail() {
               </div>
             </div>
 
+            <div className="ViewDetail--field">
+              <label htmlFor="Status">Estado del Dispositivo</label>
+              <div className={'AddNewItemForm--select status'}>
+                <select 
+                  name="status"
+                  value={state?.status}
+                >
+                  <option value={"true"}>Bueno</option>
+                  <option value={"false"}>Dañado</option>
+                </select>
+              </div>
+            </div>
+
             {dataBrand ? (
               <Suspense fallback={<Loading />}>
                 <div className="ViewDetail--field">
@@ -210,10 +218,16 @@ export default function ViewDetail() {
             )}
           </div>
 
-          <div className="ViewDetail-btnContainer">
-
+          <div className="ViewDetail--btnContainer">
+            <Button
+              type={"button"}
+              name={"Cerrar"}
+              action={"cancelType"}
+              onHandle={onClose}
+            />
             <Button
               type={"submit"}
+              action={'saveType'}
               name={"Guardar"}
             />
             <Button
