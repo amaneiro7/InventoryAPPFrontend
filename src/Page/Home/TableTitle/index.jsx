@@ -12,8 +12,7 @@ export default function TableTitle() {
     const [setModel, setDataModel] = useState();
     const {
         state,
-        dataCategory,
-        items,
+        dataCategory,        
         dataBrand,
         dataModel,
         dispatch
@@ -25,7 +24,7 @@ export default function TableTitle() {
             return
         }
         let brandList = []
-        const brandFiltered = items.filter(item => item.category.id === Number(state.searchValueCategory))
+        const brandFiltered = dataModel.filter(brand => brand.category.id === Number(state.searchValueCategory))
 
         brandFiltered.forEach(item => {
             if (!brandList.some(brand => brand.id === item.brand.id)) {
@@ -33,25 +32,21 @@ export default function TableTitle() {
             }
         });
         setDataBrand(brandList)
-    }, [items, state.searchValueCategory, dataBrand])
+    }, [dataModel, state.searchValueCategory, dataBrand])
 
     useEffect(() => {
         if (state.searchValueCategory === "" && state.searchValueBrand === "") {
             setDataModel(dataModel)
             return
         }
-        let modelList = []
-        const modelFiltered = items.filter(item => 
-            item.category.id === Number(state.searchValueCategory) || 
-            item.brand.id === Number(state.searchValueBrand)
+
+        const modelFiltered = dataModel.filter(model => 
+            model.category.id === Number(state.searchValueCategory) && 
+            model.brand.id === Number(state.searchValueBrand)
             )
-        modelFiltered.forEach(item => {
-            if (!modelList.some(model => model.id === item.model.id)) {
-                modelList.push(item.model)
-            }
-        })
-        setDataModel(modelList)
-    }, [items, state.searchValueCategory, state.searchValueBrand, dataModel])
+
+        setDataModel(modelFiltered)
+    }, [state.searchValueCategory, state.searchValueBrand, dataModel])
 
     const onHandleInput = ({ target }) => {
         const { name, value } = target
