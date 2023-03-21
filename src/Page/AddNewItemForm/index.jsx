@@ -13,13 +13,13 @@ const SelectForm = lazy(() => import('Page/AddNewItemForm/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
-  const { items, dataCategory, dataBrand, setReload } = useContext(InventaryContext)
+  const { items, dataCategory, dataModel ,setReload } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
   const formRef = useRef(null);
-  // const [dataBrand, setDataBrand] = useState();
-  const [dataModel, setDataModel] = useState();
+  const [dataBrandList, setDataBrand] = useState();
+  const [dataModelList, setDataModel] = useState();
 
   const onHandleInput = ({ target }) => {
     const {name, value} = target
@@ -74,22 +74,25 @@ export default function AddNewItemForm() {
   
   const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))
   
-  // useEffect(() => {
-  //   let brandList = []
-  //   const brandFiltered = items.filter(item => item.category.id === Number(state.category))  
+  useEffect(() => {
+    let brandList = []
+    const brandFiltered = dataModel.filter(brand => brand.category.id === Number(state.category))  
     
-  //   brandFiltered.forEach(item => {
-  //     if (!brandList.some(brand => brand.id === item.brand.id)) {
-  //       brandList.push(item.brand)
-  //     }      
-  //   });
-  //   setDataBrand(brandList)
-  // },[items, state.category])
+    brandFiltered.forEach(item => {
+      if (!brandList.some(brand => brand.id === item.brand.id)) {
+        brandList.push(item.brand)
+      }      
+    });
+    setDataBrand(brandList)
+  },[dataModel, state.category])
 
-  useEffect(() => {    
-    const modelFiltered = dataBrand.filter(brand => brand.id === Number(state.brand))
-    setDataModel(modelFiltered[0]?.model)    
-  },[dataBrand, state.brand])
+  useEffect(() => {
+    const modelFiltered = dataModel.filter(model => 
+      model.category.id === Number(state.category) && 
+      model.brand.id === Number(state.brand)
+    )    
+    setDataModel(modelFiltered)
+  },[dataModel, state.brand, state.category])
 
   return (
     <>
@@ -159,7 +162,7 @@ export default function AddNewItemForm() {
               onChange={onHandleInput}
               state={state}
               dispatch={dispatch}
-              data={dataBrand}
+              data={dataBrandList}
               endPoint={`brand?category=${state.category}`}
               placeholder={"la Marca"}
               isDisabled={state.category === ""}
@@ -172,7 +175,7 @@ export default function AddNewItemForm() {
               state={state}
               dispatch={dispatch}
               onChange={onHandleInput}
-              data={dataModel}
+              data={dataModelList}
               endPoint={`models?brandId=${state.brand}`}
               placeholder={"el Modelo"}
               isDisabled={state.brand === ""}
