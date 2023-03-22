@@ -4,7 +4,6 @@ import { InventaryContext } from "context";
 import useFetchingData from "Hooks/useFetchingData";
 import "./ViewDetail.css";
 
-
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
@@ -47,7 +46,7 @@ const reducerOBJECT = (state, payload) => ({
 export default function ViewDetail() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { fetchState, updateData, deleteData } = useFetchingData();
-  const { dataCategory, dataBrand, dataModel, setReload } = useContext(InventaryContext)
+  const { dataCategory, dataBrand, dataModel, dataStatus, dataObsolete, setReload } = useContext(InventaryContext)
   const formRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -68,17 +67,37 @@ export default function ViewDetail() {
     dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
   };
 
+  const onHandleInput2 = ({ target }) => {
+    let { name, value } = target
+    const trueFalseValue = {
+      true: true,
+      false: false,
+      '': undefined
+    }
+    value = trueFalseValue[value]
+    dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(formRef.current);
+    const trueFalseValue = {
+      true: true,
+      false: false,
+    }
+
     const valueSerial =
       formData.get('serial') === ""
         ? null
         : formData.get('serial').trim().toUpperCase();
+
     const valueActivo =
       formData.get('activo') === ""
         ? null
         : formData.get('activo').trim().toUpperCase();
+
+    const statusValue = trueFalseValue[formData.get('status')]
+    const obsoleteValue = trueFalseValue[formData.get('obsolete')]
 
     if (valueSerial === null && valueActivo === null) {
       alert('Al menos uno de los campos serial o activo debe tener un valor')
@@ -88,6 +107,8 @@ export default function ViewDetail() {
     const data = {
       serial: valueSerial,
       activo: valueActivo,
+      status: statusValue,
+      obsolete: obsoleteValue,
       categoryId: formData.get('categoryId'),
       brandId: formData.get('brandId'),
       modelId: formData.get('modelId'),
@@ -121,7 +142,7 @@ export default function ViewDetail() {
             <div className="ViewDetail--title">
               <h1>Edita el elemento</h1>
             </div>
-            
+
 
             {dataCategory && state ? (
               <Suspense fallback={<Loading />}>
@@ -166,18 +187,36 @@ export default function ViewDetail() {
               </div>
             </div>
 
-            <div className="ViewDetail--field">
-              <label htmlFor="Status">Estado del Dispositivo</label>
-              <div className={'AddNewItemForm--select status'}>
-                <select 
-                  name="status"
+            <Suspense fallback={<Loading />}>
+              <div className="ViewDetail--field">
+                <label htmlFor="Status">Estado del Dispositivo</label>
+                <Select
+                  name={"status"}
                   value={state?.status}
-                >
-                  <option value={"true"}>Bueno</option>
-                  <option value={"false"}>Dañado</option>
-                </select>
+                  options={dataStatus}
+                  onChange={onHandleInput2}
+                  size={'status'}
+                  placeholder={"-- Seleccione el Estado --"}
+                  isDisabled={false}
+                  isAutoFocus={false}
+                />
               </div>
-            </div>
+            </Suspense>
+            <Suspense fallback={<Loading />}>
+              <div className="ViewDetail--field">
+                <label htmlFor="Obsolete">Obsolencencia del Dispositivo</label>
+                <Select
+                  name={"obsolete"}
+                  value={state?.obsolete}
+                  options={dataObsolete}
+                  onChange={onHandleInput2}
+                  size={'status'}
+                  placeholder={"-- Seleccione la obsolecencia --"}
+                  isDisabled={false}
+                  isAutoFocus={false}
+                />
+              </div>
+            </Suspense>
 
             {dataBrand ? (
               <Suspense fallback={<Loading />}>

@@ -36,13 +36,13 @@ export default function AddNewItemForm() {
   const onHandleInput2 = ({ target }) => {
     let { name, value } = target
     const trueFalseValue = {
-        true: true,
-        false: false,
-        '': undefined
-    }        
-    value = trueFalseValue[value]        
+      true: true,
+      false: false,
+      '': undefined
+    }
+    value = trueFalseValue[value]
     dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
-}
+  }
 
   const onClose = () => {
     navigate("/");
@@ -52,6 +52,10 @@ export default function AddNewItemForm() {
     e.preventDefault();
     if (state.openModal) {
       return
+    }
+    const trueFalseValue = {
+      true: true,
+      false: false,
     }
 
     const formData = new FormData(formRef.current);
@@ -66,6 +70,9 @@ export default function AddNewItemForm() {
         ? null
         : formData.get("activo").trim().toUpperCase();
 
+    const statusValue = trueFalseValue[formData.get('status')]
+    const obsoleteValue = trueFalseValue[formData.get('obsolete')]
+
     if (valueSerial === null && valueActivo === null) {
       alert('Al menos uno de los campos serial o activo debe tener un valor')
       return
@@ -74,8 +81,8 @@ export default function AddNewItemForm() {
     const data = {
       serial: valueSerial,
       activo: valueActivo,
-      status: formData.get("status"),
-      obsolete: formData.get("obsolete"),
+      status: statusValue,
+      obsolete: obsoleteValue,
       categoryId: formData.get("category"),
       brandId: formData.get("brand"),
       modelId: formData.get("model"),

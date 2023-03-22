@@ -1,12 +1,14 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const LoadingTable = lazy(() => import('UI/Atoms/LoadingTable'));
 
 export default function InventoryList({searchedItems}) {
     const navigate = useNavigate()
     
     return (
         <>  
-            <Suspense fallback={<p>...Loading</p>}>
+            <Suspense fallback={<LoadingTable/>}>
                 {searchedItems?.map(item => {
                     return (
                         <tr 
@@ -23,7 +25,7 @@ export default function InventoryList({searchedItems}) {
                             <td>{item?.brand?.name}</td>
                             <td>{item?.model?.name}</td>
                             <td>{item?.status ? 'Operativo' : 'Dañado'}</td>
-                            <td>{item?.obsolete ? 'Si' : 'No'}</td>
+                            <td>{item?.obsolete ? 'Obsoleto' : 'Funcional'}</td>
                         </tr>
                     )
                 })}

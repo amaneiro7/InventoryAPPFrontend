@@ -4,6 +4,7 @@ import ErrorBoundary from 'App/ErrorBoundary';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
+const LoadingTable = lazy(() => import('UI/Atoms/LoadingTable'));
 const TableTitle = lazy(() => import('Page/Home/TableTitle'))
 const InventoryList = lazy(() => import('Page/Home/InventoryList'))
 const Loading = lazy(() => import('UI/Atoms/Loading'));
@@ -25,12 +26,12 @@ export default function Home() {
             <table className='main-table'>
                 <tbody>
                     <ErrorBoundary>
-                        <Suspense fallback={<Loading />}>
+                        <Suspense fallback={<LoadingTable />}>
                             <TableTitle />
                         </Suspense>
                     </ErrorBoundary>                    
                     {items && <ErrorBoundary>
-                        <Suspense fallback={<Loading />}>
+                        <Suspense fallback={<LoadingTable />}>
                             <InventoryList 
                             searchedItems={searchedItems}/>
                         </Suspense>
