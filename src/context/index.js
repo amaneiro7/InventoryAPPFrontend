@@ -27,12 +27,12 @@ export function InventaryProvider(props) {
     ]
     const dataObsolete = [
         {
-        id: true,
-        name: 'Si',
+        id: false,
+        name: 'Funcional',
         },
         {
-        id: false,
-        name: 'No',
+        id: true,
+        name: 'Obsoleto',
         },
     ]
 

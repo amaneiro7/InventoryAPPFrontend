@@ -4,6 +4,8 @@ const initialState = {
     category: "",
     serial: "",
     activo: "",
+    status: true,
+    obsolete: false,
     brand: "",
     model: "",
     button: "",

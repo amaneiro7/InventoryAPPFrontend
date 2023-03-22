@@ -6,6 +6,7 @@ import useFetchingData from "Hooks/useFetchingData";
 import "./AddNewItemForm.css";
 import "./FormAddNewItem.css";
 import { InventaryContext } from "context";
+import Select from "UI/Atoms/Select";
 
 const Button = lazy(() => import('UI/Atoms/Button'));
 const Input = lazy(() => import('UI/Atoms/Input'));
@@ -13,7 +14,7 @@ const SelectForm = lazy(() => import('Page/AddNewItemForm/SelectForm'));
 const MessageStatus = lazy(() => import("UI/Atoms/MessageStatus"));
 
 export default function AddNewItemForm() {
-  const { items, dataCategory, dataModel ,setReload } = useContext(InventaryContext)
+  const { items, dataCategory, dataModel, dataStatus, dataObsolete, setReload } = useContext(InventaryContext)
   const { state, dispatch } = useReducerFromAddPage();
   const { fetchState, createData } = useFetchingData();
   const navigate = useNavigate();
@@ -22,15 +23,26 @@ export default function AddNewItemForm() {
   const [dataModelList, setDataModel] = useState();
 
   const onHandleInput = ({ target }) => {
-    const {name, value} = target
+    const { name, value } = target
     dispatch({ type: "CHANGEVALUE", payload: target });
 
     import('Hooks/useIsExist.js')
-    .then(module => module.useIsExist(items, name, value))
-    .then(result => {      
-      dispatch({ type: 'ALREADY_EXIST', payload: {name, result}})
-    })    
+      .then(module => module.useIsExist(items, name, value))
+      .then(result => {
+        dispatch({ type: 'ALREADY_EXIST', payload: { name, result } })
+      })
   };
+
+  const onHandleInput2 = ({ target }) => {
+    let { name, value } = target
+    const trueFalseValue = {
+        true: true,
+        false: false,
+        '': undefined
+    }        
+    value = trueFalseValue[value]        
+    dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+}
 
   const onClose = () => {
     navigate("/");
@@ -62,37 +74,39 @@ export default function AddNewItemForm() {
     const data = {
       serial: valueSerial,
       activo: valueActivo,
+      status: formData.get("status"),
+      obsolete: formData.get("obsolete"),
       categoryId: formData.get("category"),
       brandId: formData.get("brand"),
       modelId: formData.get("model"),
     };
-    dispatch({ type: "DEFAULTVALUE"})
+    dispatch({ type: "DEFAULTVALUE" })
     createData({ endPoint: "/items", data });
     setReload(true)
   };
-  
-  
+
+
   const isDisabled = ((state.category === "" || state.brand === "" || state.model === "") || (state.activo === "" && state.serial === ""))
-  
+
   useEffect(() => {
     let brandList = []
-    const brandFiltered = dataModel.filter(brand => brand.category.id === Number(state.category))  
-    
+    const brandFiltered = dataModel.filter(brand => brand.category.id === Number(state.category))
+
     brandFiltered.forEach(item => {
       if (!brandList.some(brand => brand.id === item.brand.id)) {
         brandList.push(item.brand)
-      }      
+      }
     });
     setDataBrand(brandList)
-  },[dataModel, state.category])
+  }, [dataModel, state.category])
 
   useEffect(() => {
-    const modelFiltered = dataModel.filter(model => 
-      model.category.id === Number(state.category) && 
+    const modelFiltered = dataModel.filter(model =>
+      model.category.id === Number(state.category) &&
       model.brand.id === Number(state.brand)
-    )    
+    )
     setDataModel(modelFiltered)
-  },[dataModel, state.brand, state.category])
+  }, [dataModel, state.brand, state.category])
 
   return (
     <>
@@ -139,21 +153,32 @@ export default function AddNewItemForm() {
             </div>
 
             <div className="AddNewItemForm--field">
-              <div className={'AddNewItemForm--select status'}>
-                <select 
-                  name="status"
-                  defaultValue={true}
-                >
-                  <option 
-                    value={''}
-                    disabled
-                    
-                  >-- Seleccione el Estado del dispositivo--</option>
-                  <option value={"true"}>Bueno</option>
-                  <option value={"false"}>Dañado</option>
-                </select>
-              </div>
+
+              <Select
+                name={'status'}
+                value={state.status}
+                options={dataStatus}
+                onChange={onHandleInput2}
+                placeholder={'Seleccione el estado del dispositivo'}
+                isDisabled={false}
+                isAutoFocus={false}
+                size={'status'}
+              />
             </div>
+
+            <div className="AddNewItemForm--field">
+              <Select
+                name={'obsolete'}
+                value={state.obsolete}
+                options={dataObsolete}
+                onChange={onHandleInput2}
+                placeholder={'Seleccione si el dispositivo se encuentra obsoleto'}
+                isDisabled={false}
+                isAutoFocus={false}
+                size={'status'}
+              />
+            </div>
+
 
             <SelectForm
               name={"brand"}
@@ -167,7 +192,7 @@ export default function AddNewItemForm() {
               placeholder={"la Marca"}
               isDisabled={state.category === ""}
             />
-            
+
             <SelectForm
               name={"model"}
               type={"MODEL"}
@@ -198,35 +223,35 @@ export default function AddNewItemForm() {
             />
           </div>
         </div>
-          {(state.serialExisted && !state.openModal) && (
-            <Suspense>
-              <MessageStatus
-                status={"error"}
-                message={null}
-                messageInfo={'El serial introducido ya existe'}
-              />
-            </Suspense>
-          )}
-          {(state.activoExisted && !state.openModal) && (
-            <Suspense>
-              <MessageStatus
-                status={"error"}
-                message={null}
-                messageInfo={'El activo introducido ya existe'}
-              />
-            </Suspense>
-          )}
-          {(fetchState.status !== "" && !state.openModal) && (
-            <Suspense>
-              <MessageStatus
-                status={fetchState?.error === null ? "success" : "error"}
-                message={fetchState.status}
-                messageInfo={
-                  fetchState?.error !== null && fetchState.statusInfo
-                }
-              />
-            </Suspense>
-          )}
+        {(state.serialExisted && !state.openModal) && (
+          <Suspense>
+            <MessageStatus
+              status={"error"}
+              message={null}
+              messageInfo={'El serial introducido ya existe'}
+            />
+          </Suspense>
+        )}
+        {(state.activoExisted && !state.openModal) && (
+          <Suspense>
+            <MessageStatus
+              status={"error"}
+              message={null}
+              messageInfo={'El activo introducido ya existe'}
+            />
+          </Suspense>
+        )}
+        {(fetchState.status !== "" && !state.openModal) && (
+          <Suspense>
+            <MessageStatus
+              status={fetchState?.error === null ? "success" : "error"}
+              message={fetchState.status}
+              messageInfo={
+                fetchState?.error !== null && fetchState.statusInfo
+              }
+            />
+          </Suspense>
+        )}
       </form>
     </>
   );
