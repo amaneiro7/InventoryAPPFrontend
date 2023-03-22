@@ -15,15 +15,32 @@ export function InventaryProvider(props) {
         dispatch
     } = useGetSearch(setReload, reload)
 
-    const dataStatus = {
-        bueno: true,
-        malo: false
-    }
+    const dataStatus = [
+        {
+        id: true,
+        name: 'Operativo',
+        },
+        {
+        id: false,
+        name: 'Dañado',
+        },
+    ]
+    const dataObsolete = [
+        {
+        id: true,
+        name: 'Si',
+        },
+        {
+        id: false,
+        name: 'No',
+        },
+    ]
 
     return (
         <InventaryContext.Provider
             value={{
                 dataStatus,
+                dataObsolete,
                 items,
                 dataCategory,
                 dataBrand,

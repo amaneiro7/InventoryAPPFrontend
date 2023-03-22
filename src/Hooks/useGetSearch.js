@@ -10,6 +10,8 @@ const initialState = {
     searchValueActivo: "",
     searchValueBrand: "",
     searchValueModel: "",
+    statusInput: undefined,
+    obsoleteInput: undefined,
 };
 
 const reducer = (state, action) => {
@@ -31,7 +33,7 @@ const reducerOBJECT = (state, payload) => ({
     'ERROR': {
         ...state,
         error: payload,
-    },
+    }
 });
 
 export default function useGetSearch(setReload, reload) {
@@ -60,9 +62,9 @@ export default function useGetSearch(setReload, reload) {
             }
         };        
         fetchData();
-    }, [reload]);
+    }, [setReload,reload]);
 
-    const { searchValueCategory, searchValueSerial, searchValueActivo, searchValueBrand, searchValueModel, dataItems, dataCategory, dataBrand, dataModel } = state;
+    const { searchValueCategory, searchValueSerial, searchValueActivo, searchValueBrand, searchValueModel, dataItems, dataCategory, dataBrand, dataModel, statusInput, obsoleteInput } = state;
 
     let searchedItems = [];
     let currentSearchValue;
@@ -70,39 +72,40 @@ export default function useGetSearch(setReload, reload) {
     
 
     if (searchValueCategory.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return item.category.id === Number(searchValueCategory);
-        });
+        searchedItems = currentSearchValue.filter(item => item.category.id === Number(searchValueCategory))
         currentSearchValue = searchedItems;
     }
 
     if (searchValueSerial.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return String(item.serial).toLowerCase().includes(searchValueSerial.toLowerCase());
-        });
+        searchedItems = currentSearchValue.filter(item => String(item.serial).toLowerCase().includes(searchValueSerial.toLowerCase()))
         currentSearchValue = searchedItems;
     }
 
     if (searchValueActivo.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return String(item.activo).toLowerCase().includes(searchValueActivo.toLowerCase());
-        });
+        searchedItems = currentSearchValue.filter(item => String(item.activo).toLowerCase().includes(searchValueActivo.toLowerCase()));
         currentSearchValue = searchedItems;
     }
 
     if (searchValueBrand.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return item.brand.id === Number(searchValueBrand);
-        });
+        searchedItems = currentSearchValue.filter(item => item.brand.id === Number(searchValueBrand))
         currentSearchValue = searchedItems;
     }
 
     if (searchValueModel.length >= 1) {
-        searchedItems = currentSearchValue.filter((item) => {
-            return item.model.id === Number(searchValueModel);
-        });
+        searchedItems = currentSearchValue.filter(item => item.model.id === Number(searchValueModel))
         currentSearchValue = searchedItems;
     }
+    
+    if (statusInput !== undefined) {
+        
+        searchedItems = currentSearchValue.filter(item => item.status === statusInput)
+        currentSearchValue = searchedItems
+    }
+    if (obsoleteInput !== undefined) {
+        searchedItems = currentSearchValue.filter(item => item.obsolete === obsoleteInput)
+        currentSearchValue = searchedItems
+    }
+    
 
     const searchValueTrigger = searchValueCategory.length + searchValueSerial.length + searchValueActivo.length + searchValueBrand.length + searchValueModel.length;
 

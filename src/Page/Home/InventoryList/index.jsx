@@ -1,11 +1,7 @@
-import React, { Suspense, useContext } from 'react';
+import React, { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { InventaryContext } from 'context';
 
-
-export default function InventoryList() {
-    const { searchedItems } = useContext(InventaryContext)
-    
+export default function InventoryList({searchedItems}) {
     const navigate = useNavigate()
     
     return (
@@ -26,6 +22,8 @@ export default function InventoryList() {
                             <td>{item?.activo}</td>
                             <td>{item?.brand?.name}</td>
                             <td>{item?.model?.name}</td>
+                            <td>{item?.status ? 'Operativo' : 'Dañado'}</td>
+                            <td>{item?.obsolete ? 'Si' : 'No'}</td>
                         </tr>
                     )
                 })}

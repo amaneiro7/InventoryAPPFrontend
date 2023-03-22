@@ -1,18 +1,19 @@
-import React, { Suspense, lazy, useContext, useTransition, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useContext, useEffect, useState } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
 
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
-const Loading = lazy(() => import('UI/Atoms/Loading'));
 
 export default function TableTitle() {
-    const [isPending, startTransition] = useTransition();
+
     const [setBrand, setDataBrand] = useState();
     const [setModel, setDataModel] = useState();
     const {
         state,
-        dataCategory,        
+        dataStatus,
+        dataObsolete,
+        dataCategory,
         dataBrand,
         dataModel,
         dispatch
@@ -40,20 +41,33 @@ export default function TableTitle() {
             return
         }
 
-        const modelFiltered = dataModel.filter(model => 
-            model.category.id === Number(state.searchValueCategory) && 
+        const modelFiltered = dataModel.filter(model =>
+            model.category.id === Number(state.searchValueCategory) &&
             model.brand.id === Number(state.searchValueBrand)
-            )
+        )
 
         setDataModel(modelFiltered)
     }, [state.searchValueCategory, state.searchValueBrand, dataModel])
 
+    const isDisabled = !dataCategory ? true : false
+
     const onHandleInput = ({ target }) => {
-        const { name, value } = target
-        startTransition(() => {
-            dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
-        })
+        let { name, value } = target
+        dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+        console.log(name, value);
     };
+
+    const onHandleInput2 = ({ target }) => {
+        let { name, value } = target
+        const trueFalseValue = {
+            true: true,
+            false: false,
+            '': undefined
+        }        
+        value = trueFalseValue[value]        
+        dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
+    }
+
 
     return (
         <tr className='main-table--title'>
@@ -61,7 +75,6 @@ export default function TableTitle() {
                 <h3>
                     Categoria
                 </h3>
-                {isPending && <Loading />}
                 <Suspense fallback={<LoadingInput />}>
                     {dataCategory &&
                         <Select
@@ -72,7 +85,7 @@ export default function TableTitle() {
                             hidden={false}
                             disabled={false}
                             onChange={onHandleInput}
-                            isDisabled={false}
+                            isDisabled={isDisabled}
                             isAutoFocus={false}
                             size='home'
                         />}
@@ -101,7 +114,7 @@ export default function TableTitle() {
                         placeholder={"Activo"}
                         value={state.searchValueActivo}
                         onChange={onHandleInput}
-                        isAutoFocus={false}
+                        isAutoFocus={isDisabled}
                         size='home'
                     />
                 </Suspense>
@@ -118,7 +131,7 @@ export default function TableTitle() {
                             hidden={false}
                             disabled={false}
                             onChange={onHandleInput}
-                            isDisabled={false}
+                            isDisabled={isDisabled}
                             isAutoFocus={false}
                             size='home'
                         />}
@@ -136,10 +149,44 @@ export default function TableTitle() {
                             hidden={false}
                             disabled={false}
                             onChange={onHandleInput}
-                            isDisabled={false}
+                            isDisabled={isDisabled}
                             isAutoFocus={false}
                             size='home'
                         />}
+                </Suspense>
+            </th>
+            <th>
+                <h3>Estado</h3>
+                <Suspense fallback={<LoadingInput />}>
+                    <Select
+                        name={'statusInput'}
+                        value={state.statusInput}
+                        options={dataStatus}
+                        placeholder={"-- Filtre por Estado --"}
+                        hidden={false}
+                        disabled={false}
+                        onChange={onHandleInput2}
+                        isDisabled={isDisabled}
+                        isAutoFocus={false}
+                        size='home'
+                    />
+                </Suspense>
+            </th>
+            <th>
+                <h3>Obsoletos</h3>
+                <Suspense fallback={<LoadingInput />}>
+                    <Select
+                        name={'obsoleteInput'}
+                        value={state.obsoleteInput}
+                        options={dataObsolete}
+                        placeholder={"-- Filtre por Obsoleto --"}
+                        hidden={false}
+                        disabled={false}
+                        onChange={onHandleInput2}
+                        isDisabled={isDisabled}
+                        isAutoFocus={false}
+                        size='home'
+                    />
                 </Suspense>
             </th>
         </tr>

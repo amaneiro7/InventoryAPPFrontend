@@ -1,15 +1,16 @@
+import React, { lazy, Suspense, useContext } from 'react';
+import { InventaryContext } from 'context';
 import ErrorBoundary from 'App/ErrorBoundary';
-import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const TableTitle = lazy(() => import('Page/Home/TableTitle'))
 const InventoryList = lazy(() => import('Page/Home/InventoryList'))
 const Loading = lazy(() => import('UI/Atoms/Loading'));
-const Modal = lazy(() => import('UI/Atoms/Modal'));
 const Button = lazy(() => import('UI/Atoms/Button'));
 
 export default function Home() {
+    const { searchedItems, items } = useContext(InventaryContext)
     const navigate = useNavigate();
 
     return (
@@ -23,27 +24,21 @@ export default function Home() {
             </div>
             <table className='main-table'>
                 <tbody>
-
                     <ErrorBoundary>
-                        <Suspense fallback={
-                            <Modal>
-                                <Loading />
-                            </Modal>
-                        }>
+                        <Suspense fallback={<Loading />}>
                             <TableTitle />
                         </Suspense>
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Suspense fallback={
-                            <Modal>
-                                <Loading />
-                            </Modal>
-                        }>
-                            <InventoryList />
+                    </ErrorBoundary>                    
+                    {items && <ErrorBoundary>
+                        <Suspense fallback={<Loading />}>
+                            <InventoryList 
+                            searchedItems={searchedItems}/>
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundary>}
                 </tbody>
             </table>
+            {!items && <Loading/>}
+            {(items && searchedItems.length === 0) && <p>No hay ningun dispositivo que coincida con las búsqueda</p>}
         </main>
     )
 }
