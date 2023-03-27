@@ -3,14 +3,13 @@ import "./BalanceTable.css";
 
 export default function BalanceTable({ data }) {
 let brandCount = [];
-  let modelsCount = [];
+let modelsCount = [];
   data.item.forEach((elem) => {
     let brand = elem.brand.name;
     let model = brand + " / " + elem.model.name;
     brandCount[brand] = (brandCount[brand] || 0) + 1;
     modelsCount[model] = (modelsCount[model] || 0) + 1;
   });
- 
 
   return (
       <table className="Balance__table">
