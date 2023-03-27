@@ -1,7 +1,8 @@
 import { InventaryContext } from 'context';
-import React, { useContext } from 'react';
-import { BalanceTable } from './BalanceTable';
+import React, { lazy, useContext } from 'react';
 import './Dashboard.css'
+
+const BalanceTable = lazy(() => import('./BalanceTable'))
 
 export default function Dashboard() {
 const {dataCategory} = useContext(InventaryContext);

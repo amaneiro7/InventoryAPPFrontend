@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useContext, useEffect, useState } from 'react';
 import { InventaryContext } from 'context';
 import LoadingInput from 'UI/Atoms/LoadingInput';
+import './TableTitle.css'
 
 const Input = lazy(() => import('UI/Atoms/Input'));
 const Select = lazy(() => import('UI/Atoms/Select'));
@@ -36,16 +37,23 @@ export default function TableTitle() {
     }, [dataModel, state.searchValueCategory, dataBrand])
 
     useEffect(() => {
+        // funcion auxiliar que filtra el modelo segun los parametros
+        const filterModel = (category, brand) => {
+            return dataModel.filter(model =>
+                (category === "" || model.category.id === Number(category)) &&
+                (brand === "" || model.brand.id === Number(brand))
+            );
+        }
+        // si no hay ningun parametro de busqueda, se usa el modelo original
         if (state.searchValueCategory === "" && state.searchValueBrand === "") {
             setDataModel(dataModel)
             return
         }
-
-        const modelFiltered = dataModel.filter(model =>
-            model.category.id === Number(state.searchValueCategory) &&
-            model.brand.id === Number(state.searchValueBrand)
-        )
-
+        //si hay algun parametro de busqueda, se llama a la funcion uxiliar
+        const modelFiltered = filterModel(
+            state.searchValueCategory,
+            state.searchValueBrand
+        );
         setDataModel(modelFiltered)
     }, [state.searchValueCategory, state.searchValueBrand, dataModel])
 
@@ -63,18 +71,16 @@ export default function TableTitle() {
             true: true,
             false: false,
             '': undefined
-        }        
-        value = trueFalseValue[value]        
+        }
+        value = trueFalseValue[value]
         dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
     }
 
 
     return (
-        <tr className='main-table--title'>
-            <th>
-                <h3>
-                    Categoria
-                </h3>
+        <div className='TableTitle__container'>
+            <div className='TableTitle__inputs'>
+                <h3>Categoria</h3>
                 <Suspense fallback={<LoadingInput />}>
                     {dataCategory &&
                         <Select
@@ -90,8 +96,8 @@ export default function TableTitle() {
                             size='home'
                         />}
                 </Suspense>
-            </th>
-            <th>
+            </div>
+            <div className='TableTitle--Inputs'>
                 <h3>Serial</h3>
                 <Suspense fallback={<LoadingInput />}>
                     <Input
@@ -104,8 +110,8 @@ export default function TableTitle() {
                         size='home'
                     />
                 </Suspense>
-            </th>
-            <th>
+            </div>
+            <div className='TableTitle--Inputs'>
                 <h3>Activo</h3>
                 <Suspense fallback={<LoadingInput />}>
                     <Input
@@ -118,8 +124,8 @@ export default function TableTitle() {
                         size='home'
                     />
                 </Suspense>
-            </th>
-            <th>
+            </div>
+            <div className='TableTitle--Inputs'>
                 <h3>Marca</h3>
                 <Suspense fallback={<LoadingInput />}>
                     {dataBrand &&
@@ -136,8 +142,8 @@ export default function TableTitle() {
                             size='home'
                         />}
                 </Suspense>
-            </th>
-            <th>
+            </div>
+            <div className='TableTitle--Inputs'>
                 <h3>Modelo</h3>
                 <Suspense fallback={<LoadingInput />}>
                     {dataModel &&
@@ -154,8 +160,8 @@ export default function TableTitle() {
                             size='home'
                         />}
                 </Suspense>
-            </th>
-            <th>
+            </div>
+            <div className='TableTitle--Inputs'>
                 <h3>Estado</h3>
                 <Suspense fallback={<LoadingInput />}>
                     <Select
@@ -171,8 +177,8 @@ export default function TableTitle() {
                         size='home'
                     />
                 </Suspense>
-            </th>
-            <th>
+            </div>
+            <div className='TableTitle--Inputs'>
                 <h3>Obsoletos</h3>
                 <Suspense fallback={<LoadingInput />}>
                     <Select
@@ -188,7 +194,7 @@ export default function TableTitle() {
                         size='home'
                     />
                 </Suspense>
-            </th>
-        </tr>
+            </div>
+        </div>
     )
 }

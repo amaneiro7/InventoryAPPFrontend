@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Inventory.css'
 
 const LoadingTable = lazy(() => import('UI/Atoms/LoadingTable'));
 

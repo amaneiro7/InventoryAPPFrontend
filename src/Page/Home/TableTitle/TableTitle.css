@@ -1,0 +1,6 @@
+.TableTitle__container {
+    display: grid;
+    grid-template-columns:  repeat(auto-fit, 250px);
+    grid-template-rows: 120px;
+    column-gap: 20px;
+}
