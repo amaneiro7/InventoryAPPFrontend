@@ -61,8 +61,7 @@ export default function TableTitle() {
 
     const onHandleInput = ({ target }) => {
         let { name, value } = target
-        dispatch({ type: 'CHANGEVALUE', payload: { name, value } });
-        console.log(name, value);
+        dispatch({ type: 'CHANGEVALUE', payload: { name, value } });        
     };
 
     const onHandleInput2 = ({ target }) => {

@@ -1,3 +1,4 @@
+import useGetData from "Hooks/useGetData";
 import useGetSearch from "Hooks/useGetSearch";
 import React, { createContext, useState } from "react";
 
@@ -5,15 +6,19 @@ export const InventaryContext = createContext();
 
 export function InventaryProvider(props) {
     const [reload, setReload] = useState(false);
-    const {        
+    
+    const {
         dataItems: items,
         dataCategory,
         dataBrand,
-        dataModel,
+        dataModel
+    } = useGetData(setReload, reload)
+    
+    const {
         state,
         searchedItems,
         dispatch
-    } = useGetSearch(setReload, reload)
+    } = useGetSearch(items)
 
     const dataStatus = [
         {
