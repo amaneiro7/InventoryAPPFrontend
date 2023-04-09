@@ -1,0 +1,102 @@
+public            
+├─ favicon.ico    
+├─ index.html     
+├─ logo192.png    
+├─ logo512.png    
+├─ manifest.json  
+└─ robots.txt     
+
+src                             
+├─ App                          
+│  ├─ App.css                   
+│  ├─ ErrorBoundary.js          
+│  └─ index.jsx                 
+├─ assets                       
+│  ├─ BNC_Logo_min.png          
+│  └─ Logo.png                  
+├─ context                      
+│  └─ index.js                  
+├─ Hooks                        
+│  ├─ useExportToExcel.js       
+│  ├─ useFetchingData.js        
+│  ├─ useGetData.js             
+│  ├─ useGetSearch.js           
+│  ├─ useIsExist.js             
+│  ├─ useReducerFromAddPage.js  
+│  └─ useWait.js                
+├─ Page                         
+│  ├─ AddNewItemForm            
+│  │  ├─ SelectForm             
+│  │  │  └─ index.jsx           
+│  │  ├─ AddNewItemForm.css     
+│  │  ├─ FormAddNewItem.css     
+│  │  └─ index.jsx              
+│  ├─ Dashboard                 
+│  │  ├─ BalanceTable           
+│  │  │  ├─ BalanceTable.css    
+│  │  │  └─ index.jsx           
+│  │  ├─ Dashboard.css          
+│  │  └─ index.jsx              
+│  ├─ Home                      
+│  │  ├─ InventoryList          
+│  │  │  ├─ index.jsx           
+│  │  │  └─ Inventory.css       
+│  │  ├─ TableTitle             
+│  │  │  ├─ index.jsx           
+│  │  │  └─ TableTitle.css      
+│  │  ├─ Home.css               
+│  │  └─ index.jsx              
+│  └─ ViewDetail                
+│     ├─ index.jsx              
+│     └─ ViewDetail.css         
+├─ services                     
+│  ├─ api.js                    
+│  ├─ config.js                 
+│  └─ endPoint.js               
+├─ UI                           
+│  ├─ Atoms                     
+│  │  ├─ Button                 
+│  │  │  ├─ Button.css          
+│  │  │  └─ index.jsx           
+│  │  ├─ Icon                   
+│  │  │  ├─ add.svg             
+│  │  │  ├─ AddIcon.js          
+│  │  │  ├─ delete.svg          
+│  │  │  ├─ DeleteIcon.js       
+│  │  │  ├─ edit.svg            
+│  │  │  ├─ EditIcon.js         
+│  │  │  ├─ Icon.css            
+│  │  │  └─ index.js            
+│  │  ├─ Input                  
+│  │  │  ├─ index.jsx           
+│  │  │  └─ Input.css           
+│  │  ├─ Loading                
+│  │  │  ├─ index.jsx           
+│  │  │  └─ loading.css         
+│  │  ├─ LoadingInput           
+│  │  │  ├─ index.jsx           
+│  │  │  └─ LoadingInput.css    
+│  │  ├─ LoadingTable           
+│  │  │  └─ index.jsx           
+│  │  ├─ MessageStatus          
+│  │  │  ├─ index.jsx           
+│  │  │  └─ MessageStatus.css   
+│  │  ├─ Modal                  
+│  │  │  ├─ index.jsx           
+│  │  │  └─ Modal.css           
+│  │  └─ Select                 
+│  │     ├─ index.jsx           
+│  │     └─ Select.css          
+│  ├─ Molecules                 
+│  │  └─ Menu                   
+│  │     ├─ index.jsx           
+│  │     └─ Menu.css            
+│  └─ Organisms                 
+│     ├─ FormBrand              
+│     │  └─ index.jsx           
+│     ├─ FormCategory           
+│     │  └─ index.jsx           
+│     └─ FormModel              
+│        └─ index.jsx           
+├─ index.css                    
+└─ index.js                     

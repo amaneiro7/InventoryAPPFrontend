@@ -32,39 +32,32 @@ export default function useGetSearch(dataItems) {
         searchedItems = dataItems;
     }
 
-    if (state.searchValueCategory) {        
-        searchedItems = getSearch(state.searchValueCategory, "categoryId", "number")
-        currentSearchValue = searchedItems;
+    if (state.searchValueCategory) {
+        getSearch(state.searchValueCategory, "categoryId", "number")
     }
 
     if (state.searchValueSerial) {
-        searchedItems = getSearch(state.searchValueSerial, "serial", "string")
-        currentSearchValue = searchedItems;
+        getSearch(state.searchValueSerial, "serial", "string")
     }
 
     if (state.searchValueActivo) {
-        searchedItems = getSearch(state.searchValueActivo, "activo", "string");
-        currentSearchValue = searchedItems;
+        getSearch(state.searchValueActivo, "activo", "string")
     }
 
     if (state.searchValueBrand) {
-        searchedItems = getSearch(state.searchValueBrand, "brandId", "number")
-        currentSearchValue = searchedItems;
+        getSearch(state.searchValueBrand, "brandId", "number")
     }
 
     if (state.searchValueModel) {
-        searchedItems = getSearch(state.searchValueModel, "modelId", "number")
-        currentSearchValue = searchedItems;
+        getSearch(state.searchValueModel, "modelId", "number")
     }
 
     if (state.statusInput !== undefined) {
-        searchedItems = getSearch(state.statusInput, "status", "boolean")
-        currentSearchValue = searchedItems
+        getSearch(state.statusInput, "status", "boolean")
     }
 
     if (state.obsoleteInput !== undefined) {
-        searchedItems = getSearch(state.obsoleteInput, "obsolete", "boolean")
-        currentSearchValue = searchedItems
+        getSearch(state.obsoleteInput, "obsolete", "boolean")
     }
 
     function getSearch(searchValue, value, type) {
@@ -73,7 +66,8 @@ export default function useGetSearch(dataItems) {
             number: (searchValue, value) => currentSearchValue.filter(item => item[value] === Number(searchValue)),
             boolean: (searchValue, value) => currentSearchValue.filter(item => item[value] === searchValue)
         }
-        return typeValidation[type] && typeValidation[type](searchValue, value)
+        searchedItems = typeValidation[type] && typeValidation[type](searchValue, value)
+        currentSearchValue = searchedItems
     }
     return {
         searchedItems,
