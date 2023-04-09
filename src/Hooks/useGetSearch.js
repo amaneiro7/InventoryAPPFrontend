@@ -32,33 +32,19 @@ export default function useGetSearch(dataItems) {
         searchedItems = dataItems;
     }
 
-    if (state.searchValueCategory) {
-        getSearch(state.searchValueCategory, "categoryId", "number")
-    }
+    if (state.searchValueCategory) getSearch(state.searchValueCategory, "categoryId", "number")
 
-    if (state.searchValueSerial) {
-        getSearch(state.searchValueSerial, "serial", "string")
-    }
+    if (state.searchValueSerial) getSearch(state.searchValueSerial, "serial", "string")
 
-    if (state.searchValueActivo) {
-        getSearch(state.searchValueActivo, "activo", "string")
-    }
+    if (state.searchValueActivo) getSearch(state.searchValueActivo, "activo", "string")
 
-    if (state.searchValueBrand) {
-        getSearch(state.searchValueBrand, "brandId", "number")
-    }
+    if (state.searchValueBrand) getSearch(state.searchValueBrand, "brandId", "number")
 
-    if (state.searchValueModel) {
-        getSearch(state.searchValueModel, "modelId", "number")
-    }
+    if (state.searchValueModel) getSearch(state.searchValueModel, "modelId", "number")
 
-    if (state.statusInput !== undefined) {
-        getSearch(state.statusInput, "status", "boolean")
-    }
+    if (state.statusInput !== undefined) getSearch(state.statusInput, "status", "boolean")
 
-    if (state.obsoleteInput !== undefined) {
-        getSearch(state.obsoleteInput, "obsolete", "boolean")
-    }
+    if (state.obsoleteInput !== undefined) getSearch(state.obsoleteInput, "obsolete", "boolean")
 
     function getSearch(searchValue, value, type) {
         const typeValidation = {
